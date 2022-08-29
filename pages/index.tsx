@@ -12,44 +12,32 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to the PIMS by Team Nitrogen!</h1>
+      <div className={styles.landingBackground}>
+        <div className={styles.framesBackground}></div>
 
-        <p className={styles.description}>
-          {"We kinda know what we're doing "}
-        </p>
+        <div className={styles.loginFrame}></div>
 
-        {/* <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <div className={styles.loginFrameHeading}>Nitro Manage</div>
+        <div className={styles.logo}></div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <div className={styles.usernamePromptText}>Username</div>
+        <div className={styles.usernameField}></div>
+        <div className={styles.usernameFieldIconFrame}>
+          <div className={styles.usernameFieldIcon}></div>
+        </div>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        {/* <div className={styles.passwordFieldPrompt}>Password</div>
+        <div className={styles.passwordField}></div>
+        <div className={styles.passwordFieldIconFrame}>
+          <div className={styles.passwordFieldIcon}></div>
         </div> */}
-      </main>
 
+        {/* Bottom right login button */}
+        <div className={styles.loginButton}></div>
+        <div className={styles.loginButtonText}>Login</div>
+      </div>
+      
+      
       {/* <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
