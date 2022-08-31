@@ -1,5 +1,15 @@
 .container {
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  top: 0;
+  left: 0;
+  background-color: #424f40;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
 }
 
 .main {
@@ -128,8 +138,6 @@
   }
 }
 
-
-
 /* ------------------------------------------------------ New CSS from Figma ------------------------------- */
 .landingBackground {
   position: absolute;
@@ -138,7 +146,7 @@
   left: 0%;
   top: 0%;
 
-  background: #424F40;
+  background: #424f40;
 }
 
 .framesBackground {
@@ -148,7 +156,7 @@
   left: 5.51256614%;
   top: 8.55893536%;
 
-  background: #7B9278;
+  background: #7b9278;
   border-radius: 25px 25px 0px 0px;
 }
 
@@ -159,24 +167,24 @@
   left: 11.5740741%;
   top: 16.3498099%;
 
-  background: #E6F5E1;
+  background: #e6f5e1;
   border-radius: 25px;
 }
 
 .loginFrameHeading {
   position: absolute;
-	width: 25.1322751%;
-	height: 8.07984791;
-	left: 15.1455026%;
-	top: 23.0038023%;
+  width: 25.1322751%;
+  height: 8.07984791;
+  left: 15.1455026%;
+  top: 23.0038023%;
 
-	font-family: 'Poppins';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 55px;
-	line-height: 82px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 82px;
 
-	color: #424F40;
+  color: #424f40;
 }
 
 .logo {
@@ -186,7 +194,6 @@
   left: 51.6534392%;
   top: 18.1558935%;
 
-  background-image: url("../images/login_page_logo.png");
   background-repeat: no-repeat;
 }
 
@@ -197,13 +204,13 @@
   left: 16.0712486%;
   top: 42.9657795%;
 
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 22px;
 
-  color: #424F40;
+  color: #424f40;
 }
 
 .usernameField {
@@ -243,13 +250,13 @@
   left: 199px;
   top: 525px;
 
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 22px;
 
-  color: #424F40;
+  color: #424f40;
 }
 
 .passwordField {
@@ -259,7 +266,7 @@
   left: 199px;
   top: 548.1px;
 
-  background: #D7E8D0;
+  background: #d7e8d0;
   border-radius: 12px;
 }
 
@@ -289,23 +296,23 @@
   left: 561px;
   top: 783px;
 
-  background: #879B82;
+  background: #879b82;
   border-radius: 12px;
 }
 
-.loginButtonText { 
+.loginButtonText {
   position: absolute;
   width: 65px;
   height: 36px;
   left: 669px;
   top: 795px;
 
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 36px;
   /* identical to box height */
 
-  color: #F6FEF3;
+  color: #f6fef3;
 }
