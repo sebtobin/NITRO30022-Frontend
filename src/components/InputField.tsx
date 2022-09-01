@@ -16,7 +16,7 @@ const InputField: FC<InputFieldProps> = ({ svg, heading }) => {
         <ImageComponent>
           <Image src={svg} alt="" />
         </ImageComponent>
-        <input style={inputStyle}></input>
+        <UserInput></UserInput>
       </FieldContainer>
     </Field>
   );
@@ -53,20 +53,26 @@ const Heading = styled.h4`
   color: #424f40;
 `;
 
-const inputStyle: CSSProperties = {
-  backgroundColor: " #D7E8D0",
-  borderColor: "transparent",
-  height: "55px",
-  borderRadius: "12px",
-  fontSize: "23px",
-  width: "30vw",
-  backgroundPositionX: "10px",
-  backgroundPositionY: "10px",
-  backgroundRepeat: "no-repeat",
-  paddingLeft: "50px",
-  color: "#424F40",
-  fontFamily: "Poppins",
-  fontStyle: "normal",
-  fontWeight: 400,
-};
+const UserInput = styled.input`
+  background-color: #d7e8d0;
+  border-color: transparent;
+  height: 55px;
+  border-radius: 12px;
+  font-size: 23px;
+  width: 30vw;
+  background-position-x: 10px;
+  background-position-y: 10px;
+  background-repeat: no-repeat;
+  padding-left: 50px;
+  color: #424f40;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+
+  :focus {
+    outline: none;
+  }
+`;
+
+const inputStyle: CSSProperties = {};
 export default InputField;
