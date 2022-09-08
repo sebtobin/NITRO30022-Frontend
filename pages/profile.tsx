@@ -4,7 +4,8 @@ export default function Home() {
     //TODO: this.
     console.log("Save press");
   }, []);
-
+  
+  // Also need to look into adding the script when Change button is clicked.
   return (
     <Background>
       <ProfileContainer>
