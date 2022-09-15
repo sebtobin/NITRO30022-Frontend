@@ -53,7 +53,6 @@ const UserName = styled.h2`
   font-weight: 600;
   font-size: 26px;
   margin-left: 10px;
-
   color: #424f40;
 `;
 const ProfileContainer = styled.div`
@@ -69,7 +68,6 @@ const LogoutButton = styled.h2`
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
-
   color: #424f40;
 `;
 
@@ -93,17 +91,4 @@ const NavBarContainer = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  background-color: #e6f5e1;
-  width: 30%;
-  height: 55%;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 25px;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  right: 10vw;
-  top: 280px;
-`;
 export default NavBar;
