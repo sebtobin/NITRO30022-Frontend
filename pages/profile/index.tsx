@@ -1,11 +1,4 @@
-// Profile Page of a User. On this page, they can change their User Details 
-// (Username, Email, Password) as well as their Profile Picture.
-
-import Head from "next/head";
-import Image from "next/image";
 import styled from "styled-components";
-import styles from "../styles/Home.module.css";
-import LogoImage from "../images/logo.svg";
 import UserImage from "../images/user-ic.svg";
 import KeyImage from "../images/key-ic.svg";
 import MailImage from "../images/mail-ic.svg";
@@ -13,6 +6,8 @@ import InputField from "../src/components/InputField";
 import { useCallback } from "react";
 import NitButton from "../src/components/NitButton";
 
+// Profile Page of a User. On this page, they can change their User Details 
+// (Username, Email, Password) as well as their Profile Picture.
 export default function Home() {
   
   const onSaveClick = useCallback(() => {
