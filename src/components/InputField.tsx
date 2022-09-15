@@ -5,7 +5,7 @@ import { blue } from "@material-ui/core/colors";
 
 interface InputFieldProps {
   svg: any;
-  heading: string;
+  heading?: string;
 }
 
 const InputField: FC<InputFieldProps> = ({ svg, heading }) => {
@@ -16,7 +16,7 @@ const InputField: FC<InputFieldProps> = ({ svg, heading }) => {
         <ImageComponent>
           <Image src={svg} alt="" />
         </ImageComponent>
-        <UserInput></UserInput>
+        <UserInput />
       </FieldContainer>
     </Field>
   );
@@ -63,7 +63,7 @@ const UserInput = styled.input`
   background-position-x: 10px;
   background-position-y: 10px;
   background-repeat: no-repeat;
-  padding-left: 50px;
+  padding-left: 60px;
   color: #424f40;
   font-family: Poppins;
   font-style: normal;
