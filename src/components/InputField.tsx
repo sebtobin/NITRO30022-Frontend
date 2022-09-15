@@ -74,5 +74,4 @@ const UserInput = styled.input`
   }
 `;
 
-const inputStyle: CSSProperties = {};
 export default InputField;
