@@ -1,3 +1,5 @@
+// Profile Page of a User. On this page, they can change their User Details 
+// (Username, Email, Password) as well as their Profile Picture.
 export default function Home() {
   
   const onSaveClick = useCallback(() => {
