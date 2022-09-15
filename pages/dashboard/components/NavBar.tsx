@@ -7,6 +7,7 @@ import DashboardButton from "./DashboardButton";
 import SearchImage from "../../../images/magnify-ic.svg";
 import ProfileDefaultImage from "../../../images/profile-default-ic.svg";
 import Image from "next/image";
+
 interface NavBarProps {
   userName: string;
 }
