@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import UserImage from "../images/user-ic.svg";
-import KeyImage from "../images/key-ic.svg";
-import MailImage from "../images/mail-ic.svg";
-import InputField from "../src/components/InputField";
+import UserImage from "../../images/user-ic.svg";
+import KeyImage from "../../images/key-ic.svg";
+import MailImage from "../../images/mail-ic.svg";
+import InputField from "../../src/components/InputField";
 import { useCallback } from "react";
-import NitButton from "../src/components/NitButton";
+import NitButton from "../../src/components/NitButton";
 
 // Profile Page of a User. On this page, they can change their User Details 
 // (Username, Email, Password) as well as their Profile Picture.
