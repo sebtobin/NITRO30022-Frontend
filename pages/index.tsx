@@ -7,18 +7,19 @@ import UserImage from "../images/user-ic.svg";
 import KeyImage from "../images/key-ic.svg";
 import MailImage from "../images/mail-ic.svg";
 import InputField from "../src/components/InputField";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
+import router from "next/router";
 
 export default function Home() {
+  const [username, setUsername] = useState("");
   const onLoginClick = useCallback(() => {
-    //TODO: this.
-    console.log("Login press");
+    // TODO: this.
+    router.push("/dashboard");
   }, []);
 
   const onRegisterClick = useCallback(() => {
     //TODO: this.
-    console.log("Register press");
   }, []);
 
   return (
@@ -29,22 +30,6 @@ export default function Home() {
       </Head>
 
       <Container>
-        <SignUpContainer>
-          <TitleContainer>
-            <SubTitle>Register</SubTitle>
-          </TitleContainer>
-          <RegisterInputContainer>
-            <InputField svg={UserImage} heading={"Username"} />
-            <InputField svg={MailImage} heading={"Email"} />
-            <InputField svg={KeyImage} heading={"Password"} />
-          </RegisterInputContainer>
-          <NitButton
-            onClick={onRegisterClick}
-            buttonText="Register"
-            style={{ marginRight: 80, marginTop: 20 }}
-          />
-        </SignUpContainer>
-
         <LoginContainer>
           <TitleContainer>
             <Title>Nitrus</Title>
@@ -60,6 +45,21 @@ export default function Home() {
             buttonText="Login"
           />
         </LoginContainer>
+        <SignUpContainer>
+          <TitleContainer>
+            <SubTitle>Register</SubTitle>
+          </TitleContainer>
+          <RegisterInputContainer>
+            <InputField svg={UserImage} heading={"Username"} />
+            <InputField svg={MailImage} heading={"Email"} />
+            <InputField svg={KeyImage} heading={"Password"} />
+          </RegisterInputContainer>
+          <NitButton
+            onClick={onRegisterClick}
+            buttonText="Register"
+            style={{ marginRight: 80, marginTop: 20 }}
+          />
+        </SignUpContainer>
       </Container>
     </div>
   );
@@ -77,6 +77,7 @@ const Container = styled.div`
 
   @media only screen and (max-width: 770px) {
     background-color: red;
+    flex-direction: column;
   }
 `;
 
@@ -122,6 +123,7 @@ const LoginContainer = styled.div`
 
 const SignUpContainer = styled.div`
   display: flex;
+  flex: 1;
   background-color: #e6f5e1;
   width: 30%;
   height: 55%;
@@ -129,9 +131,6 @@ const SignUpContainer = styled.div`
   flex-direction: column;
   border-radius: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  right: 10vw;
-  top: 280px;
 `;
 
 const Title = styled.h1`
