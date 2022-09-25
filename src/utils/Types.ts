@@ -3,7 +3,11 @@ export interface Auth {
   password: string;
 }
 export enum DashboardScreenSelection {
-  Dashboard = "Dashboard",
   Collection = "My Collection",
   Friends = "Friends",
+}
+export enum PrivacyLevel {
+  Public = "Public",
+  Private = "Private",
+  FriendsOnly = "Friends Only",
 }

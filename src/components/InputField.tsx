@@ -4,11 +4,13 @@ import Image from "next/image";
 import { blue } from "@material-ui/core/colors";
 
 interface InputFieldProps {
-  svg: any;
+  svg?: any;
   heading?: string;
+  value?: string;
 }
 
-const InputField: FC<InputFieldProps> = ({ svg, heading }) => {
+const InputField: FC<InputFieldProps> = ({ svg, heading, value }) => {
+  const padding: CSSProperties = { paddingLeft: "60px" };
   return (
     <Field>
       <Heading>{heading}</Heading>
@@ -16,7 +18,7 @@ const InputField: FC<InputFieldProps> = ({ svg, heading }) => {
         <ImageComponent>
           <Image src={svg} alt="" />
         </ImageComponent>
-        <UserInput />
+        <UserInput style={svg ? padding : undefined} value={value} />
       </FieldContainer>
     </Field>
   );
@@ -63,7 +65,7 @@ const UserInput = styled.input`
   background-position-x: 10px;
   background-position-y: 10px;
   background-repeat: no-repeat;
-  padding-left: 60px;
+  padding: 30px 30px;
   color: #424f40;
   font-family: Poppins;
   font-style: normal;

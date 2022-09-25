@@ -7,34 +7,57 @@ import DashboardButton from "./DashboardButton";
 import SearchImage from "../../../images/magnify-ic.svg";
 import ProfileDefaultImage from "../../../images/profile-default-ic.svg";
 import Image from "next/image";
+import Head from "next/head";
 
 interface NavBarProps {
   userName: string;
+  onCollectionNav: () => void;
+  onFriendsNav: () => void;
+  selectedScreen?: DashboardScreenSelection;
 }
 
-const NavBar: FC<NavBarProps> = () => {
-  const [selectedScreen, setSelectedScreen] =
-    useState<DashboardScreenSelection>(DashboardScreenSelection.Dashboard);
-
+const NavBar: FC<NavBarProps> = ({
+  userName,
+  onCollectionNav,
+  onFriendsNav,
+  selectedScreen,
+}) => {
   const onLogoutClick = useCallback(() => {
     router.push("/");
   }, []);
+  const onProfilePress = useCallback(() => {
+    router.push("/profile");
+  }, []);
+  const onCollectionNavigate = useCallback(() => {
+    router.push("/dashboard");
+    onCollectionNav();
+  }, [onCollectionNav]);
+  const onFriendsNavigate = useCallback(() => {
+    router.push("/dashboard");
+    onFriendsNav();
+  }, [onFriendsNav]);
 
   return (
     <NavBarContainer>
-      <ProfileContainer>
+      <Head>
+        <title>Nitrus</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <ProfileContainer onClick={onProfilePress}>
         <Image src={ProfileDefaultImage} alt="" />
-        <UserName>isaac_parsons</UserName>
+        <UserName>{userName}</UserName>
       </ProfileContainer>
       <InputField svg={SearchImage} />
       <SelectionDashboardContainer>
         <DashboardButton
           text={DashboardScreenSelection.Collection}
           selected={selectedScreen === DashboardScreenSelection.Collection}
+          onClick={onCollectionNavigate}
         />
         <DashboardButton
           text={DashboardScreenSelection.Friends}
           selected={selectedScreen === DashboardScreenSelection.Friends}
+          onClick={onFriendsNavigate}
         />
       </SelectionDashboardContainer>
 
@@ -43,7 +66,7 @@ const NavBar: FC<NavBarProps> = () => {
   );
 };
 const SelectionDashboardContainer = styled.div`
-  width: 25vw;
+  width: 30vw;
   flex-direction: row;
   display: flex;
 `;
@@ -58,6 +81,9 @@ const UserName = styled.h2`
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
+  :hover {
+    cursor: pointer;
+  }
 `;
 const LogoutButton = styled.h2`
   :hover {
@@ -74,6 +100,7 @@ const LogoutButton = styled.h2`
 const NavBarContainer = styled.div`
   display: flex;
   position: sticky;
+  z-index: 100;
   top: 0;
   box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.2);
   background-color: #e6f5e1;

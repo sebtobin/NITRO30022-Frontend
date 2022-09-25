@@ -10,9 +10,11 @@ import InputField from "../src/components/InputField";
 import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
 import router from "next/router";
+import NavBar from "./dashboard/components/NavBar";
 
 export default function Home() {
   const [username, setUsername] = useState("");
+  const userName = "isaac_parsons";
   const onLoginClick = useCallback(() => {
     // TODO: this.
     router.push("/dashboard");
@@ -24,11 +26,6 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Nitrus</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-
       <Container>
         <LoginContainer>
           <TitleContainer>
@@ -131,6 +128,7 @@ const SignUpContainer = styled.div`
   flex-direction: column;
   border-radius: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+  margin-right: 65px;
 `;
 
 const Title = styled.h1`

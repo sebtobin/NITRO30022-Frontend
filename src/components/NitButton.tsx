@@ -20,7 +20,6 @@ const LoginButton = styled.div`
   width: 35%;
   height: 70px;
   border-radius: 12px;
-  align-self: flex-end;
   background-color: #879b82;
   align-items: center;
   justify-content: center;
