@@ -53,7 +53,6 @@ export default function Collection() {
   return (
     <div>
       <NavBar
-        userName={userName}
         onCollectionNav={navigateToDash}
         onFriendsNav={navigateToDash}
         selectedScreen={DashboardScreenSelection.Collection}

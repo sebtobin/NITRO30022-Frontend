@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "./apiTypes";
 
-export const SET_USER = "SET_USER";
-
 const initialState: AuthState = {
   authToken: null,
 };

@@ -1,10 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LoginRequest, LoginResponse } from "./apiTypes";
+import {
+  LoginRequest,
+  LoginResponse,
+  SignUpRequest,
+  SignUpResponse,
+  UserState,
+} from "./apiTypes";
 import { RootState } from "./store";
 
 export const nitrusApi = createApi({
   baseQuery: fetchBaseQuery({
-    // baseUrl: `http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api`,
+    baseUrl: `http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api`,
     mode: "cors",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.authToken;
@@ -15,24 +21,26 @@ export const nitrusApi = createApi({
     },
   }),
   endpoints: (build) => ({
+    getMe: build.mutation<UserState, string>({
+      query: (authtoken) => ({
+        url: "/users/getMe/",
+        method: "POST",
+        body: { authToken: authtoken },
+      }),
+    }),
     login: build.mutation<LoginResponse, LoginRequest>({
       query: ({ ...data }) => ({
-        url: "http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api/users/login/",
+        url: "/users/login/",
         method: "POST",
         body: data,
       }),
     }),
-    // signUp: build.mutation<SignUpResponse, SignUp>({
-    //   query: ({ ...data }) => ({
-    //     url: '/auth/signup',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
-    // getMe: build.query<User, void>({
-    //   query: () => ({
-    //     url: '/auth/me',
-    //   }),
-    // }),
+    signUp: build.mutation<SignUpResponse, SignUpRequest>({
+      query: ({ ...data }) => ({
+        url: "/users/signup/",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
