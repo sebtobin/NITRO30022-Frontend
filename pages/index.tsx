@@ -61,7 +61,7 @@ export default function Home() {
           console.log("API error: " + error);
         });
     },
-    [getUserState, userLogin]
+    [getUserState, resetErrors, userLogin]
   );
   const onRegisterClick = useCallback(
     (values: SignUpRequest) => {
@@ -80,7 +80,7 @@ export default function Home() {
           console.log("API error: " + error);
         });
     },
-    [getUserState, userSignup]
+    [getUserState, resetErrors, userSignup]
   );
 
   return (
