@@ -1,29 +1,50 @@
 import { CSSProperties, FC } from "react";
 import styled from "styled-components";
+import ActivityIndicator from "../../pages/dashboard/components/ActivityIndicator";
 
 interface NitButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
   buttonText: string;
   style?: CSSProperties;
+  type?: "button" | "submit" | "reset" | undefined;
+  loading?: boolean;
 }
 
-const NitButton: FC<NitButtonProps> = ({ onClick, style, buttonText }) => {
+const NitButton: FC<NitButtonProps> = ({
+  onClick,
+  style,
+  buttonText,
+  type,
+  loading,
+}) => {
   return (
-    <LoginButton onClick={onClick} style={style}>
+    <LoginButton type={type} onClick={onClick} style={style}>
       <ButtonText>{buttonText}</ButtonText>
+      {loading && (
+        <Loading>
+          <ActivityIndicator />
+        </Loading>
+      )}
     </LoginButton>
   );
 };
 
-const LoginButton = styled.div`
+const Loading = styled.div`
+  display: flex;
+  position: absolute;
+  right: 10px;
+`;
+const LoginButton = styled.button`
   display: flex;
   width: 35%;
+  position: relative;
   height: 70px;
   border-radius: 12px;
   background-color: #879b82;
   align-items: center;
   justify-content: center;
   transition-duration: 0.4s;
+  border-color: transparent;
 
   :hover {
     background-color: #424f40;

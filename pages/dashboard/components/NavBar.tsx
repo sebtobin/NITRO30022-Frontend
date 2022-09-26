@@ -8,23 +8,32 @@ import SearchImage from "../../../images/magnify-ic.svg";
 import ProfileDefaultImage from "../../../images/profile-default-ic.svg";
 import Image from "next/image";
 import Head from "next/head";
+import { Form, Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../src/redux/authReducer";
+import { RootState } from "../../../src/redux/store";
+import { UserState } from "../../../src/redux/apiTypes";
 
 interface NavBarProps {
-  userName: string;
   onCollectionNav: () => void;
   onFriendsNav: () => void;
   selectedScreen?: DashboardScreenSelection;
 }
+interface searchValues {
+  searchTerm: string;
+}
 
 const NavBar: FC<NavBarProps> = ({
-  userName,
   onCollectionNav,
   onFriendsNav,
   selectedScreen,
 }) => {
+  const user = useSelector<RootState, UserState | null>((state) => state.user);
+  const dispatch = useDispatch();
   const onLogoutClick = useCallback(() => {
+    dispatch(logout());
     router.push("/");
-  }, []);
+  }, [dispatch]);
   const onProfilePress = useCallback(() => {
     router.push("/profile");
   }, []);
@@ -37,6 +46,10 @@ const NavBar: FC<NavBarProps> = ({
     onFriendsNav();
   }, [onFriendsNav]);
 
+  const search = useCallback((values: searchValues) => {
+    console.log(values);
+  }, []);
+
   return (
     <NavBarContainer>
       <Head>
@@ -45,9 +58,18 @@ const NavBar: FC<NavBarProps> = ({
       </Head>
       <ProfileContainer onClick={onProfilePress}>
         <Image src={ProfileDefaultImage} alt="" />
-        <UserName>{userName}</UserName>
+        <UserName>{user?.username}</UserName>
       </ProfileContainer>
-      <InputField svg={SearchImage} />
+      <Formik
+        initialValues={{
+          searchTerm: "",
+        }}
+        onSubmit={search}
+      >
+        <Form>
+          <InputField svg={SearchImage} field={"searchTerm"} />
+        </Form>
+      </Formik>
       <SelectionDashboardContainer>
         <DashboardButton
           text={DashboardScreenSelection.Collection}

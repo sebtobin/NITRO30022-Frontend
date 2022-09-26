@@ -10,19 +10,78 @@ import InputField from "../src/components/InputField";
 import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
 import router from "next/router";
-import NavBar from "./dashboard/components/NavBar";
+import { Formik, Form } from "formik";
+import { nitrusApi } from "../src/redux/apiClient";
+import { LoginRequest, SignUpRequest } from "../src/redux/apiTypes";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "../src/redux/authReducer";
+import { setUser } from "../src/redux/userReducer";
 
 export default function Home() {
-  const [username, setUsername] = useState("");
-  const userName = "isaac_parsons";
-  const onLoginClick = useCallback(() => {
-    // TODO: this.
-    router.push("/dashboard");
+  const dispatch = useDispatch();
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [signupError, setSignupError] = useState(false);
+  const [registering, setRegistering] = useState(false);
+  const [userLogin] = nitrusApi.endpoints.login.useMutation();
+  const [userSignup] = nitrusApi.endpoints.signUp.useMutation();
+  const [getMe] = nitrusApi.endpoints.getMe.useMutation();
+
+  const getUserState = useCallback(
+    (token: string) => {
+      dispatch(setAuthToken(token));
+      getMe(token)
+        .unwrap()
+        .then((result) => {
+          dispatch(setUser(result));
+        });
+    },
+    [dispatch, getMe]
+  );
+
+  const resetErrors = useCallback(() => {
+    setLoginError(false);
+    setSignupError(false);
   }, []);
 
-  const onRegisterClick = useCallback(() => {
-    //TODO: this.
-  }, []);
+  const onLoginClick = useCallback(
+    (values: LoginRequest) => {
+      resetErrors();
+      setLoggingIn(true);
+      userLogin(values)
+        .unwrap()
+        .then((result) => {
+          setLoggingIn(false);
+          getUserState(result.token);
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          setLoggingIn(false);
+          setLoginError(true);
+          console.log("API error: " + error);
+        });
+    },
+    [getUserState, resetErrors, userLogin]
+  );
+  const onRegisterClick = useCallback(
+    (values: SignUpRequest) => {
+      resetErrors();
+      setRegistering(true);
+      userSignup(values)
+        .unwrap()
+        .then((result) => {
+          setLoggingIn(false);
+          getUserState(result.token);
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          setRegistering(false);
+          setSignupError(true);
+          console.log("API error: " + error);
+        });
+    },
+    [getUserState, resetErrors, userSignup]
+  );
 
   return (
     <div className={styles.container}>
@@ -33,35 +92,96 @@ export default function Home() {
             <Image src={LogoImage} alt="" />
           </TitleContainer>
           <LoginInputContainer>
-            <InputField svg={UserImage} heading={"Username"} />
-            <InputField svg={KeyImage} heading={"Password"} />
+            <Formik
+              initialValues={{
+                username: "",
+                password: "",
+              }}
+              onSubmit={onLoginClick}
+            >
+              <Form>
+                <InputField
+                  svg={UserImage}
+                  heading={"Username"}
+                  field={"username"}
+                />
+                <InputField
+                  svg={KeyImage}
+                  heading={"Password"}
+                  field={"password"}
+                  type={"password"}
+                />
+                <NitButton
+                  type={"submit"}
+                  loading={loggingIn}
+                  style={{ marginTop: "10vw", marginBottom: 55 }}
+                  buttonText="Login"
+                />
+                {loginError && (
+                  <ErrorText>
+                    Incorrect username or password. Please try again.
+                  </ErrorText>
+                )}
+              </Form>
+            </Formik>
           </LoginInputContainer>
-          <NitButton
-            onClick={onLoginClick}
-            style={{ marginTop: "10vw", marginBottom: 55 }}
-            buttonText="Login"
-          />
         </LoginContainer>
         <SignUpContainer>
           <TitleContainer>
             <SubTitle>Register</SubTitle>
           </TitleContainer>
           <RegisterInputContainer>
-            <InputField svg={UserImage} heading={"Username"} />
-            <InputField svg={MailImage} heading={"Email"} />
-            <InputField svg={KeyImage} heading={"Password"} />
+            <Formik
+              initialValues={{
+                username: "",
+                email: "",
+                password: "",
+              }}
+              onSubmit={onRegisterClick}
+            >
+              <Form>
+                <InputField
+                  svg={UserImage}
+                  heading={"Username"}
+                  field={"username"}
+                />
+                <InputField svg={MailImage} heading={"Email"} field={"email"} />
+                <InputField
+                  svg={KeyImage}
+                  type={"password"}
+                  heading={"Password"}
+                  field={"password"}
+                />
+
+                <NitButton
+                  type={"submit"}
+                  loading={registering}
+                  buttonText="Register"
+                  style={{ marginLeft: "54%", width: 220 }}
+                />
+                {signupError && (
+                  <ErrorText>
+                    An unexpected error occurred. Please try again.
+                  </ErrorText>
+                )}
+              </Form>
+            </Formik>
           </RegisterInputContainer>
-          <NitButton
-            onClick={onRegisterClick}
-            buttonText="Register"
-            style={{ marginRight: 80, marginTop: 20 }}
-          />
         </SignUpContainer>
       </Container>
     </div>
   );
 }
 
+const ErrorText = styled.h4`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 10px;
+  margin-left: 25%;
+  color: #424f40;
+`;
 const Container = styled.div`
   display: flex;
   flex: 1;
@@ -80,6 +200,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
+  flex: 0.2;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -90,16 +211,17 @@ const LoginInputContainer = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 10vh;
   height: 200px;
 `;
 
 const RegisterInputContainer = styled.div`
   display: flex;
+  flex: 1;
   width: 70%;
   flex-direction: column;
   justify-content: space-between;
-  height: 270px;
+
+  height: 300px;
 `;
 
 const LoginContainer = styled.div`

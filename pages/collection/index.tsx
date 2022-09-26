@@ -53,7 +53,6 @@ export default function Collection() {
   return (
     <div>
       <NavBar
-        userName={userName}
         onCollectionNav={navigateToDash}
         onFriendsNav={navigateToDash}
         selectedScreen={DashboardScreenSelection.Collection}
@@ -81,10 +80,10 @@ export default function Collection() {
                 onClick={onPrivacyLevelClick}
               />
             </PricacyLevelSelect>
-            <InputField
+            {/* <InputField
               heading={"Collection Name"}
               value={SAMPLE_COLLECTION.name}
-            />
+            /> */}
             <NitButton
               onClick={() => {
                 return;
