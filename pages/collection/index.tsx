@@ -81,10 +81,10 @@ export default function Collection() {
                 onClick={onPrivacyLevelClick}
               />
             </PricacyLevelSelect>
-            <InputField
+            {/* <InputField
               heading={"Collection Name"}
               value={SAMPLE_COLLECTION.name}
-            />
+            /> */}
             <NitButton
               onClick={() => {
                 return;

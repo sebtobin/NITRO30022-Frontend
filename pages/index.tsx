@@ -10,18 +10,39 @@ import InputField from "../src/components/InputField";
 import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
 import router from "next/router";
-import NavBar from "./dashboard/components/NavBar";
+import { Formik, Form } from "formik";
+
+interface LoginValues {
+  username: string;
+  password: string;
+}
+interface RegisterValues {
+  username: string;
+  password: string;
+}
 
 export default function Home() {
-  const [username, setUsername] = useState("");
-  const userName = "isaac_parsons";
-  const onLoginClick = useCallback(() => {
-    // TODO: this.
-    router.push("/dashboard");
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [registering, setRegistering] = useState(false);
+  const onLoginClick = useCallback((values: LoginValues) => {
+    setLoggingIn(true);
+    setTimeout(() => {
+      console.log(values);
+      setLoggingIn(false);
+    }, 50000);
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 10000);
   }, []);
-
-  const onRegisterClick = useCallback(() => {
-    //TODO: this.
+  const onRegisterClick = useCallback((values: RegisterValues) => {
+    setRegistering(true);
+    setTimeout(() => {
+      console.log(values);
+      setRegistering(false);
+    }, 5000);
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 1000);
   }, []);
 
   return (
@@ -33,29 +54,71 @@ export default function Home() {
             <Image src={LogoImage} alt="" />
           </TitleContainer>
           <LoginInputContainer>
-            <InputField svg={UserImage} heading={"Username"} />
-            <InputField svg={KeyImage} heading={"Password"} />
+            <Formik
+              initialValues={{
+                username: "",
+                password: "",
+              }}
+              onSubmit={onLoginClick}
+            >
+              <Form>
+                <InputField
+                  svg={UserImage}
+                  heading={"Username"}
+                  field={"username"}
+                />
+                <InputField
+                  svg={KeyImage}
+                  heading={"Password"}
+                  field={"password"}
+                  type={"password"}
+                />
+                <NitButton
+                  type={"submit"}
+                  loading={loggingIn}
+                  style={{ marginTop: "10vw", marginBottom: 55 }}
+                  buttonText="Login"
+                />
+              </Form>
+            </Formik>
           </LoginInputContainer>
-          <NitButton
-            onClick={onLoginClick}
-            style={{ marginTop: "10vw", marginBottom: 55 }}
-            buttonText="Login"
-          />
         </LoginContainer>
         <SignUpContainer>
           <TitleContainer>
             <SubTitle>Register</SubTitle>
           </TitleContainer>
           <RegisterInputContainer>
-            <InputField svg={UserImage} heading={"Username"} />
-            <InputField svg={MailImage} heading={"Email"} />
-            <InputField svg={KeyImage} heading={"Password"} />
+            <Formik
+              initialValues={{
+                username: "",
+                email: "",
+                password: "",
+              }}
+              onSubmit={onRegisterClick}
+            >
+              <Form>
+                <InputField
+                  svg={UserImage}
+                  heading={"Username"}
+                  field={"username"}
+                />
+                <InputField svg={MailImage} heading={"Email"} field={"email"} />
+                <InputField
+                  svg={KeyImage}
+                  type={"password"}
+                  heading={"Password"}
+                  field={"password"}
+                />
+
+                <NitButton
+                  type={"submit"}
+                  loading={registering}
+                  buttonText="Register"
+                  style={{ marginLeft: "54%", width: 220 }}
+                />
+              </Form>
+            </Formik>
           </RegisterInputContainer>
-          <NitButton
-            onClick={onRegisterClick}
-            buttonText="Register"
-            style={{ marginRight: 80, marginTop: 20 }}
-          />
         </SignUpContainer>
       </Container>
     </div>
@@ -80,6 +143,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
+  flex: 0.2;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -90,16 +154,17 @@ const LoginInputContainer = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 10vh;
   height: 200px;
 `;
 
 const RegisterInputContainer = styled.div`
   display: flex;
+  flex: 1;
   width: 70%;
   flex-direction: column;
   justify-content: space-between;
-  height: 270px;
+
+  height: 300px;
 `;
 
 const LoginContainer = styled.div`

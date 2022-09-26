@@ -33,9 +33,9 @@ export default function Home() {
         <ProfileContainer>
           <UserInfoContainerBackground>
             <UserInfoFieldContainer>
-              <InputField svg={UserImage} heading={"Username"} />
+              {/* <InputField svg={UserImage} heading={"Username"} />
               <InputField svg={MailImage} heading={"Email"} />
-              <InputField svg={KeyImage} heading={"Password"} />
+              <InputField svg={KeyImage} heading={"Password"} /> */}
             </UserInfoFieldContainer>
             <NitButton
               onClick={onSaveClick}

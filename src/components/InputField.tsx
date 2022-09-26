@@ -2,25 +2,56 @@ import { CSSProperties, FC } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { blue } from "@material-ui/core/colors";
-
+import { Formik, Field, Form, FormikHelpers } from "formik";
 interface InputFieldProps {
   svg?: any;
   heading?: string;
-  value?: string;
+  placeholder?: string;
+  field: string;
+  type?: string;
 }
 
-const InputField: FC<InputFieldProps> = ({ svg, heading, value }) => {
-  const padding: CSSProperties = { paddingLeft: "60px" };
+const InputField: FC<InputFieldProps> = ({
+  svg,
+  heading,
+  field,
+  type,
+  placeholder,
+}) => {
+  const padding: CSSProperties = {
+    paddingLeft: "60px",
+    backgroundColor: "#d7e8d0",
+    borderColor: "transparent",
+    height: "55px",
+    borderRadius: "12px",
+    fontSize: "23px",
+    width: "30vw",
+    backgroundPositionX: "10px",
+    backgroundPositionY: "10px",
+    backgroundRepeat: "no-repeat",
+    paddingRight: "30px",
+    color: " #424f40",
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: 400,
+    justifyContent: "center",
+  };
   return (
-    <Field>
+    <Container>
       <Heading>{heading}</Heading>
       <FieldContainer>
         <ImageComponent>
           <Image src={svg} alt="" />
         </ImageComponent>
-        <UserInput style={svg ? padding : undefined} value={value} />
+        <Field
+          style={padding}
+          id={field}
+          name={field}
+          placeholder={placeholder}
+          type={type}
+        />
       </FieldContainer>
-    </Field>
+    </Container>
   );
 };
 
@@ -30,9 +61,11 @@ const FieldContainer = styled.div`
   position: relative;
 `;
 
-const Field = styled.div`
+const Container = styled.div`
   flex-direction: column;
   display: flex;
+  margin-top: 12px;
+  margin-bottom: 12px;
 `;
 
 const ImageComponent = styled.div`
@@ -54,7 +87,6 @@ const Heading = styled.h4`
   margin: 0px;
   color: #424f40;
 `;
-
 const UserInput = styled.input`
   background-color: #d7e8d0;
   border-color: transparent;
@@ -70,10 +102,6 @@ const UserInput = styled.input`
   font-family: Poppins;
   font-style: normal;
   font-weight: 400;
-
-  :focus {
-    outline: none;
-  }
 `;
 
 export default InputField;

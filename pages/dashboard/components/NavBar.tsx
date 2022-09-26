@@ -8,12 +8,16 @@ import SearchImage from "../../../images/magnify-ic.svg";
 import ProfileDefaultImage from "../../../images/profile-default-ic.svg";
 import Image from "next/image";
 import Head from "next/head";
+import { Form, Formik } from "formik";
 
 interface NavBarProps {
   userName: string;
   onCollectionNav: () => void;
   onFriendsNav: () => void;
   selectedScreen?: DashboardScreenSelection;
+}
+interface searchValues {
+  searchTerm: string;
 }
 
 const NavBar: FC<NavBarProps> = ({
@@ -37,6 +41,10 @@ const NavBar: FC<NavBarProps> = ({
     onFriendsNav();
   }, [onFriendsNav]);
 
+  const search = useCallback((values: searchValues) => {
+    console.log(values);
+  }, []);
+
   return (
     <NavBarContainer>
       <Head>
@@ -47,7 +55,16 @@ const NavBar: FC<NavBarProps> = ({
         <Image src={ProfileDefaultImage} alt="" />
         <UserName>{userName}</UserName>
       </ProfileContainer>
-      <InputField svg={SearchImage} />
+      <Formik
+        initialValues={{
+          searchTerm: "",
+        }}
+        onSubmit={search}
+      >
+        <Form>
+          <InputField svg={SearchImage} field={"searchTerm"} />
+        </Form>
+      </Formik>
       <SelectionDashboardContainer>
         <DashboardButton
           text={DashboardScreenSelection.Collection}
