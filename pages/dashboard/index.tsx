@@ -9,6 +9,7 @@ import Collection from "./components/Collection";
 import NavBar from "./components/NavBar";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 import Image from "next/image";
+import NitModal from "./components/NitModal"
 
 interface Friends {
   name: string;
@@ -25,9 +26,16 @@ export default function Dashboard() {
   const userName = "isaac_parsons";
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
+  const [showCollectionsModal, setShowCollectionsModal] = useState(false);
 
   const onNewCollectionClick = useCallback(() => {
     console.debug("new collection press");
+    setShowCollectionsModal(true);
+  }, []);
+
+  const onCloseCollectionClick = useCallback(() => {
+    console.debug("new collection press");
+    setShowCollectionsModal(false);
   }, []);
 
   const onCollectionNav = useCallback(() => {
@@ -98,6 +106,12 @@ export default function Dashboard() {
           </FriendsContainer>
         )}
       </ContentContainer>
+      <NitModal
+        title = {"Create Collection"}
+        text = {"Choose a name for your new Collection. The collection can be renamed if need be."}
+        show = {showCollectionsModal}
+        onCloseClick = {onCloseCollectionClick}
+      />
     </div>
   );
 }
