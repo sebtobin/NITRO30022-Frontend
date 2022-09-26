@@ -9,6 +9,8 @@ import Collection from "./components/Collection";
 import NavBar from "./components/NavBar";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../src/redux/store";
 
 interface Friends {
   name: string;
@@ -23,6 +25,9 @@ interface CollectionDetails {
 
 export default function Dashboard() {
   const userName = "isaac_parsons";
+  const accessToken = useSelector<RootState, string | null>(
+    (state) => state.auth?.authToken
+  );
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
 
@@ -53,7 +58,7 @@ export default function Dashboard() {
       <ContentContainer>
         {selectedScreen == DashboardScreenSelection.Collection && (
           <>
-            <WelcomeMessage>{`Welcome back to Nitrus, ${userName}!`}</WelcomeMessage>
+            <WelcomeMessage>{`Welcome back to Nitrus, ${userName}!\n`}</WelcomeMessage>
             <CollectionContainer>
               <NitButton
                 onClick={onNewCollectionClick}
@@ -62,6 +67,7 @@ export default function Dashboard() {
               />
             </CollectionContainer>
 
+            <WelcomeMessage>{`you have auth token: ${accessToken}`}</WelcomeMessage>
             <CollectionsSelect>
               {SAMPLE_COLLECTIONS.map((item) => (
                 <Collection

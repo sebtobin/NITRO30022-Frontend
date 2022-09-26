@@ -9,6 +9,8 @@ import ProfileDefaultImage from "../../../images/profile-default-ic.svg";
 import Image from "next/image";
 import Head from "next/head";
 import { Form, Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../src/redux/authReducer";
 
 interface NavBarProps {
   userName: string;
@@ -26,9 +28,11 @@ const NavBar: FC<NavBarProps> = ({
   onFriendsNav,
   selectedScreen,
 }) => {
+  const dispatch = useDispatch();
   const onLogoutClick = useCallback(() => {
+    dispatch(logout());
     router.push("/");
-  }, []);
+  }, [dispatch]);
   const onProfilePress = useCallback(() => {
     router.push("/profile");
   }, []);

@@ -11,11 +11,11 @@ import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
 import router from "next/router";
 import { Formik, Form } from "formik";
+import { nitrusApi } from "../src/redux/apiClient";
+import { LoginRequest } from "../src/redux/apiTypes";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "../src/redux/authReducer";
 
-interface LoginValues {
-  username: string;
-  password: string;
-}
 interface RegisterValues {
   username: string;
   password: string;
@@ -24,16 +24,25 @@ interface RegisterValues {
 export default function Home() {
   const [loggingIn, setLoggingIn] = useState(false);
   const [registering, setRegistering] = useState(false);
-  const onLoginClick = useCallback((values: LoginValues) => {
-    setLoggingIn(true);
-    setTimeout(() => {
-      console.log(values);
-      setLoggingIn(false);
-    }, 50000);
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 10000);
-  }, []);
+  const [userLogin] = nitrusApi.endpoints.login.useMutation();
+  const dispatch = useDispatch();
+  const onLoginClick = useCallback(
+    (values: LoginRequest) => {
+      setLoggingIn(true);
+      const { unwrap } = userLogin(values);
+      unwrap()
+        .then((result) => {
+          setLoggingIn(false);
+          dispatch(setAuthToken(result.token));
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          // TODO: get error states eg. 401 unauthorised and show error message below error button.
+          console.log("API error: " + error);
+        });
+    },
+    [dispatch, userLogin]
+  );
   const onRegisterClick = useCallback((values: RegisterValues) => {
     setRegistering(true);
     setTimeout(() => {
