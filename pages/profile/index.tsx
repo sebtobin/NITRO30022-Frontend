@@ -20,7 +20,6 @@ export default function Home() {
   return (
     <div>
       <NavBar
-        userName="isaac_parsons"
         onCollectionNav={() => {
           return;
         }}

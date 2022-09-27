@@ -11,39 +11,77 @@ import { useCallback, useState } from "react";
 import NitButton from "../src/components/NitButton";
 import router from "next/router";
 import { Formik, Form } from "formik";
-
-interface LoginValues {
-  username: string;
-  password: string;
-}
-interface RegisterValues {
-  username: string;
-  password: string;
-}
+import { nitrusApi } from "../src/redux/apiClient";
+import { LoginRequest, SignUpRequest } from "../src/redux/apiTypes";
+import { useDispatch } from "react-redux";
+import { setAuthToken } from "../src/redux/authReducer";
+import { setUser } from "../src/redux/userReducer";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const [loggingIn, setLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [signupError, setSignupError] = useState(false);
   const [registering, setRegistering] = useState(false);
-  const onLoginClick = useCallback((values: LoginValues) => {
-    setLoggingIn(true);
-    setTimeout(() => {
-      console.log(values);
-      setLoggingIn(false);
-    }, 50000);
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 10000);
+  const [userLogin] = nitrusApi.endpoints.login.useMutation();
+  const [userSignup] = nitrusApi.endpoints.signUp.useMutation();
+  const [getMe] = nitrusApi.endpoints.getMe.useMutation();
+
+  const getUserState = useCallback(
+    (token: string) => {
+      dispatch(setAuthToken(token));
+      getMe(token)
+        .unwrap()
+        .then((result) => {
+          dispatch(setUser(result));
+        });
+    },
+    [dispatch, getMe]
+  );
+
+  const resetErrors = useCallback(() => {
+    setLoginError(false);
+    setSignupError(false);
   }, []);
-  const onRegisterClick = useCallback((values: RegisterValues) => {
-    setRegistering(true);
-    setTimeout(() => {
-      console.log(values);
-      setRegistering(false);
-    }, 5000);
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 1000);
-  }, []);
+
+  const onLoginClick = useCallback(
+    (values: LoginRequest) => {
+      resetErrors();
+      setLoggingIn(true);
+      userLogin(values)
+        .unwrap()
+        .then((result) => {
+          setLoggingIn(false);
+          getUserState(result.token);
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          setLoggingIn(false);
+          setLoginError(true);
+          console.log("API error: " + error);
+        });
+    },
+    [getUserState, resetErrors, userLogin]
+  );
+  const onRegisterClick = useCallback(
+    (values: SignUpRequest) => {
+      resetErrors();
+      setRegistering(true);
+      userSignup(values)
+        .unwrap()
+        .then((result) => {
+          setLoggingIn(false);
+          getUserState(result.token);
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          setRegistering(false);
+          setSignupError(true);
+          console.log("API error: " + error);
+        });
+    },
+    [getUserState, resetErrors, userSignup]
+  );
 
   return (
     <div className={styles.container}>
@@ -79,6 +117,11 @@ export default function Home() {
                   style={{ marginTop: "10vw", marginBottom: 55 }}
                   buttonText="Login"
                 />
+                {loginError && (
+                  <ErrorText>
+                    Incorrect username or password. Please try again.
+                  </ErrorText>
+                )}
               </Form>
             </Formik>
           </LoginInputContainer>
@@ -116,6 +159,11 @@ export default function Home() {
                   buttonText="Register"
                   style={{ marginLeft: "54%", width: 220 }}
                 />
+                {signupError && (
+                  <ErrorText>
+                    An unexpected error occurred. Please try again.
+                  </ErrorText>
+                )}
               </Form>
             </Formik>
           </RegisterInputContainer>
@@ -125,6 +173,15 @@ export default function Home() {
   );
 }
 
+const ErrorText = styled.h4`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 10px;
+  margin-left: 25%;
+  color: #424f40;
+`;
 const Container = styled.div`
   display: flex;
   flex: 1;

@@ -9,6 +9,9 @@ import Collection from "./components/Collection";
 import NavBar from "./components/NavBar";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../src/redux/store";
+import { UserState } from "../../src/redux/apiTypes";
 import NitModal from "./components/NitModal"
 
 interface Friends {
@@ -24,6 +27,10 @@ interface CollectionDetails {
 
 export default function Dashboard() {
   const userName = "isaac_parsons";
+  const accessToken = useSelector<RootState, string | null>(
+    (state) => state.auth?.authToken
+  );
+  const user = useSelector<RootState, UserState | null>((state) => state.user);
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
 
@@ -61,7 +68,6 @@ export default function Dashboard() {
   return (
     <div>
       <NavBar
-        userName={userName}
         onCollectionNav={onCollectionNav}
         onFriendsNav={onFriendsNav}
         selectedScreen={selectedScreen}
@@ -69,7 +75,7 @@ export default function Dashboard() {
       <ContentContainer>
         {selectedScreen == DashboardScreenSelection.Collection && (
           <>
-            <WelcomeMessage>{`Welcome back to Nitrus, ${userName}!`}</WelcomeMessage>
+            <WelcomeMessage>{`Welcome back to Nitrus, ${user?.username}!\n`}</WelcomeMessage>
             <CollectionContainer>
               <NitButton
                 onClick={onNewCollectionClick}
@@ -77,7 +83,6 @@ export default function Dashboard() {
                 style={{ width: 280 }}
               />
             </CollectionContainer>
-
             <CollectionsSelect>
               {collections.map((item) => (
                 <Collection
