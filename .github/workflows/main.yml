@@ -5,7 +5,6 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node16.16.0-chrome105-ff104-edge
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -16,4 +15,5 @@ jobs:
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
           # Specify Browser since container image is compile with Firefox
+          build: yarn next build
           browser: chrome
