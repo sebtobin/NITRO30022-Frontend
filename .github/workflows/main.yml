@@ -16,4 +16,5 @@ jobs:
         with:
           # Specify Browser since container image is compile with Firefox
           build: yarn next build
+          start: yarn dev
           browser: chrome
