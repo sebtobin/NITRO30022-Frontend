@@ -9,6 +9,7 @@ interface InputFieldProps {
   placeholder?: string;
   field: string;
   type?: string;
+  style?: CSSProperties;
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -17,6 +18,7 @@ const InputField: FC<InputFieldProps> = ({
   field,
   type,
   placeholder,
+  style,
 }) => {
   const padding: CSSProperties = {
     paddingLeft: "60px",
@@ -37,7 +39,7 @@ const InputField: FC<InputFieldProps> = ({
     justifyContent: "center",
   };
   return (
-    <Container>
+    <Container style = {style}>
       <Heading>{heading}</Heading>
       <FieldContainer>
         <ImageComponent>
