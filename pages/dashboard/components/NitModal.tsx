@@ -9,20 +9,19 @@ import { useCallback, useRef } from "react";
 		show?: boolean;
 		title: string;
 		text?: string;
+    fieldHeading? :string;
 		onCloseClick: () => void;
+		onButtonClick: () => void;
 	}
 
 	const NitModal: FC<NitModalProps> = ({
 		show,
 		title,
 		text,
-		onCloseClick
+    fieldHeading,
+		onCloseClick,
+    onButtonClick
 	}) => {
-		const onCreateClick = useCallback(() => {
-			//TODO: this.
-			console.log("Create press");
-		}, []);
-
 		return (
 			show ? (
 				<NitModalContainer>
@@ -31,34 +30,35 @@ import { useCallback, useRef } from "react";
 						<NitModalPopUpContentContainer>
 							<NitModalPopUpTitle>{title}</NitModalPopUpTitle>
 							<NitModalText>{text}</NitModalText>
-							<Formik 
-								initialValues = {{
-									collectionName: "",
-								}}
-								onSubmit = {onCreateClick} 
-							>
-								<Form>
-									<InputField
-										heading = {"Collection Name"}
-										field = {"collectionName"}
-										style = {{
-											width: "20%",
-											marginLeft: "2vw",
-											marginTop: 0,
-											alignSelf: "center",}}
-									/>
-								</Form>
-
-							</Formik>
-							<NitButton
-								type = {"submit"}
-								buttonText = "Create"
-								style={{
-									width: 200,
-									height: 50,
-									alignSelf: "center",
-								}}
-							/>
+              <NitModalFormikContainer>
+                <Formik 
+                  initialValues = {{
+                    collectionName: "",
+                  }}
+                  onSubmit = {onButtonClick} 
+                >
+                  <Form>
+                    <InputField
+                      heading = {fieldHeading}
+                      field = {"collectionName"}
+                      style = {{
+                        width: "20%",
+                        marginTop: 0,
+                        alignSelf: "center",}}
+                    />
+                    <NitButton
+                      type = {"submit"}
+                      buttonText = "Create"
+                      style={{
+                        width: 200,
+                        height: 50,
+                        alignSelf: "center",
+                        marginLeft: "3.5vw",
+                      }}
+                    />
+                  </Form>
+                </Formik>
+              </NitModalFormikContainer>
 						</NitModalPopUpContentContainer>
 					</NitModalPopup>
 				</NitModalContainer>
@@ -137,5 +137,12 @@ import { useCallback, useRef } from "react";
 	
 		color: #424f40;
 	`	
+
+  const NitModalFormikContainer = styled.div `
+    height: auto;
+    width: 75%;
+    display: flex;
+    align-self: center;
+  `
 
 	export default NitModal;
