@@ -11,7 +11,7 @@ interface NitModalProps {
 	text?: string;
 	fieldHeading?: string;
 	fieldText: string;
-	token: string | null;
+	authToken: string | null;
 	onCloseClick: () => void;
 	onButtonClick: (values: CreateCollectionRequest) => void;
 }
@@ -36,7 +36,7 @@ const NitModal: FC<NitModalProps> = ({
 						<NitModalFormikContainer>
 							<Formik 
 								initialValues = {{
-									token: "",
+									authToken: "",
 									name: "",
 								}}
 								onSubmit = {onButtonClick} 

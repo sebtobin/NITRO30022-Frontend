@@ -25,10 +25,10 @@ export interface SignUpRequest {
 }
 
 export interface CreateCollectionResponse {
-  
+
 }
 
 export interface CreateCollectionRequest {
   name: string;
-  token: string;
+  authToken: string;
 }

@@ -128,7 +128,7 @@ export default function Dashboard() {
         text = {"Choose a name for your new Collection. The collection can be renamed if need be."}
         fieldHeading = {"Collection Name"}
         fieldText = {"name"}
-        token = {accessToken}
+        authToken = {accessToken}
         onCloseClick = {onCloseCollectionClick}
         onButtonClick = {onCreateCollectionClick}
       />
