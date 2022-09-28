@@ -1,4 +1,4 @@
-name: Cypress Tests using Cypress Docker Image
+name: Cypress Tests for Nitrus Application
 
 on: [push]
 
@@ -10,11 +10,17 @@ jobs:
         uses: actions/checkout@v2
 
       # Install Yarn dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
+      # and run all Cypress tests on Chrome
+      - name: Chrome Nitrus Test
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
-          # Specify Browser since container image is compile with Firefox
           build: yarn build
           start: yarn dev
           browser: chrome
+
+      - name: Firefox Nitrus Test
+        uses: cypress-io/github-action@v4.2.0 # use the explicit version number
+        with:
+          build: yarn build
+          start: yarn dev
+          browser: firefox
