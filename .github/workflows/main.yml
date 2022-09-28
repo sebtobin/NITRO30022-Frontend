@@ -9,12 +9,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Install NPM dependencies, cache them correctly
+      # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
           # Specify Browser since container image is compile with Firefox
-          build: yarn next build
+          build: yarn build
           start: yarn dev
           browser: chrome
