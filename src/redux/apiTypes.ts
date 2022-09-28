@@ -23,3 +23,12 @@ export interface SignUpRequest {
   email: string;
   password: string;
 }
+
+export interface CreateCollectionResponse {
+  
+}
+
+export interface CreateCollectionRequest {
+  name: string;
+  token: string;
+}

@@ -12,7 +12,9 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "../../src/redux/store";
 import { UserState } from "../../src/redux/apiTypes";
+import { CreateCollectionRequest } from "../../src/redux/apiTypes";
 import NitModal from "./components/NitModal"
+import { nitrusApi } from "../../src/redux/apiClient";
 
 interface Friends {
   name: string;
@@ -37,6 +39,8 @@ export default function Dashboard() {
   const [collections, setCollections] = useState(SAMPLE_COLLECTIONS);
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
 
+  const [createCollection] = nitrusApi.endpoints.createCollection.useMutation();
+
   const onNewCollectionClick = useCallback(() => {
     setShowCollectionsModal(true);
   }, []);
@@ -45,13 +49,12 @@ export default function Dashboard() {
     setShowCollectionsModal(false);
   }, []);
 
-  const onCreateCollectionClick = useCallback(() => {
-    addNewCollection();
-  }, []);
-
-  const addNewCollection = useCallback(() => {
-    setCollections(collections => [...collections, { name: "motorcycles", items: 0, space: 0}])
-  }, []);
+  const onCreateCollectionClick = useCallback(
+    (values: CreateCollectionRequest) => {
+      createCollection(values)
+    },
+    []
+  );
 
   const onCollectionNav = useCallback(() => {
     setSelectedScreen(DashboardScreenSelection.Collection);
@@ -120,10 +123,12 @@ export default function Dashboard() {
         )}
       </ContentContainer>
       <NitModal
+        show = {showCollectionsModal}
         title = {"Create Collection"}
         text = {"Choose a name for your new Collection. The collection can be renamed if need be."}
         fieldHeading = {"Collection Name"}
-        show = {showCollectionsModal}
+        fieldText = {"name"}
+        token = {accessToken}
         onCloseClick = {onCloseCollectionClick}
         onButtonClick = {onCreateCollectionClick}
       />

@@ -4,6 +4,8 @@ import {
   LoginResponse,
   SignUpRequest,
   SignUpResponse,
+  CreateCollectionRequest,
+  CreateCollectionResponse,
   UserState,
 } from "./apiTypes";
 import { RootState } from "./store";
@@ -38,6 +40,13 @@ export const nitrusApi = createApi({
     signUp: build.mutation<SignUpResponse, SignUpRequest>({
       query: ({ ...data }) => ({
         url: "/users/signup/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createCollection: build.mutation<CreateCollectionResponse, CreateCollectionRequest>({
+      query: ({ ...data }) => ({
+        url: "/collection/",
         method: "POST",
         body: data,
       }),
