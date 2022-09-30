@@ -9,12 +9,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Run backend
+        uses: convictional/trigger-workflow-and-wait@v1.3.0
+        with: 
+          owner: EfficientBogoSort
+          repo: NITRO30022-Backend
+          github_token: ${{ secrets.PEP_ACCESS_TOKEN }}
+          workflow_file_name: testing2.yml
+          ref: develop
+
+
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
       - name: Chrome Nitrus Test
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
           build: yarn build
+          wait-on: 'http://localhost:8081'
           start: yarn dev
           browser: chrome
 
