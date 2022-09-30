@@ -28,6 +28,8 @@ jobs:
           wait-on: 'http://localhost:8081'
           start: yarn dev
           browser: chrome
+      
+      #Test2
 
       # - name: Firefox Nitrus Test
       #   uses: cypress-io/github-action@v4.2.0 # use the explicit version number
