@@ -9,14 +9,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run backend
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
-        with: 
-          owner: Pepu0309
-          repo: test-backend
-          github_token: ${{ secrets.PEP_ACCESS_KEY }}
-          workflow_file_name: testing.yml
-          ref: main
+      - name: Run Backend
+        uses: convictional/trigger-workflow-and-wait@master
+        with:
+          owner: EfficientBogoSort
+          repo: NITRO30022-Backend
+          github_token: ${{ secrets.PEP_ACCESS_TOKEN }}
+          workflow_file_name: testing2.yml
+          github_user: Pepu0309
+          ref: develop
 
 
       # Install Yarn dependencies, cache them correctly
