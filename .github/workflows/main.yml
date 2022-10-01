@@ -12,6 +12,7 @@ jobs:
       - name: Checkout Backend Repo
         uses: actions/checkout@master 
         with:
+          token: ${{ secrets.PEP_ACCESS_TOKEN }}
           submodules: true
 
       - name: Set up Python
