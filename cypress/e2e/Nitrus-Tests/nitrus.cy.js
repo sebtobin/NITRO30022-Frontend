@@ -23,19 +23,19 @@ describe('example to-do app', () => {
     })
 
     it('Should not allow a registered user to register again', () => {
-      // cy.request({
-      //   method: 'POST', 
-      //   url: 'http://localhost:8000/api/users/signup/', 
-      //   body: {
-      //     "username": "test",
-      //     "email": "test123@gmail.com",
-      //     "password": "test123"
-      //   }, 
-      //   failOnStatusCode: false})
+      cy.request({
+        method: 'POST', 
+        url: 'http://localhost:8000/api/users/signup/', 
+        body: {
+          "username": "test",
+          "email": "test123@gmail.com",
+          "password": "test123"
+        }, 
+        failOnStatusCode: false})
 
-      //   .then((response) => {
-      //     expect(response).property('status').to.equal(401)
-      //   })
+        .then((response) => {
+          expect(response).property('status').to.equal(401)
+        })
 
         cy.get('.sc-iqcoie > form > :nth-child(1) > .sc-bczRLJ > #username').type('test')
         cy.get('#email').type('test123@gmail.com')
