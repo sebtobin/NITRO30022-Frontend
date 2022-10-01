@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@master 
         with:
           repository: EfficientBogoSort/NITRO30022-Backend
-          github_token: ${{ secrets.PEP_ACCESS_TOKEN }}
+          token: ${{ secrets.PEP_ACCESS_TOKEN }}
 
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
