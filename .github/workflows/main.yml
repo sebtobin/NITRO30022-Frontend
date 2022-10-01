@@ -14,6 +14,8 @@ jobs:
         with:
           repository: EfficientBogoSort/NITRO30022-Backend
           token: ${{ secrets.PEP_ACCESS_TOKEN }}
+          path: backend
+          ref: develop
 
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
