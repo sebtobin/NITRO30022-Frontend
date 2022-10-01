@@ -25,7 +25,7 @@ describe('example to-do app', () => {
     it('Should not allow a registered user to register again', () => {
       cy.request({
         method: 'POST', 
-        url: 'http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api/users/signup/', 
+        url: 'http://localhost:8081/api/users/signup/', 
         body: {
           "username": "test",
           "email": "test123@gmail.com",
@@ -48,7 +48,7 @@ describe('example to-do app', () => {
     it('Should not allow an unregistered user to login', () => {
       cy.request({
         method: 'POST', 
-        url: 'http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api/users/login/', 
+        url: 'http://localhost:8081/api/users/login/', 
         body: {
           "username": "doesnotexist",
           "password": "doesnotexist123"
@@ -68,7 +68,7 @@ describe('example to-do app', () => {
     })
 
     it('Should allow a registered user to login, and go to their dashboard', () => {
-        cy.request('POST', 'http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api/users/login/', {
+        cy.request('POST', 'http://localhost:8081/api/users/login/', {
             "username": "test",
             "password": "test123"
         })
