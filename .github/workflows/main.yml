@@ -34,7 +34,8 @@ jobs:
       
       - name: Run Backend Server
         run: |
-          python NITRO30022-Backend/manage.py runserver
+          python NITRO30022-Backend/manage.py runserver &
+          sleep 30
 
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
