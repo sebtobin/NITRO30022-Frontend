@@ -12,10 +12,7 @@ jobs:
       - name: Checkout Backend Repo
         uses: actions/checkout@master 
         with:
-          repository: EfficientBogoSort/NITRO30022-Backend
-          token: ${{ secrets.PEP_ACCESS_TOKEN }}
-          path: backend
-          ref: develop
+          submodules: true
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -26,7 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: Set up env variables
         run: |
           touch .env
