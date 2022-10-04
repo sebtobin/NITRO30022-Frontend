@@ -23,3 +23,15 @@ export interface SignUpRequest {
   email: string;
   password: string;
 }
+export interface Collection {
+  name: string;
+  num_items: number;
+  size: number;
+
+  owner: string;
+  allFiles: number[];
+}
+
+export interface PostCollection {
+  name: string;
+}
