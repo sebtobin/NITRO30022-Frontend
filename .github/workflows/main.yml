@@ -47,6 +47,13 @@ jobs:
           browser: chrome
           wait-on: 'http://localhost:3000'
           headed: true
+      
+      - name: Upload screenshots
+        uses: actions/upload-artifact@latest
+        if: failure()
+        with:
+            name: cypress-snapshots
+            path: cypress/snapshots
 
       # - name: Firefox Nitrus Test
       #   uses: cypress-io/github-action@v4.2.0 # use the explicit version number
