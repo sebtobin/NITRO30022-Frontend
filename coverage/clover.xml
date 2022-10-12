@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1665559685487" clover="3.2.0">
-  <project timestamp="1665559685487" name="All files">
+<coverage generated="1665560823205" clover="3.2.0">
+  <project timestamp="1665560823205" name="All files">
     <metrics statements="40" coveredstatements="30" conditionals="6" coveredconditionals="4" methods="13" coveredmethods="6" elements="59" coveredelements="40" complexity="0" loc="40" ncloc="40" packages="2" files="6" classes="6"/>
     <package name="components">
       <metrics statements="14" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
       <file name="InputField.tsx" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\components\InputField.tsx">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="15" count="17" type="stmt"/>
-        <line num="23" count="240" type="stmt"/>
-        <line num="41" count="240" type="stmt"/>
-        <line num="44" count="240" type="stmt"/>
-        <line num="63" count="17" type="stmt"/>
-        <line num="69" count="17" type="stmt"/>
-        <line num="76" count="17" type="stmt"/>
-        <line num="87" count="17" type="stmt"/>
-        <line num="95" count="17" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+        <line num="23" count="180" type="stmt"/>
+        <line num="41" count="180" type="stmt"/>
+        <line num="44" count="180" type="stmt"/>
+        <line num="63" count="9" type="stmt"/>
+        <line num="69" count="9" type="stmt"/>
+        <line num="76" count="9" type="stmt"/>
+        <line num="87" count="9" type="stmt"/>
+        <line num="95" count="9" type="stmt"/>
       </file>
       <file name="NitButton.tsx" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\components\NitButton.tsx">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="13" count="17" type="stmt"/>
-        <line num="20" count="96" type="stmt"/>
-        <line num="32" count="17" type="stmt"/>
-        <line num="37" count="17" type="stmt"/>
-        <line num="55" count="17" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="20" count="72" type="stmt"/>
+        <line num="32" count="9" type="stmt"/>
+        <line num="37" count="9" type="stmt"/>
+        <line num="55" count="9" type="stmt"/>
       </file>
     </package>
     <package name="redux">
       <metrics statements="26" coveredstatements="16" conditionals="2" coveredconditionals="1" methods="11" coveredmethods="4"/>
       <file name="apiClient.ts" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\redux\apiClient.ts">
         <metrics statements="13" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="8" coveredmethods="4"/>
-        <line num="13" count="17" type="stmt"/>
-        <line num="14" count="17" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
         <line num="19" count="5" type="stmt"/>
         <line num="20" count="5" type="cond" truecount="1" falsecount="1"/>
         <line num="21" count="0" type="stmt"/>
         <line num="23" count="5" type="stmt"/>
-        <line num="26" count="17" type="stmt"/>
+        <line num="26" count="9" type="stmt"/>
         <line num="28" count="0" type="stmt"/>
         <line num="35" count="3" type="stmt"/>
         <line num="42" count="2" type="stmt"/>
@@ -45,25 +45,25 @@
       </file>
       <file name="authReducer.ts" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\redux\authReducer.ts">
         <metrics statements="5" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="4" count="17" type="stmt"/>
-        <line num="8" count="17" type="stmt"/>
+        <line num="4" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
-        <line num="21" count="17" type="stmt"/>
+        <line num="21" count="9" type="stmt"/>
       </file>
       <file name="store.ts" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\redux\store.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="5" count="17" type="stmt"/>
+        <line num="5" count="9" type="stmt"/>
       </file>
       <file name="userReducer.ts" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\redux\userReducer.ts">
         <metrics statements="7" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="4" count="17" type="stmt"/>
-        <line num="6" count="17" type="stmt"/>
-        <line num="12" count="17" type="stmt"/>
+        <line num="4" count="9" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="23" count="17" type="stmt"/>
+        <line num="23" count="9" type="stmt"/>
       </file>
     </package>
   </project>
