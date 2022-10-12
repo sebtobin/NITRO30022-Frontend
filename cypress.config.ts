@@ -1,6 +1,8 @@
 import { defineConfig } from "cypress";
 
-export default defineConfig({
+module.exports = {
+  projectId: "dtp3p7",
+  
   e2e: {
     setupNodeEvents(on, config) {
       require('@cypress/code-coverage/task')(on, config)
@@ -15,4 +17,4 @@ export default defineConfig({
 
   viewportWidth: 2560,
   viewportHeight: 1440
-});
+  }
