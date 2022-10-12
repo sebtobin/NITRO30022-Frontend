@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
 
-module.exports = {
+export default defineConfig({
   projectId: "dtp3p7",
   
   e2e: {
@@ -17,4 +17,4 @@ module.exports = {
 
   viewportWidth: 2560,
   viewportHeight: 1440
-  }
+});
