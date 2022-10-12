@@ -20,7 +20,7 @@ const InputField: FC<InputFieldProps> = ({
   placeholder,
   style,
 }) => {
-  const padding: CSSProperties = {
+  const container: CSSProperties = {
     paddingLeft: "60px",
     backgroundColor: "#d7e8d0",
     borderColor: "transparent",
@@ -38,6 +38,9 @@ const InputField: FC<InputFieldProps> = ({
     fontWeight: 400,
     justifyContent: "center",
   };
+  const padding: CSSProperties = {
+    paddingLeft: svg ? "60px" : "20px",
+  };
   return (
     <Container style = {style}>
       <Heading>{heading}</Heading>
@@ -46,7 +49,7 @@ const InputField: FC<InputFieldProps> = ({
           <Image src={svg} alt="" />
         </ImageComponent>
         <Field
-          style={padding}
+          style={{ ...container, ...padding }}
           id={field}
           name={field}
           placeholder={placeholder}

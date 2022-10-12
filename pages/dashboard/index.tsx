@@ -1,6 +1,6 @@
 import Head from "next/head";
 import router from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import NitButton from "../../src/components/NitButton";
 import { DashboardScreenSelection } from "../../src/utils/Types";
@@ -12,7 +12,8 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "../../src/redux/store";
 import { UserState } from "../../src/redux/apiTypes";
-import NitModal from "./components/NitModal"
+import NitModal from "./components/NitModal";
+import { nitrusApi } from "../../src/redux/apiClient";
 
 interface Friends {
   name: string;
@@ -26,15 +27,22 @@ interface CollectionDetails {
 }
 
 export default function Dashboard() {
-  const userName = "isaac_parsons";
-  const accessToken = useSelector<RootState, string | null>(
-    (state) => state.auth?.authToken
-  );
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
 
-  const [collections, setCollections] = useState(SAMPLE_COLLECTIONS);
+  const [getCollections, collectionsList] =
+    nitrusApi.endpoints.getCollections.useLazyQuery();
+  const [postCollection] = nitrusApi.endpoints.postCollection.useMutation();
+  useEffect(() => {
+    getCollections()
+      .unwrap()
+      .then((res) => {
+        // TODO: res does not capture returned data from query. Data is fetched looking at chrome->inspect->network->/collection -> response
+        console.log("responses:");
+        console.log(res.length);
+      });
+  });
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
 
   const onNewCollectionClick = useCallback(() => {
@@ -45,13 +53,31 @@ export default function Dashboard() {
     setShowCollectionsModal(false);
   }, []);
 
-  const onCreateCollectionClick = useCallback(() => {
-    addNewCollection();
-  }, []);
+  const addNewCollection = useCallback(
+    (collectionName: string) => {
+      postCollection({ name: collectionName })
+        .unwrap()
+        .then(() => {
+          getCollections();
+        })
+        .catch((e) => {
+          console.log("error on post collection: " + e);
+        });
+      // setCollections((collections) => [
+      //   ...collections,
+      //   { name: "motorcycles", items: 0, space: 0 },
+      // ]);
+    },
+    [postCollection]
+  );
 
-  const addNewCollection = useCallback(() => {
-    setCollections(collections => [...collections, { name: "motorcycles", items: 0, space: 0}])
-  }, []);
+  const onCreateCollectionClick = useCallback(
+    (collectionName: string) => {
+      addNewCollection(collectionName);
+      setShowCollectionsModal(false);
+    },
+    [addNewCollection]
+  );
 
   const onCollectionNav = useCallback(() => {
     setSelectedScreen(DashboardScreenSelection.Collection);
@@ -84,15 +110,21 @@ export default function Dashboard() {
               />
             </CollectionContainer>
             <CollectionsSelect>
-              {collections.map((item) => (
-                <Collection
-                  key={item.name}
-                  name={item.name}
-                  items={item.items}
-                  size={item.space}
-                  onViewClick={onViewCollection}
-                />
-              ))}
+              {collectionsList.data ? (
+                <>
+                  {collectionsList.data.map((item) => {
+                    <Collection
+                      key={item.name}
+                      name={item.name + "why"}
+                      items={item.num_items}
+                      size={item.size}
+                      onViewClick={onViewCollection}
+                    />;
+                  })}
+                </>
+              ) : (
+                <FriendsName>{"No collections yet!"}</FriendsName>
+              )}
             </CollectionsSelect>
           </>
         )}
@@ -120,12 +152,14 @@ export default function Dashboard() {
         )}
       </ContentContainer>
       <NitModal
-        title = {"Create Collection"}
-        text = {"Choose a name for your new Collection. The collection can be renamed if need be."}
-        fieldHeading = {"Collection Name"}
-        show = {showCollectionsModal}
-        onCloseClick = {onCloseCollectionClick}
-        onButtonClick = {onCreateCollectionClick}
+        title={"Create Collection"}
+        text={
+          "Choose a name for your new Collection. The collection can be renamed if need be."
+        }
+        fieldHeading={"Collection Name"}
+        show={showCollectionsModal}
+        onCloseClick={onCloseCollectionClick}
+        onButtonClick={onCreateCollectionClick}
       />
     </div>
   );
