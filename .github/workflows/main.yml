@@ -32,10 +32,10 @@ jobs:
           echo MONGO_DB_PASSWORD=zhOEdo3dNhScqTEA >> .env
           echo MONGO_DB_HOST=cluster0.n3en270.mongodb.net >> .env
       
-      # - name: Run Backend Server
-      #   run: |
-      #     python NITRO30022-Backend/manage.py runserver &
-      #     sleep 30
+      - name: Run Backend Server
+        run: |
+          python NITRO30022-Backend/manage.py runserver &
+          sleep 30
 
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
@@ -43,7 +43,7 @@ jobs:
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
           build: yarn build
-          start: yarn dev
+          start: cy:run
           browser: chrome
 
       # - name: Firefox Nitrus Test
