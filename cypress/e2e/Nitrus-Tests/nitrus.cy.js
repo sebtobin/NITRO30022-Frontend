@@ -10,6 +10,8 @@ describe('example to-do app', () => {
         cy.contains('Register')
     })
 
+    Cypress.config('defaultCommandTimeout', 10000);
+
     it('Fields should contain input when typed in and clear properly', () => {
         cy.contains('Login')
         
