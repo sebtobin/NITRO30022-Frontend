@@ -1,31 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1665560823205" clover="3.2.0">
-  <project timestamp="1665560823205" name="All files">
-    <metrics statements="40" coveredstatements="30" conditionals="6" coveredconditionals="4" methods="13" coveredmethods="6" elements="59" coveredelements="40" complexity="0" loc="40" ncloc="40" packages="2" files="6" classes="6"/>
-    <package name="components">
+<coverage generated="1665658238441" clover="3.2.0">
+  <project timestamp="1665658238441" name="All files">
+    <metrics statements="85" coveredstatements="66" conditionals="10" coveredconditionals="8" methods="23" coveredmethods="12" elements="118" coveredelements="86" complexity="0" loc="85" ncloc="85" packages="3" files="7" classes="7"/>
+    <package name="pages">
+      <metrics statements="45" coveredstatements="36" conditionals="4" coveredconditionals="4" methods="10" coveredmethods="6"/>
+      <file name="index.tsx" path="C:\COMP30022 IT Project\NITRO30022-Frontend\pages\index.tsx">
+        <metrics statements="45" coveredstatements="36" conditionals="4" coveredconditionals="4" methods="10" coveredmethods="6"/>
+        <line num="21" count="36" type="stmt"/>
+        <line num="22" count="36" type="stmt"/>
+        <line num="23" count="36" type="stmt"/>
+        <line num="24" count="36" type="stmt"/>
+        <line num="25" count="36" type="stmt"/>
+        <line num="26" count="36" type="stmt"/>
+        <line num="27" count="36" type="stmt"/>
+        <line num="28" count="36" type="stmt"/>
+        <line num="30" count="36" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="42" count="36" type="stmt"/>
+        <line num="43" count="5" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="47" count="36" type="stmt"/>
+        <line num="49" count="3" type="stmt"/>
+        <line num="50" count="3" type="stmt"/>
+        <line num="51" count="3" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="66" count="36" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="78" count="2" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="86" count="36" type="stmt"/>
+        <line num="187" count="9" type="stmt"/>
+        <line num="196" count="9" type="stmt"/>
+        <line num="212" count="9" type="stmt"/>
+        <line num="220" count="9" type="stmt"/>
+        <line num="228" count="9" type="stmt"/>
+        <line num="238" count="9" type="stmt"/>
+        <line num="254" count="9" type="stmt"/>
+        <line num="267" count="9" type="stmt"/>
+        <line num="275" count="9" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
       <metrics statements="14" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
       <file name="InputField.tsx" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\components\InputField.tsx">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="15" count="9" type="stmt"/>
-        <line num="23" count="180" type="stmt"/>
-        <line num="41" count="180" type="stmt"/>
-        <line num="44" count="180" type="stmt"/>
-        <line num="63" count="9" type="stmt"/>
-        <line num="69" count="9" type="stmt"/>
-        <line num="76" count="9" type="stmt"/>
-        <line num="87" count="9" type="stmt"/>
-        <line num="95" count="9" type="stmt"/>
+        <line num="16" count="9" type="stmt"/>
+        <line num="25" count="180" type="stmt"/>
+        <line num="43" count="180" type="stmt"/>
+        <line num="46" count="180" type="stmt"/>
+        <line num="65" count="9" type="stmt"/>
+        <line num="71" count="9" type="stmt"/>
+        <line num="78" count="9" type="stmt"/>
+        <line num="89" count="9" type="stmt"/>
+        <line num="97" count="9" type="stmt"/>
       </file>
       <file name="NitButton.tsx" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\components\NitButton.tsx">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="13" count="9" type="stmt"/>
-        <line num="20" count="72" type="stmt"/>
-        <line num="32" count="9" type="stmt"/>
-        <line num="37" count="9" type="stmt"/>
-        <line num="55" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="22" count="72" type="stmt"/>
+        <line num="34" count="9" type="stmt"/>
+        <line num="39" count="9" type="stmt"/>
+        <line num="57" count="9" type="stmt"/>
       </file>
     </package>
-    <package name="redux">
+    <package name="src.redux">
       <metrics statements="26" coveredstatements="16" conditionals="2" coveredconditionals="1" methods="11" coveredmethods="4"/>
       <file name="apiClient.ts" path="C:\COMP30022 IT Project\NITRO30022-Frontend\src\redux\apiClient.ts">
         <metrics statements="13" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="8" coveredmethods="4"/>

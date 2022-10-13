@@ -8,6 +8,7 @@ interface NitButtonProps {
   style?: CSSProperties;
   type?: "button" | "submit" | "reset" | undefined;
   loading?: boolean;
+  id?: string;
 }
 
 const NitButton: FC<NitButtonProps> = ({
@@ -16,9 +17,10 @@ const NitButton: FC<NitButtonProps> = ({
   buttonText,
   type,
   loading,
+  id
 }) => {
   return (
-    <LoginButton type={type} onClick={onClick} style={style}>
+    <LoginButton type={type} onClick={onClick} style={style} id={id}> 
       <ButtonText>{buttonText}</ButtonText>
       {loading && (
         <Loading>
