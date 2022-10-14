@@ -32,10 +32,10 @@ jobs:
           echo MONGO_DB_PASSWORD=zhOEdo3dNhScqTEA >> .env
           echo MONGO_DB_HOST=cluster0.n3en270.mongodb.net >> .env
       
-      # - name: Run Backend Server
-      #   run: |
-      #     python NITRO30022-Backend/manage.py runserver &
-      #     sleep 30
+      - name: Run Backend Server
+        run: |
+          python NITRO30022-Backend/manage.py runserver &
+          sleep 30
 
       # Install Yarn dependencies, cache them correctly
       # and run all Cypress tests on Chrome
@@ -45,6 +45,19 @@ jobs:
           build: yarn build
           start: yarn dev
           browser: chrome
+          headed: true
+          record: true
+          spec: cypress/e2e/Nitrus-Tests/nitrus.cy.js
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: cypress-snapshots
+            path: cypress/snapshots
 
       # - name: Firefox Nitrus Test
       #   uses: cypress-io/github-action@v4.2.0 # use the explicit version number

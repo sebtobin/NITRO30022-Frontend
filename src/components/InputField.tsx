@@ -10,6 +10,7 @@ interface InputFieldProps {
   field: string;
   type?: string;
   style?: CSSProperties;
+  id?: string;
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -19,6 +20,7 @@ const InputField: FC<InputFieldProps> = ({
   type,
   placeholder,
   style,
+  id
 }) => {
   const container: CSSProperties = {
     paddingLeft: "60px",
@@ -50,7 +52,7 @@ const InputField: FC<InputFieldProps> = ({
         </ImageComponent>
         <Field
           style={{ ...container, ...padding }}
-          id={field}
+          id={id}
           name={field}
           placeholder={placeholder}
           type={type}
