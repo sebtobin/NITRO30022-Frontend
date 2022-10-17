@@ -23,8 +23,10 @@ jobs:
             # Now we have gotten access to EC2 and we will start the deploy .
             export NVM_DIR=~/.nvm &&
             source ~/.nvm/nvm.sh &&
+            killall node &&
             cd NITRO30022-Frontend/ &&
             git checkout prod &&
             git pull &&
-            yarn dev
+            docker-compose down -v &&
+            docker-compose up -d
           '
