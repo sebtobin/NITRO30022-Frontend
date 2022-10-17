@@ -73,7 +73,8 @@ describe('Nitrus Logout', () => {
   })
 
   it('Should log the user out of the dashboard when user presses on logout button', () => {
-  
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/');
   })
 
 })
