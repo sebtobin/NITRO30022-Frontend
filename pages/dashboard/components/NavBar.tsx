@@ -83,7 +83,7 @@ const NavBar: FC<NavBarProps> = ({
         />
       </SelectionDashboardContainer>
 
-      <LogoutButton onClick={onLogoutClick}>Logout</LogoutButton>
+      <LogoutButton onClick={onLogoutClick} id="#logout_button">Logout</LogoutButton>
     </NavBarContainer>
   );
 };

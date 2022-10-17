@@ -51,13 +51,6 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-            name: cypress-snapshots
-            path: cypress/snapshots
 
       # - name: Firefox Nitrus Test
       #   uses: cypress-io/github-action@v4.2.0 # use the explicit version number

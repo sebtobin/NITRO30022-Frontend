@@ -1,4 +1,4 @@
-describe('example to-do app', () => {
+describe('Nitrus Login and Register', () => {
     beforeEach(() => {
       // At the start of all our tests, visit the home page
       cy.visit('/')
@@ -61,4 +61,19 @@ describe('example to-do app', () => {
     })
 
 })
+
+describe('Nitrus Logout', () => {
+  beforeEach(() => {
+    // At the start of all our tests, visit the home page and log in
+    cy.visit('/')
+
+    cy.get('#login_username').type('test')
+    cy.get('#login_password').type('test123')
+    cy.get('#login_button').click()
+  })
+
+  it('Should log the user out of the dashboard when user presses on logout button', () => {
   
+  })
+
+})
