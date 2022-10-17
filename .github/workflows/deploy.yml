@@ -25,6 +25,5 @@ jobs:
             git checkout prod &&
             git pull &&
             docker-compose down -v &&
-            yarn &&
             docker-compose up -d --build
           '
