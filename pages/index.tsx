@@ -104,21 +104,21 @@ export default function Home() {
                   svg={UserImage}
                   heading={"Username"}
                   field={"username"}
-                  id = {"login_username"}
+                  id={"login_username"}
                 />
                 <InputField
                   svg={KeyImage}
                   heading={"Password"}
                   field={"password"}
                   type={"password"}
-                  id = {"login_password"}
+                  id={"login_password"}
                 />
                 <NitButton
                   type={"submit"}
                   loading={loggingIn}
                   style={{ marginTop: "10vw", marginBottom: 55 }}
                   buttonText="Login"
-                  id = "login_button"
+                  id="login_button"
                 />
                 {loginError && (
                   <ErrorText>
@@ -147,20 +147,20 @@ export default function Home() {
                   svg={UserImage}
                   heading={"Username"}
                   field={"username"}
-                  id = {"register_username"}
+                  id={"register_username"}
                 />
-                <InputField 
-                  svg={MailImage} 
-                  heading={"Email"} 
-                  field={"email"} 
-                  id = {"register_email"}
+                <InputField
+                  svg={MailImage}
+                  heading={"Email"}
+                  field={"email"}
+                  id={"register_email"}
                 />
                 <InputField
                   svg={KeyImage}
                   type={"password"}
                   heading={"Password"}
                   field={"password"}
-                  id = {"register_password"}
+                  id={"register_password"}
                 />
 
                 <NitButton
@@ -168,7 +168,7 @@ export default function Home() {
                   loading={registering}
                   buttonText="Register"
                   style={{ marginLeft: "54%", width: 220 }}
-                  id = {"register_button"}
+                  id={"register_button"}
                 />
                 {signupError && (
                   <ErrorText>

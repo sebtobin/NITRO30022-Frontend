@@ -31,18 +31,20 @@ export default function Dashboard() {
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
 
-  const [getCollections, collectionsList] =
+  const [trigger, { isLoading, isError, data, error }] =
     nitrusApi.endpoints.getCollections.useLazyQuery();
   const [postCollection] = nitrusApi.endpoints.postCollection.useMutation();
   useEffect(() => {
-    getCollections()
+    trigger()
       .unwrap()
       .then((res) => {
-        // TODO: res does not capture returned data from query. Data is fetched looking at chrome->inspect->network->/collection -> response
         console.log("responses:");
-        console.log(res.length);
+        console.log(data);
+        console.log("hh");
+        // console.log(collectionsList.data[0].name);
+        // console.log(res.length);
       });
-  });
+  }, [data, trigger]);
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
 
   const onNewCollectionClick = useCallback(() => {
@@ -58,7 +60,7 @@ export default function Dashboard() {
       postCollection({ name: collectionName })
         .unwrap()
         .then(() => {
-          getCollections();
+          trigger();
         })
         .catch((e) => {
           console.log("error on post collection: " + e);
@@ -68,7 +70,7 @@ export default function Dashboard() {
       //   { name: "motorcycles", items: 0, space: 0 },
       // ]);
     },
-    [postCollection]
+    [postCollection, trigger]
   );
 
   const onCreateCollectionClick = useCallback(
@@ -110,9 +112,9 @@ export default function Dashboard() {
               />
             </CollectionContainer>
             <CollectionsSelect>
-              {collectionsList.data ? (
+              {data ? (
                 <>
-                  {collectionsList.data.map((item) => {
+                  {data.map((item) => {
                     <Collection
                       key={item.name}
                       name={item.name + "why"}
