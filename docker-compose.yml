@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    command: bash -c "yarn build && yarn start"
+    volumes:
+      - .:/code
+    ports:
+      - "80:3000"

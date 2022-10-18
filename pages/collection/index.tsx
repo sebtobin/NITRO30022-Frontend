@@ -34,8 +34,8 @@ export default function Collection() {
     getCollections()
       .unwrap()
       .then((res) => {
-        console.log("responses:::");
-        console.log(res);
+        // console.log(res);
+        // console.log(collections.data);
       });
   });
   const SAMPLE_COLLECTION = {
