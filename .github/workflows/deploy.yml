@@ -25,5 +25,6 @@ jobs:
             git checkout prod &&
             git pull &&
             docker-compose down -v &&
+            npm i --force &&
             docker-compose up -d --build
           '
