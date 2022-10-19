@@ -9,8 +9,8 @@ import {
   PostCollection,
 } from "./apiTypes";
 import { RootState } from "./store";
-// const baseUrl = `http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api`;
-const baseUrl = `http://0.0.0.0:8081/api`;
+const baseUrl = `http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api`;
+// const baseUrl = `http://0.0.0.0:8081/api`;
 export const nitrusApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
