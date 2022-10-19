@@ -1,20 +1,18 @@
-import Head from "next/head";
-import router from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import NitButton from "../../src/components/NitButton";
 import { DashboardScreenSelection, PrivacyLevel } from "../../src/utils/Types";
-import styles from "../../styles/Home.module.css";
 import NavBar from "../dashboard/components/NavBar";
-import DefaultProfileImage from "../../images/friends-image-default.svg";
-import Image from "next/image";
 import PrivacyLevelButton from "./components/PrivacyLevelButton";
 import InputField from "../../src/components/InputField";
 import FileRow from "./components/FileRow";
 import { Form, Formik } from "formik";
-import { validateConfig } from "next/dist/server/config-shared";
 import React from "react";
-import { nitrusApi } from "../../src/redux/apiClient";
+import { baseUrl, nitrusApi } from "../../src/redux/apiClient";
+import { Collection } from "../../src/redux/apiTypes";
+import { useRouter } from "next/router";
+import axios from "axios";
+import store from "../../src/redux/store";
 
 interface Friends {
   name: string;
@@ -27,17 +25,18 @@ interface CollectionDetails {
   space: number;
 }
 
-export default function Collection() {
-  const [getCollections, collections] =
-    nitrusApi.endpoints.getCollections.useLazyQuery();
+const CollectionDetails = () => {
+  const router = useRouter();
+  const data = router.query;
+  const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
+  const [collection, setCollection] = useState<Collection>();
   useEffect(() => {
-    getCollections()
+    getCollection(data.name as string)
       .unwrap()
-      .then((res) => {
-        // console.log(res);
-        // console.log(collections.data);
+      .then((currentCollection) => {
+        setCollection(currentCollection);
       });
-  });
+  }, [data.name, getCollection]);
   const SAMPLE_COLLECTION = {
     name: "AudioBooks",
     privacyLevel: PrivacyLevel.FriendsOnly,
@@ -53,12 +52,12 @@ export default function Collection() {
       { name: "kirbygif.gif", id: 8 },
     ],
   };
-  const userName = "isaac_parsons";
+
   const [postUploadedFile] = nitrusApi.endpoints.postFile.useMutation();
   interface CollectionEditableValues {
     collectionName: string;
   }
-  const [collectionName, setCollectionName] = useState(SAMPLE_COLLECTION.name);
+  const [collectionName, setCollectionName] = useState(collection?.name);
   const [privacyLevel, setPrivacyLevel] = useState(
     SAMPLE_COLLECTION.privacyLevel
   );
@@ -85,29 +84,44 @@ export default function Collection() {
 
   const uploadFile = () => {
     if (selectedfile) {
-      const data = new FormData();
+      let data = new FormData();
       data.append("document", selectedfile);
-      data.append("colln", "there");
-      data.append("title", "I_hate_macos");
-      // postUploadedFileAxios(data);
-      // console.log(data.values);
-      //postUploadedFileAxios(selectedfile);
-      // todo await call
+      data.append("colln", collection?.name as string);
+
+      data.append("title", selectedfile.name);
+      for (var key of data.entries()) {
+        console.log(key[0] + ", " + key[1]);
+      }
+      // const config = {
+      //   headers: {
+      //     "content-type": "multipart/form-data",
+      //     Authorization: `Bearer ${store.getState().auth.authToken}`,
+      //   },
+      // };
+      // axios
+      //   .post(baseUrl + "/files/", data, config)
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
       postUploadedFile(data)
         .unwrap()
         .then(() => {
-          console.log("success");
+          console.log("success on upload file");
           setSelectedFile(undefined);
           setFileName("");
         })
         .catch((error) => {
           setSelectedFile(undefined);
           setFileName("");
-          console.log("fff");
           console.warn("API upload error: " + JSON.stringify(error));
         });
     }
   };
+
   return (
     <div>
       <NavBar
@@ -118,7 +132,7 @@ export default function Collection() {
       <ContentContainer>
         <CollectionDetailsContainer>
           <Title>
-            <CollectionName>{collectionName}</CollectionName>
+            <CollectionName>{collection?.name}</CollectionName>
             <NitButton
               buttonText="ChooseFile"
               style={{ flex: 0.3 }}
@@ -160,7 +174,7 @@ export default function Collection() {
             </PricacyLevelSelect>
             <Formik
               initialValues={{
-                collectionName: collectionName,
+                collectionName: collection?.name,
               }}
               onSubmit={onSaveName}
             >
@@ -185,6 +199,9 @@ export default function Collection() {
             ></NitButton>
           </CollectionSettings>
         </CollectionDetailsContainer>
+        {collection?.allFiles?.map((id) => (
+          <h4 key={id}>{id}</h4>
+        ))}
         <FilesContainer>
           {SAMPLE_COLLECTION.files.map((item) => (
             <FileRow key={item.id} name={item.name} />
@@ -193,7 +210,9 @@ export default function Collection() {
       </ContentContainer>
     </div>
   );
-}
+};
+
+export default CollectionDetails;
 const FilesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

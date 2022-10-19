@@ -41,8 +41,8 @@ const NitModal: FC<NitModalProps> = ({
                   heading={fieldHeading}
                   field={"collectionName"}
                   style={{
-                    width: "20%",
-                    marginTop: 0,
+                    width: 330,
+                    marginBottom: 30,
                     alignSelf: "center",
                   }}
                 />
@@ -83,7 +83,7 @@ const NitModalBackground = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 const NitModalPopup = styled.div`
   position: absolute;
@@ -104,8 +104,6 @@ const NitModalPopUpContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-around;
-
   padding-left: 1vw;
   padding-right: 1vw;
 `;
@@ -122,17 +120,13 @@ const NitModalPopUpTitle = styled.h1`
   color: #424f40;
 `;
 
-const NitModalText = styled.h3`
+const NitModalText = styled.h4`
   font-family: "Poppins";
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
-  line-height: 25px;
   align-self: center;
   text-align: center;
-
-  margin-top: 0;
-
   color: #424f40;
 `;
 
@@ -141,6 +135,8 @@ const NitModalFormikContainer = styled.div`
   width: 75%;
   display: flex;
   align-self: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 export default NitModal;

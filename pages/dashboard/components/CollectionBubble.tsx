@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react";
 import styled from "styled-components";
 import NitButton from "../../../src/components/NitButton";
@@ -8,13 +9,15 @@ interface CollectionProps {
   name: string;
   items: number;
   size: number;
-  onViewClick: () => void;
+  onViewClick?: () => void;
+  linkName?: string;
 }
 
-const Collection: FC<CollectionProps> = ({
+const CollectionBubble: FC<CollectionProps> = ({
   items,
   name,
   size,
+  linkName,
   onViewClick,
 }) => {
   return (
@@ -27,17 +30,19 @@ const Collection: FC<CollectionProps> = ({
       </ItemsBubble>
       <AttributesContainer>
         <CollectionName>{name}</CollectionName>
-        <NitButton
-          onClick={onViewClick}
-          style={{
-            width: 200,
-            height: 50,
-            alignSelf: "center",
-            backgroundColor: "#A2B29F",
-            marginTop: 30,
-          }}
-          buttonText={"View"}
-        />
+        <Link href={{ pathname: `/collection`, query: { name: linkName } }}>
+          <NitButton
+            onClick={onViewClick}
+            style={{
+              width: 200,
+              height: 50,
+              alignSelf: "center",
+              backgroundColor: "#A2B29F",
+              marginTop: 30,
+            }}
+            buttonText={"View"}
+          />
+        </Link>
         <Storage>
           <Image src={StorageImage} alt={""} />
           <SpaceText>{`${size}MB`}</SpaceText>
@@ -110,4 +115,4 @@ const ItemsBubble = styled.div`
   background-color: #a2b29f;
 `;
 
-export default Collection;
+export default CollectionBubble;
