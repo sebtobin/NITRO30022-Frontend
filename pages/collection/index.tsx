@@ -199,14 +199,15 @@ const CollectionDetails = () => {
             ></NitButton>
           </CollectionSettings>
         </CollectionDetailsContainer>
-        {collection?.allFiles?.map((id) => (
-          <h4 key={id}>{id}</h4>
-        ))}
-        <FilesContainer>
-          {SAMPLE_COLLECTION.files.map((item) => (
-            <FileRow key={item.id} name={item.name} />
-          ))}
-        </FilesContainer>
+        {collection?.files_data ? (
+          <FilesContainer>
+            {collection?.files_data?.map((item) => (
+              <FileRow key={item.id} file={item} />
+            ))}
+          </FilesContainer>
+        ) : (
+          <h2>No files yet!</h2>
+        )}
       </ContentContainer>
     </div>
   );

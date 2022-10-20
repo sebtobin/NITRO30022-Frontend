@@ -30,6 +30,13 @@ export interface Collection {
 
   owner?: string;
   allFiles?: number[];
+  files_data?: FileData[];
+}
+
+export interface FileData {
+  id: string;
+  title: string;
+  document: string;
 }
 
 export interface PostCollection {
