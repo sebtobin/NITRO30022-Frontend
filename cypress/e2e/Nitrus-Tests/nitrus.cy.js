@@ -1,4 +1,4 @@
-describe('example to-do app', () => {
+describe('Nitrus Login and Register', () => {
     beforeEach(() => {
       // At the start of all our tests, visit the home page
       cy.visit('/')
@@ -33,7 +33,7 @@ describe('example to-do app', () => {
 
       // The registration should fail.
       cy.contains('An unexpected error occurred. Please try again.')
-      cy.url().should('eq', 'http://localhost:3000/')
+      cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/')
     })
 
     it('Should not allow an unregistered user to login', () => {
@@ -44,7 +44,7 @@ describe('example to-do app', () => {
 
       // The login should fail.
       cy.contains('Incorrect username or password. Please try again.')
-      cy.url().should('eq', 'http://localhost:3000/')
+      cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/')
     })
 
     it('Should allow a registered user to login, and go to their dashboard', () => {
@@ -61,4 +61,20 @@ describe('example to-do app', () => {
     })
 
 })
-  
+
+describe('Nitrus Logout', () => {
+  beforeEach(() => {
+    // At the start of all our tests, visit the home page and log in
+    cy.visit('/')
+
+    cy.get('#login_username').type('test')
+    cy.get('#login_password').type('test123')
+    cy.get('#login_button').click()
+  })
+
+  it('Should log the user out of the dashboard when user presses on logout button', () => {
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/');
+  })
+
+})
