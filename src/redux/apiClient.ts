@@ -77,5 +77,11 @@ export const nitrusApi = createApi({
         body: data,
       }),
     }),
+    deleteCollection: build.mutation<void, string>({
+      query: (name) => ({
+        method: "DELETE",
+        url: `/collection/${name}/`,
+      }),
+    }),
   }),
 });

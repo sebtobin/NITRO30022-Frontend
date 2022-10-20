@@ -37,36 +37,19 @@ const CollectionDetails = () => {
         setCollection(currentCollection);
       });
   }, [data.name, getCollection]);
-  const SAMPLE_COLLECTION = {
-    name: "AudioBooks",
-    privacyLevel: PrivacyLevel.FriendsOnly,
-    files: [
-      { name: "doc.txt", id: 1 },
-      { name: "doc.txt", id: 2 },
-      { name: "doc.txt", id: 3 },
-      { name: "doc.txt", id: 4 },
-      { name: "doc.txt", id: 5 },
-      { name: "doc.txt", id: 6 },
-      { name: "doc.txt", id: 7 },
-      { name: "doc.txt", id: 8 },
-      { name: "kirbygif.gif", id: 8 },
-    ],
-  };
 
   const [postUploadedFile] = nitrusApi.endpoints.postFile.useMutation();
   interface CollectionEditableValues {
     collectionName: string;
   }
-  const [collectionName, setCollectionName] = useState(collection?.name);
-  const [privacyLevel, setPrivacyLevel] = useState(
-    SAMPLE_COLLECTION.privacyLevel
-  );
+
+  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.FriendsOnly);
   const navigateToDash = useCallback(() => {
     router.push("/dashboard");
   }, []);
   const onSaveName = useCallback((values: CollectionEditableValues) => {
     // TODO: dispatch new name.
-    setCollectionName(values.collectionName);
+    // setCollectionName(values.collectionName);
   }, []);
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
@@ -80,16 +63,28 @@ const CollectionDetails = () => {
       setFileName(event.target.files[0].name);
     }
   }, []);
+  const [deleteCollection] = nitrusApi.endpoints.deleteCollection.useMutation();
+  const onDeleteCollection = useCallback(() => {
+    console.log("fire del colle" + data.name);
+    if (data.name) {
+      console.log("fire");
+      deleteCollection(data.name as string)
+        .unwrap()
+        .then(() => {
+          router.push("/dashboard");
+        });
+    }
+  }, []);
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
 
   const uploadFile = () => {
     if (selectedfile) {
-      let data = new FormData();
-      data.append("document", selectedfile);
-      data.append("colln", collection?.name as string);
+      let formData = new FormData();
+      formData.append("document", selectedfile);
+      formData.append("colln", data.name as string);
 
-      data.append("title", selectedfile.name);
-      for (var key of data.entries()) {
+      formData.append("title", selectedfile.name);
+      for (var key of formData.entries()) {
         console.log(key[0] + ", " + key[1]);
       }
       // const config = {
@@ -107,7 +102,7 @@ const CollectionDetails = () => {
       //     console.log(error);
       //   });
 
-      postUploadedFile(data)
+      postUploadedFile(formData)
         .unwrap()
         .then(() => {
           console.log("success on upload file");
@@ -191,9 +186,7 @@ const CollectionDetails = () => {
               </Form>
             </Formik>
             <NitButton
-              onClick={() => {
-                return;
-              }}
+              onClick={onDeleteCollection}
               buttonText={"Delete Collection"}
               style={{ width: "40%" }}
             ></NitButton>
