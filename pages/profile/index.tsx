@@ -27,6 +27,7 @@ export default function Home() {
           return;
         }}
         selectedScreen={DashboardScreenSelection.Collection}
+        logoutButtonid = "profile_logout_button"
       />
       <Background>
         <ProfileContainer>

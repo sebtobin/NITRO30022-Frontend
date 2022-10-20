@@ -72,9 +72,16 @@ describe('Nitrus Logout', () => {
     cy.get('#login_button').click()
   })
 
-  it('Should log the user out of the dashboard when user presses on logout button', () => {
-    cy.get('#logout_button').click()
+  it('Should log the user out in the dashboard when user presses on logout button', () => {
+    cy.get('#dashboard_logout_button').click()
     cy.url().should('eq', 'http://localhost:3000/');
   })
+
+  it('Should log the user out in the profile page when user presses on logout button', () => {
+    cy.get('#dashboard_profile_button').click()
+    cy.get('#profile_logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/');
+  })
+
 
 })
