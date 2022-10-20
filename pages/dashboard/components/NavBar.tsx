@@ -18,6 +18,7 @@ interface NavBarProps {
   onCollectionNav: () => void;
   onFriendsNav: () => void;
   selectedScreen?: DashboardScreenSelection;
+  id?: string;
 }
 interface searchValues {
   searchTerm: string;
@@ -27,6 +28,7 @@ const NavBar: FC<NavBarProps> = ({
   onCollectionNav,
   onFriendsNav,
   selectedScreen,
+  id
 }) => {
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const dispatch = useDispatch();
@@ -83,7 +85,7 @@ const NavBar: FC<NavBarProps> = ({
         />
       </SelectionDashboardContainer>
 
-      <LogoutButton onClick={onLogoutClick} id="#logout_button">Logout</LogoutButton>
+      <LogoutButton onClick={onLogoutClick} id={id}>Logout</LogoutButton>
     </NavBarContainer>
   );
 };

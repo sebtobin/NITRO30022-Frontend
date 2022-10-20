@@ -90,6 +90,7 @@ export default function Dashboard() {
         onCollectionNav={onCollectionNav}
         onFriendsNav={onFriendsNav}
         selectedScreen={selectedScreen}
+        id = "dashboard_login_button"
       />
       <ContentContainer>
         {selectedScreen == DashboardScreenSelection.Collection && (
