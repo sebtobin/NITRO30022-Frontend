@@ -28,8 +28,15 @@ export interface Collection {
   num_items: number;
   size: number;
 
-  owner: string;
-  allFiles: number[];
+  owner?: string;
+  allFiles?: number[];
+  files_data?: FileData[];
+}
+
+export interface FileData {
+  id: string;
+  title: string;
+  document: string;
 }
 
 export interface PostCollection {

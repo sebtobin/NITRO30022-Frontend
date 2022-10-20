@@ -1,20 +1,18 @@
-import Head from "next/head";
-import router from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import NitButton from "../../src/components/NitButton";
 import { DashboardScreenSelection, PrivacyLevel } from "../../src/utils/Types";
-import styles from "../../styles/Home.module.css";
 import NavBar from "../dashboard/components/NavBar";
-import DefaultProfileImage from "../../images/friends-image-default.svg";
-import Image from "next/image";
 import PrivacyLevelButton from "./components/PrivacyLevelButton";
 import InputField from "../../src/components/InputField";
 import FileRow from "./components/FileRow";
 import { Form, Formik } from "formik";
-import { validateConfig } from "next/dist/server/config-shared";
 import React from "react";
-import { nitrusApi } from "../../src/redux/apiClient";
+import { baseUrl, nitrusApi } from "../../src/redux/apiClient";
+import { Collection } from "../../src/redux/apiTypes";
+import { useRouter } from "next/router";
+import axios from "axios";
+import store from "../../src/redux/store";
 
 interface Friends {
   name: string;
@@ -27,47 +25,31 @@ interface CollectionDetails {
   space: number;
 }
 
-export default function Collection() {
-  const [getCollections, collections] =
-    nitrusApi.endpoints.getCollections.useLazyQuery();
+const CollectionDetails = () => {
+  const router = useRouter();
+  const data = router.query;
+  const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
+  const [collection, setCollection] = useState<Collection>();
   useEffect(() => {
-    getCollections()
+    getCollection(data.name as string)
       .unwrap()
-      .then((res) => {
-        // console.log(res);
-        // console.log(collections.data);
+      .then((currentCollection) => {
+        setCollection(currentCollection);
       });
-  });
-  const SAMPLE_COLLECTION = {
-    name: "AudioBooks",
-    privacyLevel: PrivacyLevel.FriendsOnly,
-    files: [
-      { name: "doc.txt", id: 1 },
-      { name: "doc.txt", id: 2 },
-      { name: "doc.txt", id: 3 },
-      { name: "doc.txt", id: 4 },
-      { name: "doc.txt", id: 5 },
-      { name: "doc.txt", id: 6 },
-      { name: "doc.txt", id: 7 },
-      { name: "doc.txt", id: 8 },
-      { name: "kirbygif.gif", id: 8 },
-    ],
-  };
-  const userName = "isaac_parsons";
+  }, [data.name, getCollection]);
+
   const [postUploadedFile] = nitrusApi.endpoints.postFile.useMutation();
   interface CollectionEditableValues {
     collectionName: string;
   }
-  const [collectionName, setCollectionName] = useState(SAMPLE_COLLECTION.name);
-  const [privacyLevel, setPrivacyLevel] = useState(
-    SAMPLE_COLLECTION.privacyLevel
-  );
+
+  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.FriendsOnly);
   const navigateToDash = useCallback(() => {
     router.push("/dashboard");
   }, []);
   const onSaveName = useCallback((values: CollectionEditableValues) => {
     // TODO: dispatch new name.
-    setCollectionName(values.collectionName);
+    // setCollectionName(values.collectionName);
   }, []);
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
@@ -81,33 +63,60 @@ export default function Collection() {
       setFileName(event.target.files[0].name);
     }
   }, []);
+  const [deleteCollection] = nitrusApi.endpoints.deleteCollection.useMutation();
+  const onDeleteCollection = useCallback(() => {
+    console.log("fire del colle" + data.name);
+    if (data.name) {
+      console.log("fire");
+      deleteCollection(data.name as string)
+        .unwrap()
+        .then(() => {
+          router.push("/dashboard");
+        });
+    }
+  }, []);
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
 
   const uploadFile = () => {
     if (selectedfile) {
-      const data = new FormData();
-      data.append("document", selectedfile);
-      data.append("colln", "there");
-      data.append("title", "I_hate_macos");
-      // postUploadedFileAxios(data);
-      // console.log(data.values);
-      //postUploadedFileAxios(selectedfile);
-      // todo await call
-      postUploadedFile(data)
+      let formData = new FormData();
+      formData.append("document", selectedfile);
+      formData.append("colln", data.name as string);
+
+      formData.append("title", selectedfile.name);
+      for (var key of formData.entries()) {
+        console.log(key[0] + ", " + key[1]);
+      }
+      // const config = {
+      //   headers: {
+      //     "content-type": "multipart/form-data",
+      //     Authorization: `Bearer ${store.getState().auth.authToken}`,
+      //   },
+      // };
+      // axios
+      //   .post(baseUrl + "/files/", data, config)
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
+      postUploadedFile(formData)
         .unwrap()
         .then(() => {
-          console.log("success");
+          console.log("success on upload file");
           setSelectedFile(undefined);
           setFileName("");
         })
         .catch((error) => {
           setSelectedFile(undefined);
           setFileName("");
-          console.log("fff");
           console.warn("API upload error: " + JSON.stringify(error));
         });
     }
   };
+
   return (
     <div>
       <NavBar
@@ -118,7 +127,7 @@ export default function Collection() {
       <ContentContainer>
         <CollectionDetailsContainer>
           <Title>
-            <CollectionName>{collectionName}</CollectionName>
+            <CollectionName>{collection?.name}</CollectionName>
             <NitButton
               buttonText="ChooseFile"
               style={{ flex: 0.3 }}
@@ -160,7 +169,7 @@ export default function Collection() {
             </PricacyLevelSelect>
             <Formik
               initialValues={{
-                collectionName: collectionName,
+                collectionName: collection?.name,
               }}
               onSubmit={onSaveName}
             >
@@ -177,23 +186,27 @@ export default function Collection() {
               </Form>
             </Formik>
             <NitButton
-              onClick={() => {
-                return;
-              }}
+              onClick={onDeleteCollection}
               buttonText={"Delete Collection"}
               style={{ width: "40%" }}
             ></NitButton>
           </CollectionSettings>
         </CollectionDetailsContainer>
-        <FilesContainer>
-          {SAMPLE_COLLECTION.files.map((item) => (
-            <FileRow key={item.id} name={item.name} />
-          ))}
-        </FilesContainer>
+        {collection?.files_data ? (
+          <FilesContainer>
+            {collection?.files_data?.map((item) => (
+              <FileRow key={item.id} file={item} />
+            ))}
+          </FilesContainer>
+        ) : (
+          <h2>No files yet!</h2>
+        )}
       </ContentContainer>
     </div>
   );
-}
+};
+
+export default CollectionDetails;
 const FilesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

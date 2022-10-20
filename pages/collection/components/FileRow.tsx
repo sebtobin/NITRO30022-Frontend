@@ -4,20 +4,21 @@ import styled from "styled-components";
 import ViewButton from "../../../images/view-button.svg";
 import EditButton from "../../../images/edit-button.svg";
 import DeleteButton from "../../../images/delete-button.svg";
+import { FileData } from "../../../src/redux/apiTypes";
 
 interface FileRowProps {
   onView?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
-  name: string;
+  file: FileData;
 }
 
-const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, name }) => {
+const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file }) => {
   return (
     <FilePill>
-      <FileName>{name}</FileName>
+      <FileName>{file.title}</FileName>
       <FileButtons>
-        <FileButton onClick={onView}>
+        <FileButton href={file.document} target="_blank">
           <Image src={ViewButton} alt={""} />
         </FileButton>
         <FileButton onClick={onEdit}>
@@ -31,7 +32,7 @@ const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, name }) => {
   );
 };
 
-const FileButton = styled.div`
+const FileButton = styled.a`
   display: flex;
   justify-content: center;
   :hover {

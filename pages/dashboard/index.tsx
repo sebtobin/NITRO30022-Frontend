@@ -1,51 +1,42 @@
-import Head from "next/head";
 import router from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import NitButton from "../../src/components/NitButton";
 import { DashboardScreenSelection } from "../../src/utils/Types";
-import styles from "../../styles/Home.module.css";
-import Collection from "./components/Collection";
 import NavBar from "./components/NavBar";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { RootState } from "../../src/redux/store";
-import { UserState } from "../../src/redux/apiTypes";
+import store, { RootState } from "../../src/redux/store";
+import { Collection, UserState } from "../../src/redux/apiTypes";
 import NitModal from "./components/NitModal";
 import { nitrusApi } from "../../src/redux/apiClient";
+import CollectionBubble from "./components/CollectionBubble";
 
 interface Friends {
   name: string;
-  collections: CollectionDetails[];
-}
-
-interface CollectionDetails {
-  name: string;
-  items: number;
-  space: number;
+  collections: Collection[];
 }
 
 export default function Dashboard() {
+  const [collections, setCollections] = useState<Collection[]>();
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
 
-  const [trigger, { isLoading, isError, data, error }] =
-    nitrusApi.endpoints.getCollections.useLazyQuery();
   const [postCollection] = nitrusApi.endpoints.postCollection.useMutation();
+
+  const [getCollectionsList, collectionsList] =
+    nitrusApi.endpoints.getCollectionsList.useMutation();
+
+  const [showCollectionsModal, setShowCollectionsModal] = useState(false);
   useEffect(() => {
-    trigger()
+    getCollectionsList()
       .unwrap()
       .then((res) => {
-        console.log("responses:");
-        console.log(data);
-        console.log("hh");
-        // console.log(collectionsList.data[0].name);
-        // console.log(res.length);
+        setCollections(res);
       });
-  }, [data, trigger]);
-  const [showCollectionsModal, setShowCollectionsModal] = useState(false);
+  }, [getCollectionsList]);
 
   const onNewCollectionClick = useCallback(() => {
     setShowCollectionsModal(true);
@@ -60,17 +51,17 @@ export default function Dashboard() {
       postCollection({ name: collectionName })
         .unwrap()
         .then(() => {
-          trigger();
+          getCollectionsList()
+            .unwrap()
+            .then((res) => {
+              setCollections(res);
+            });
         })
         .catch((e) => {
           console.log("error on post collection: " + e);
         });
-      // setCollections((collections) => [
-      //   ...collections,
-      //   { name: "motorcycles", items: 0, space: 0 },
-      // ]);
     },
-    [postCollection, trigger]
+    [getCollectionsList, postCollection]
   );
 
   const onCreateCollectionClick = useCallback(
@@ -112,17 +103,20 @@ export default function Dashboard() {
               />
             </CollectionContainer>
             <CollectionsSelect>
-              {data ? (
+              {collections ? (
                 <>
-                  {data.map((item) => {
-                    <Collection
-                      key={item.name}
-                      name={item.name + "why"}
-                      items={item.num_items}
-                      size={item.size}
-                      onViewClick={onViewCollection}
-                    />;
-                  })}
+                  {collections.map((item, index) => (
+                    <>
+                      <CollectionBubble
+                        key={index}
+                        items={item.num_items}
+                        name={item.name}
+                        size={item.size}
+                        linkName={item.name}
+                      />
+                      ;
+                    </>
+                  ))}
                 </>
               ) : (
                 <FriendsName>{"No collections yet!"}</FriendsName>
@@ -137,12 +131,12 @@ export default function Dashboard() {
                 <Image src={DefaultProfileImage} alt="" />
                 <FriendsName>{item.name}</FriendsName>
                 <FriendsCollectionsSelect>
-                  {item.collections.map((item) => (
-                    <Collection
-                      key={item.name}
+                  {item.collections.map((item, index) => (
+                    <CollectionBubble
+                      key={index}
+                      items={item.num_items}
                       name={item.name}
-                      items={item.items}
-                      size={item.space}
+                      size={item.size}
                       onViewClick={onViewCollection}
                     />
                   ))}
@@ -155,9 +149,7 @@ export default function Dashboard() {
       </ContentContainer>
       <NitModal
         title={"Create Collection"}
-        text={
-          "Choose a name for your new Collection. The collection can be renamed if need be."
-        }
+        text={"Please enter a name for the new collection"}
         fieldHeading={"Collection Name"}
         show={showCollectionsModal}
         onCloseClick={onCloseCollectionClick}
@@ -231,39 +223,19 @@ const ContentContainer = styled.div`
   padding: 50px;
 `;
 
-const SAMPLE_COLLECTIONS: CollectionDetails[] = [
-  { name: "motorcycles", items: 3, space: 213 },
-  { name: "cars", items: 34, space: 123 },
-  { name: "trains", items: 312, space: 90 },
-  { name: "food", items: 13, space: 223 },
-  { name: "bicycles", items: 23, space: 32 },
-  { name: "moto GP", items: 35, space: 831 },
-  { name: "motorcycles", items: 3, space: 213 },
-  { name: "cars", items: 34, space: 123 },
-  { name: "trains", items: 312, space: 90 },
-  { name: "food", items: 13, space: 223 },
-  { name: "bicycles", items: 23, space: 32 },
-  { name: "moto GP", items: 35, space: 831 },
-  { name: "motorcycles", items: 3, space: 213 },
-  { name: "cars", items: 34, space: 123 },
-  { name: "trains", items: 312, space: 90 },
-  { name: "food", items: 13, space: 223 },
-  { name: "bicycles", items: 23, space: 32 },
-  { name: "moto GP", items: 35, space: 831 },
-];
 const SAMPLE_FRIENDS: Friends[] = [
   {
     name: "sentar",
     collections: [
-      { name: "tf2", items: 13, space: 100 },
-      { name: "coding", items: 3, space: 123 },
+      { name: "tf2", num_items: 13, size: 100 },
+      { name: "coding", num_items: 3, size: 123 },
     ],
   },
   {
     name: "pepu",
     collections: [
-      { name: "jest", items: 1, space: 69 },
-      { name: "anime", items: 300, space: 1000 },
+      { name: "jest", num_items: 1, size: 69 },
+      { name: "anime", num_items: 300, size: 1000 },
     ],
   },
 ];

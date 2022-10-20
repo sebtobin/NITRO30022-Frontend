@@ -9,8 +9,7 @@ import {
   PostCollection,
 } from "./apiTypes";
 import { RootState } from "./store";
-const baseUrl = `http://ec2-3-104-104-155.ap-southeast-2.compute.amazonaws.com:8081/api`;
-// const baseUrl = `http://0.0.0.0:8081/api`;
+export const baseUrl = `http://localhost:8081/api`;
 export const nitrusApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
@@ -52,6 +51,7 @@ export const nitrusApi = createApi({
         data: data,
         body: data,
         params: data,
+        // headers: { "Content-Type": "multipart/form-data" },
         headers: {
           "content-type":
             "multipart/form-data; boundary=----WebKitFormBoundarypoWW2qkMkXwQj3Ik",
@@ -59,9 +59,15 @@ export const nitrusApi = createApi({
       }),
     }),
 
-    getCollections: build.query<Collection[], void>({
+    getCollection: build.mutation<Collection, string>({
+      query: (name) => ({
+        url: `/collection/${name}/`,
+      }),
+    }),
+    getCollectionsList: build.mutation<Collection[], void>({
       query: () => ({
-        url: `/collection/`,
+        url: "/collection/",
+        method: "GET",
       }),
     }),
     postCollection: build.mutation<Collection, PostCollection>({
@@ -69,6 +75,12 @@ export const nitrusApi = createApi({
         url: `/collection/`,
         method: "POST",
         body: data,
+      }),
+    }),
+    deleteCollection: build.mutation<void, string>({
+      query: (name) => ({
+        method: "DELETE",
+        url: `/collection/${name}/`,
       }),
     }),
   }),
