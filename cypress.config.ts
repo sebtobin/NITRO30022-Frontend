@@ -12,7 +12,7 @@ export default defineConfig({
       // with any changed environment variables
       return config
     },
-    baseUrl: 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/'
+    baseUrl: 'http://localhost:3000/'
   },
 
   viewportWidth: 2560,

@@ -33,7 +33,7 @@ describe('Nitrus Login and Register', () => {
 
       // The registration should fail.
       cy.contains('An unexpected error occurred. Please try again.')
-      cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/')
+      cy.url().should('eq', 'http://localhost:3000/')
     })
 
     it('Should not allow an unregistered user to login', () => {
@@ -44,7 +44,7 @@ describe('Nitrus Login and Register', () => {
 
       // The login should fail.
       cy.contains('Incorrect username or password. Please try again.')
-      cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/')
+      cy.url().should('eq', 'http://localhost:3000/')
     })
 
     it('Should allow a registered user to login, and go to their dashboard', () => {
@@ -74,7 +74,7 @@ describe('Nitrus Logout', () => {
 
   it('Should log the user out of the dashboard when user presses on logout button', () => {
     cy.get('#logout_button').click()
-    cy.url().should('eq', 'http://ec2-52-63-2-179.ap-southeast-2.compute.amazonaws.com/');
+    cy.url().should('eq', 'http://localhost:3000/');
   })
 
 })
