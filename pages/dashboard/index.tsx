@@ -102,6 +102,7 @@ export default function Dashboard() {
                 onClick={onNewCollectionClick}
                 buttonText={"Add Collection +"}
                 style={{ width: 280 }}
+                id="create_collection_button"
               />
             </CollectionContainer>
             <CollectionsSelect>
@@ -156,6 +157,8 @@ export default function Dashboard() {
         show={showCollectionsModal}
         onCloseClick={onCloseCollectionClick}
         onButtonClick={onCreateCollectionClick}
+        inputFieldID="create_collection_modal_input"
+        buttonID="create_collection_modal_button"
       />
     </div>
   );

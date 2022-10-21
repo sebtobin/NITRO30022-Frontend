@@ -1,3 +1,5 @@
+const { it } = require("node:test")
+
 describe('Nitrus Login and Register', () => {
     beforeEach(() => {
       // At the start of all our tests, visit the home page
@@ -77,10 +79,18 @@ describe('Nitrus Logout', () => {
     cy.url().should('eq', 'http://localhost:3000/');
   })
 
-  it('Should log the user out in the profile page when user presses on logout button', () => {
-    cy.get('#dashboard_profile_button').click()
-    cy.get('#profile_logout_button').click()
-    cy.url().should('eq', 'http://localhost:3000/');
+  // it('Should log the user out in the profile page when user presses on logout button', () => {
+  //   cy.get('#dashboard_profile_button').click()
+  //   cy.get('#profile_logout_button').click()
+  //   cy.url().should('eq', 'http://localhost:3000/');
+  // })
+
+  it('Should be able to create a collection, upload a file to it, delete a file, then delete the collection', () => {
+    cy.get('#create_collection_button').click()
+    cy.get('#create_collection_modal_input').type('TestCollection')
+    cy.get('#create_collection_modal_button').click()
+
+    cy.contains('TestCollection')
   })
 
 

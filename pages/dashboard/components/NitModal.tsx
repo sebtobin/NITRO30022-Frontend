@@ -12,6 +12,8 @@ interface NitModalProps {
   fieldHeading?: string;
   onCloseClick: () => void;
   onButtonClick: (name: string) => void;
+  inputFieldID?: string;
+  buttonID?: string;
 }
 
 const NitModal: FC<NitModalProps> = ({
@@ -21,6 +23,8 @@ const NitModal: FC<NitModalProps> = ({
   fieldHeading,
   onCloseClick,
   onButtonClick,
+  inputFieldID,
+  buttonID
 }) => {
   return show ? (
     <NitModalContainer>
@@ -45,6 +49,7 @@ const NitModal: FC<NitModalProps> = ({
                     marginBottom: 30,
                     alignSelf: "center",
                   }}
+                  id={inputFieldID}
                 />
                 <NitButton
                   type={"submit"}
@@ -55,6 +60,7 @@ const NitModal: FC<NitModalProps> = ({
                     alignSelf: "center",
                     marginLeft: "3.5vw",
                   }}
+                  id={buttonID}
                 />
               </Form>
             </Formik>
