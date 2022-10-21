@@ -16,7 +16,11 @@ interface FileRowProps {
 const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file }) => {
   return (
     <FilePill>
-      <FileName>{file.title}</FileName>
+      <FileName>
+        {file.title.length > 17
+          ? file.title.substring(0, 17) + "..."
+          : file.title}
+      </FileName>
       <FileButtons>
         <FileButton href={file.document} target="_blank">
           <Image src={ViewButton} alt={""} />
