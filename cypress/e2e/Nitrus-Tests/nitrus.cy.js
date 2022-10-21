@@ -91,6 +91,9 @@ describe('Nitrus Logout', () => {
     cy.get('#create_collection_modal_button').click()
 
     cy.contains('TestCollection')
+
+    cy.get('#collection_view_button0').click()
+    cy.url().should('include', '/collection')
   })
 
 

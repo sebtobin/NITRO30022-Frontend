@@ -11,6 +11,7 @@ interface CollectionProps {
   size: number;
   onViewClick?: () => void;
   linkName?: string;
+  viewButtonID?: string;
 }
 
 const CollectionBubble: FC<CollectionProps> = ({
@@ -19,6 +20,7 @@ const CollectionBubble: FC<CollectionProps> = ({
   size,
   linkName,
   onViewClick,
+  viewButtonID
 }) => {
   return (
     <Container>
@@ -41,6 +43,7 @@ const CollectionBubble: FC<CollectionProps> = ({
               marginTop: 30,
             }}
             buttonText={"View"}
+            id={viewButtonID}
           />
         </Link>
         <Storage>

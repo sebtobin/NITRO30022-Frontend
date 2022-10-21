@@ -116,6 +116,7 @@ export default function Dashboard() {
                         name={item.name}
                         size={item.size}
                         linkName={item.name}
+                        viewButtonID= {"#collection_view_button" + index}
                       />
                       ;
                     </>
