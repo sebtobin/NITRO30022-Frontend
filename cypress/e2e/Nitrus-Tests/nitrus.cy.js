@@ -82,6 +82,17 @@ describe('Nitrus Logout', () => {
   //   cy.get('#profile_logout_button').click()
   //   cy.url().should('eq', 'http://localhost:3000/');
   // })
+})
+
+describe('Nitrus Logout', () => {
+  beforeEach(() => {
+    // At the start of all our tests, visit the home page and log in
+    cy.visit('/')
+
+    cy.get('#login_username').type('test')
+    cy.get('#login_password').type('test123')
+    cy.get('#login_button').click()
+  })
 
   it('Should be able to create a collection, upload a file to it, delete a file, then delete the collection', () => {
     cy.get('#create_collection_button').click()
@@ -90,9 +101,13 @@ describe('Nitrus Logout', () => {
 
     cy.contains('TestCollection')
 
-    cy.get('#collection_view_button0').click()
+    cy.get("#\\#collection_view_button0").click()
     cy.url().should('include', '/collection')
+
+    cy.get('input[type=file]').selectFile({ contents: 'test_utils/WOREEE.png' }, { force: true })
+    cy.get('#upload_file_button').click()
+
+    cy.contains('WOREEE')
   })
-
-
 })
+

@@ -136,6 +136,7 @@ const CollectionDetails = () => {
               onClick={() =>
                 hiddenFileInput.current && hiddenFileInput.current.click()
               }
+              id="choose_file_button"
             />
             <h3>{fileName}</h3>
             <input
@@ -149,6 +150,7 @@ const CollectionDetails = () => {
               buttonText="+ Upload File"
               style={{ flex: 0.3 }}
               onClick={uploadFile}
+              id="upload_file_button"
             />
           </Title>
           <CollectionSettings>
