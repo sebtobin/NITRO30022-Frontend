@@ -84,7 +84,7 @@ describe('Nitrus Logout', () => {
   // })
 })
 
-describe('Nitrus Logout', () => {
+describe('Nitrus Files and Collections', () => {
   beforeEach(() => {
     // At the start of all our tests, visit the home page and log in
     cy.visit('/')
@@ -109,5 +109,6 @@ describe('Nitrus Logout', () => {
 
     cy.contains('WOREEE')
   })
+
 })
 
