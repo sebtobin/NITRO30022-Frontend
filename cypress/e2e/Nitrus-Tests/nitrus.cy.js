@@ -1,5 +1,3 @@
-const { it } = require("node:test")
-
 describe('Nitrus Login and Register', () => {
     beforeEach(() => {
       // At the start of all our tests, visit the home page
