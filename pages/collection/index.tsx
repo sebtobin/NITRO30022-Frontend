@@ -80,40 +80,54 @@ const CollectionDetails = () => {
   const uploadFile = () => {
     if (selectedfile) {
       let formData = new FormData();
-      formData.append("document", selectedfile);
+
+      const trimmedFile = new File(
+        [selectedfile],
+        selectedfile.name.substring(0, 30)
+      );
+      formData.append("document", trimmedFile);
       formData.append("colln", data.name as string);
 
-      formData.append("title", selectedfile.name);
-      for (var key of formData.entries()) {
-        console.log(key[0] + ", " + key[1]);
-      }
-      // const config = {
-      //   headers: {
-      //     "content-type": "multipart/form-data",
-      //     Authorization: `Bearer ${store.getState().auth.authToken}`,
-      //   },
-      // };
-      // axios
-      //   .post(baseUrl + "/files/", data, config)
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-
-      postUploadedFile(formData)
-        .unwrap()
+      formData.append("title", selectedfile.name.substring(0, 30));
+      // for (var key of formData.entries()) {
+      //   console.log(key[0] + ", " + key[1]);
+      // }
+      const config = {
+        headers: {
+          "content-type":
+            "multipart/form-data; boundary=----WebKitFormBoundarypoWW2qkMkXwQj3Ik",
+          Authorization: `Bearer ${store.getState().auth.authToken}`,
+        },
+      };
+      axios
+        .post(baseUrl + "/files/", formData, config)
         .then(() => {
-          console.log("success on upload file");
           setSelectedFile(undefined);
           setFileName("");
+          getCollection(data.name as string)
+            .unwrap()
+            .then((currentCollection) => {
+              setCollection(currentCollection);
+            });
         })
         .catch((error) => {
           setSelectedFile(undefined);
           setFileName("");
           console.warn("API upload error: " + JSON.stringify(error));
         });
+
+      // postUploadedFile(formData)
+      //   .unwrap()
+      //   .then(() => {
+      //     console.log("success on upload file");
+      //     setSelectedFile(undefined);
+      //     setFileName("");
+      //   })
+      //   .catch((error) => {
+      //     setSelectedFile(undefined);
+      //     setFileName("");
+      //     console.warn("API upload error: " + JSON.stringify(error));
+      //   });
     }
   };
 
@@ -173,7 +187,7 @@ const CollectionDetails = () => {
             </PricacyLevelSelect>
             <Formik
               initialValues={{
-                collectionName: collection?.name,
+                collectionName: "",
               }}
               onSubmit={onSaveName}
             >
