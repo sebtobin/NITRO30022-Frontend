@@ -21,7 +21,7 @@ jobs:
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
           build: yarn install --force && yarn build
-          start: yarn start
+          start: yarn dev
           browser: chrome
           headed: true
           record: true
