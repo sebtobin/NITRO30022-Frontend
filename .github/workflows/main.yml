@@ -20,7 +20,7 @@ jobs:
       - name: Chrome Nitrus Test
         uses: cypress-io/github-action@v4.2.0 # use the explicit version number
         with:
-          build: npm install --force && yarn build
+          build: npm install --legacy-deps && yarn build
           start: yarn start
           browser: chrome
           headed: true
