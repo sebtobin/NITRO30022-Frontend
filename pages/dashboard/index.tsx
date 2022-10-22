@@ -90,6 +90,8 @@ export default function Dashboard() {
         onCollectionNav={onCollectionNav}
         onFriendsNav={onFriendsNav}
         selectedScreen={selectedScreen}
+        profileButtonid = "dashboard_profile_button"
+        logoutButtonid = "dashboard_logout_button"
       />
       <ContentContainer>
         {selectedScreen == DashboardScreenSelection.Collection && (
@@ -100,6 +102,7 @@ export default function Dashboard() {
                 onClick={onNewCollectionClick}
                 buttonText={"Add Collection +"}
                 style={{ width: 280 }}
+                id="create_collection_button"
               />
             </CollectionContainer>
             <CollectionsSelect>
@@ -113,6 +116,7 @@ export default function Dashboard() {
                         name={item.name}
                         size={item.size}
                         linkName={item.name}
+                        viewButtonID= {"#collection_view_button" + index}
                       />
                       ;
                     </>
@@ -154,6 +158,8 @@ export default function Dashboard() {
         show={showCollectionsModal}
         onCloseClick={onCloseCollectionClick}
         onButtonClick={onCreateCollectionClick}
+        inputFieldID="create_collection_modal_input"
+        buttonID="create_collection_modal_button"
       />
     </div>
   );

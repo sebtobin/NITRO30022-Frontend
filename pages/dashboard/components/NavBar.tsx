@@ -13,11 +13,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../src/redux/authReducer";
 import { RootState } from "../../../src/redux/store";
 import { UserState } from "../../../src/redux/apiTypes";
+import { profile } from "console";
 
 interface NavBarProps {
   onCollectionNav: () => void;
   onFriendsNav: () => void;
   selectedScreen?: DashboardScreenSelection;
+  profileButtonid?: string;
+  logoutButtonid?: string;
 }
 interface searchValues {
   searchTerm: string;
@@ -27,6 +30,8 @@ const NavBar: FC<NavBarProps> = ({
   onCollectionNav,
   onFriendsNav,
   selectedScreen,
+  profileButtonid,
+  logoutButtonid
 }) => {
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const dispatch = useDispatch();
@@ -56,7 +61,7 @@ const NavBar: FC<NavBarProps> = ({
         <title>Nitrus</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <ProfileContainer onClick={onProfilePress}>
+      <ProfileContainer onClick={onProfilePress} id={profileButtonid}>
         <Image src={ProfileDefaultImage} alt="" />
         <UserName>{user?.username}</UserName>
       </ProfileContainer>
@@ -83,7 +88,7 @@ const NavBar: FC<NavBarProps> = ({
         />
       </SelectionDashboardContainer>
 
-      <LogoutButton onClick={onLogoutClick} id="#logout_button">Logout</LogoutButton>
+      <LogoutButton onClick={onLogoutClick} id={logoutButtonid}>Logout</LogoutButton>
     </NavBarContainer>
   );
 };
