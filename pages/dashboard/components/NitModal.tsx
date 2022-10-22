@@ -14,6 +14,7 @@ interface NitModalProps {
   onButtonClick: (name: string) => void;
   inputFieldID?: string;
   buttonID?: string;
+  backgroundID?: string;
 }
 
 const NitModal: FC<NitModalProps> = ({
@@ -24,11 +25,12 @@ const NitModal: FC<NitModalProps> = ({
   onCloseClick,
   onButtonClick,
   inputFieldID,
-  buttonID
+  buttonID,
+  backgroundID
 }) => {
   return show ? (
     <NitModalContainer>
-      <NitModalBackground onClick={onCloseClick} />
+      <NitModalBackground onClick={onCloseClick} id={backgroundID}/>
       <NitModalPopup>
         <NitModalPopUpContentContainer>
           <NitModalPopUpTitle>{title}</NitModalPopUpTitle>

@@ -27,15 +27,14 @@ export default function Home() {
           return;
         }}
         selectedScreen={DashboardScreenSelection.Collection}
-        logoutButtonid = "profile_logout_button"
       />
       <Background>
         <ProfileContainer>
           <UserInfoContainerBackground>
             <UserInfoFieldContainer>
-              <InputField svg={UserImage} field={"Username"} heading={"Username"} />
+              {/* <InputField svg={UserImage} field={"Username"} heading={"Username"} />
               <InputField svg={MailImage} field={"Email"} heading={"Email"} />
-              <InputField svg={KeyImage} field={"Password"} heading={"Password"} />
+              <InputField svg={KeyImage} field={"Password"} heading={"Password"} /> */}
             </UserInfoFieldContainer>
             <NitButton
               onClick={onSaveClick}

@@ -62,7 +62,7 @@ describe('Nitrus Login and Register', () => {
 
 })
 
-describe('Nitrus Logout', () => {
+describe('Nitrus Page Navigation', () => {
   beforeEach(() => {
     // At the start of all our tests, visit the home page and log in
     cy.visit('/')
@@ -70,18 +70,64 @@ describe('Nitrus Logout', () => {
     cy.get('#login_username').type('test')
     cy.get('#login_password').type('test123')
     cy.get('#login_button').click()
+    cy.url().should('include', '/dashboard')
   })
 
   it('Should log the user out in the dashboard when user presses on logout button', () => {
-    cy.get('#dashboard_logout_button').click()
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/')
   })
 
-  // it('Should log the user out in the profile page when user presses on logout button', () => {
-  //   cy.get('#dashboard_profile_button').click()
-  //   cy.get('#profile_logout_button').click()
-  //   cy.url().should('eq', 'http://localhost:3000/');
-  // })
+  it('Should log the user out in the profile page when user presses on logout button', () => {
+    cy.get('#profile_button').click()
+    cy.url().should('include', '/profile')
+    cy.contains('Save')
+    cy.contains('Change')
+
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/')
+  })
+
+  it('Should be able to stay on the dashboard when My Collection button is pressed while on dashboard', () => {
+    cy.get('#collection_button').click()
+    cy.url().should('include', '/dashboard')
+    cy.contains('Welcome back to Nitrus')
+  })
+
+  it('Should be able to navigate from the profile page to the collection page', () => {
+    cy.get('#profile_button').click()
+    cy.url().should('include', '/profile')
+    cy.contains('Save')
+    cy.contains('Change')
+
+    cy.get('#collection_button').click()
+    cy.url().should('include', '/dashboard')
+    cy.contains('Welcome back to Nitrus')
+  })
+
+  it('Should be able to navigate from the profile page to the friends page', () => {
+    cy.get('#profile_button').click()
+    cy.url().should('include', '/profile')
+    cy.contains('Save')
+    cy.contains('Change')
+
+    cy.get('#friends_button').click()
+    cy.url().should('include', '/dashboard')
+    // At the moment, friends button navigates from profile page to the dashboard instead of friends page
+    // cy.contains('Welcome back to Nitrus').should('not.exist')
+    // cy.contains('sentar') // Use dummy test data for now, change test later 
+  })
+
+  it('Should navigate to the friends page and be able to logout when user presses on those buttons', () => {
+    cy.get('#friends_button').click()
+    // Note: the friends page is still the same one as dashboard, just that some components are rendered, and others are not.
+    cy.url().should('include', '/dashboard') 
+    cy.contains('Welcome Back to Nitrus').should('not.exist')
+    cy.contains('sentar') // Use dummy test data for now, change test later 
+
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/')
+  })
 })
 
 describe('Nitrus Files and Collections', () => {
@@ -92,23 +138,70 @@ describe('Nitrus Files and Collections', () => {
     cy.get('#login_username').type('test')
     cy.get('#login_password').type('test123')
     cy.get('#login_button').click()
+    cy.url().should('include', '/dashboard')
   })
 
-  it('Should be able to create a collection, upload a file to it, delete a file, then delete the collection', () => {
+  it('Should be able to close the create collection modal', () => {
+    cy.get('#create_collection_button').click()
+    // Force a click on the top left of the modal background.
+    // This needs to be done because the modal is rendered above the background and
+    // Cypress determines that the background is not visible that way.
+    cy.get('#create_collection_modal_background').click('topLeft', { force: true })
+
+    cy.contains('Create Collection').should('not.exist')
+  })
+
+  it('Should be able to create a collection and upload a file to it', () => {
     cy.get('#create_collection_button').click()
     cy.get('#create_collection_modal_input').type('TestCollection')
     cy.get('#create_collection_modal_button').click()
 
     cy.contains('TestCollection')
 
-    cy.get("#\\#collection_view_button0").click()
+    cy.get("#collection_view_button0").click()
     cy.url().should('include', '/collection')
 
+    cy.get('#choose_file_button').click()
     cy.get('input[type=file]').selectFile({ contents: 'test_utils/WOREEE.png' }, { force: true })
     cy.get('#upload_file_button').click()
 
     cy.contains('WOREEE')
   })
 
+  it('Should not be able to upload when a file is not given', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.get('#upload_file_button').click()
+
+    // Nothing happens in the case, might need to add a text prompt in the future.
+  })
+
+  it('Should not be able to create a collection with the same name', () => {
+    cy.wait(3000)
+    cy.get('#create_collection_button').click()
+    cy.get('#create_collection_modal_input').type('TestCollection')
+    cy.get('#create_collection_modal_button').click()
+
+    cy.get('#collections_select').should('have.length', 1)
+  })
+
+  it('Should be able to navigate from a collection to the dashboard', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.wait(500)
+    cy.get('#collection_button').click()
+    cy.url().should('include', '/dashboard')
+  })
+
+  it('Should be able to delete an existing collection', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.get('#delete_collection_button').click()
+    cy.url().should('include', '/dashboard')
+    cy.contains('TestCollection').should('not.exist')
+  })
 })
 
