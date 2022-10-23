@@ -122,7 +122,7 @@ describe('Nitrus Page Navigation', () => {
     cy.get('#friends_button').click()
     // Note: the friends page is still the same one as dashboard, just that some components are rendered, and others are not.
     cy.url().should('include', '/dashboard') 
-    cy.contains('Welcome Back to Nitrus').should('not.exist')
+    cy.contains('Welcome back to Nitrus').should('not.exist')
     cy.contains('sentar') // Use dummy test data for now, change test later 
 
     cy.get('#logout_button').click()
@@ -193,7 +193,32 @@ describe('Nitrus Files and Collections', () => {
     cy.wait(500)
     cy.get('#collection_button').click()
     cy.url().should('include', '/dashboard')
+    cy.contains('Welcome back to Nitrus')
   })
+
+  // Friends button on the Collection view also just navigates to the dashboard with 
+  // Collections rendered and Friends hidden 
+  // it('Should be able to navigate from a collection to Friends page', () => {
+  //   cy.get("#collection_view_button0").click()
+  //   cy.url().should('include', '/collection')
+
+  //   cy.wait(500)
+  //   cy.get('#friends_button').click()
+  //   cy.url().should('include', '/dashboard')
+  //   cy.contains('Welcome back to Nitrus').should('not.exist')
+  // })
+
+  it('Should be able to navigate from a collection to Profile page', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.wait(500)
+    cy.get('#profile_button').click()
+    cy.url().should('include', '/profile')
+    cy.contains('Save')
+    cy.contains('Change')
+  })
+
 
   it('Should be able to delete an existing collection', () => {
     cy.get("#collection_view_button0").click()
