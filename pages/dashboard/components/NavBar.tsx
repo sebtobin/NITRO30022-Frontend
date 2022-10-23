@@ -19,8 +19,6 @@ interface NavBarProps {
   onCollectionNav: () => void;
   onFriendsNav: () => void;
   selectedScreen?: DashboardScreenSelection;
-  profileButtonid?: string;
-  logoutButtonid?: string;
 }
 interface searchValues {
   searchTerm: string;
@@ -30,8 +28,6 @@ const NavBar: FC<NavBarProps> = ({
   onCollectionNav,
   onFriendsNav,
   selectedScreen,
-  profileButtonid,
-  logoutButtonid
 }) => {
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const dispatch = useDispatch();
@@ -61,7 +57,7 @@ const NavBar: FC<NavBarProps> = ({
         <title>Nitrus</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <ProfileContainer onClick={onProfilePress} id={profileButtonid}>
+      <ProfileContainer onClick={onProfilePress} id="profile_button">
         <Image src={ProfileDefaultImage} alt="" />
         <UserName>{user?.username}</UserName>
       </ProfileContainer>
@@ -80,15 +76,17 @@ const NavBar: FC<NavBarProps> = ({
           text={DashboardScreenSelection.Collection}
           selected={selectedScreen === DashboardScreenSelection.Collection}
           onClick={onCollectionNavigate}
+          dashboardButtonID="collection_button"
         />
         <DashboardButton
           text={DashboardScreenSelection.Friends}
           selected={selectedScreen === DashboardScreenSelection.Friends}
           onClick={onFriendsNavigate}
+          dashboardButtonID="friends_button"
         />
       </SelectionDashboardContainer>
 
-      <LogoutButton onClick={onLogoutClick} id={logoutButtonid}>Logout</LogoutButton>
+      <LogoutButton onClick={onLogoutClick} id="logout_button">Logout</LogoutButton>
     </NavBarContainer>
   );
 };

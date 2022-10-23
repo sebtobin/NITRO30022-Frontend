@@ -7,12 +7,14 @@ interface DashboardButtonProps {
   text: string;
   selected: boolean;
   onClick: () => void;
+  dashboardButtonID?: string
 }
 
 const DashboardButton: FC<DashboardButtonProps> = ({
   text,
   onClick,
   selected,
+  dashboardButtonID
 }) => {
   const unSelectedStyle: CSSProp = {
     flex: 0.9,
@@ -34,6 +36,7 @@ const DashboardButton: FC<DashboardButtonProps> = ({
       onClick={onClick}
       style={selected ? selectedStyle : unSelectedStyle}
       buttonText={text}
+      id={dashboardButtonID}
     />
   );
 };

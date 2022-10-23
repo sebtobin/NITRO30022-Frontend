@@ -137,8 +137,6 @@ const CollectionDetails = () => {
         onCollectionNav={navigateToDash}
         onFriendsNav={navigateToDash}
         selectedScreen={DashboardScreenSelection.Collection}
-        profileButtonid = "collection_profile_button"
-        logoutButtonid = "collection_logout_button"
       />
       <ContentContainer>
         <CollectionDetailsContainer>
@@ -207,6 +205,7 @@ const CollectionDetails = () => {
               onClick={onDeleteCollection}
               buttonText={"Delete Collection"}
               style={{ width: "40%" }}
+              id="delete_collection_button"
             ></NitButton>
           </CollectionSettings>
         </CollectionDetailsContainer>
