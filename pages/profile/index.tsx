@@ -3,18 +3,44 @@ import UserImage from "../../images/user-ic.svg";
 import KeyImage from "../../images/key-ic.svg";
 import MailImage from "../../images/mail-ic.svg";
 import InputField from "../../src/components/InputField";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import NitButton from "../../src/components/NitButton";
 import NavBar from "../dashboard/components/NavBar";
 import { DashboardScreenSelection } from "../../src/utils/Types";
 import { Formik, Form } from "formik";
+import { nitrusApi } from "../../src/redux/apiClient";
+import { UpdateUserInfoRequest, UpdateUserInfoResponse } from "../../src/redux/apiTypes";
 
 // Profile Page of a User. On this page, they can change their User Details
 // (Username, Email, Password) as well as their Profile Picture.
 export default function Home() {
-  const onSaveClick = useCallback(() => {
-    //TODO: this.
-    console.log("Save press");
+
+  const [updateUserInfo] = nitrusApi.endpoints.updateUserInfo.useMutation();
+  const [updateSuccessful, setUpdateSuccesful] = useState(false);
+  const [updateError, setUpdateError] = useState(false);
+
+  const onSaveClick = useCallback(
+    (values: UpdateUserInfoRequest) => {
+      resetUpdatePrompts();
+      if (!values.username || !values.email || !values.password) {
+        setUpdateError(true);
+      }
+      updateUserInfo(values)
+        .unwrap()
+        .then((result) => {
+          setUpdateSuccesful(true);
+        })
+        .catch((error) => {
+          setUpdateError(true);
+          console.log("API error: " + error);
+        });
+    },
+    [updateUserInfo]
+  );
+
+  const resetUpdatePrompts = useCallback(() => {
+    setUpdateError(false);
+    setUpdateSuccesful(false);
   }, []);
 
   // Also need to look into adding the script when Change button is clicked.
@@ -39,7 +65,7 @@ export default function Home() {
                   email: "",
                   password: "",
                 }}
-                onSubmit = {onSaveClick}  
+                onSubmit = {onSaveClick}
               >
                 <Form>
                   <InputField
@@ -61,14 +87,25 @@ export default function Home() {
                     field={"password"}
                     id={"change_details_password"}
                   />
+                  {updateSuccessful && (
+                    <UpdateResultText>
+                      Details updated successfully.
+                    </UpdateResultText>
+                  )}
+                  {updateError && (
+                    <UpdateResultText>
+                      An error has ocurred. Please try again.
+                    </UpdateResultText>
+                  )}
+                  <NitButton
+                    type={"submit"}
+                    style={{ marginTop: "2.5vw", marginLeft: "9vw"}}
+                    buttonText="Save"
+                    id ={"update_details_save_button"}
+                  />
                 </Form>
               </Formik>
             </UserInfoFieldContainer>
-            <NitButton
-              onClick={onSaveClick}
-              style={{ marginTop: "2.5vw", marginRight: "3vw" }}
-              buttonText="Save"
-            />
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
@@ -164,5 +201,15 @@ const ChangeText = styled.h3`
   font-size: 26px;
   line-height: 39px;
 
+  color: #424f40;
+`;
+
+const UpdateResultText = styled.h4`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 10px;
+  margin-left: 35%;
   color: #424f40;
 `;

@@ -42,3 +42,15 @@ export interface FileData {
 export interface PostCollection {
   name: string;
 }
+
+export interface UpdateUserInfoRequest {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface UpdateUserInfoResponse {
+  username: string;
+  email: string;
+  password: string;
+}

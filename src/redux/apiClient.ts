@@ -7,6 +7,8 @@ import {
   UserState,
   Collection,
   PostCollection,
+  UpdateUserInfoResponse,
+  UpdateUserInfoRequest,
 } from "./apiTypes";
 import { RootState } from "./store";
 // export const baseUrl = `http://localhost:8081/api`;
@@ -83,6 +85,12 @@ export const nitrusApi = createApi({
         method: "DELETE",
         url: `/collection/${name}/`,
       }),
+    }),
+    updateUserInfo: build.mutation<UpdateUserInfoResponse, UpdateUserInfoRequest>({
+      query: ({ ...data }) => ({
+        method: "PUT",
+        url: "/users/updateUser"
+      })
     }),
   }),
 });
