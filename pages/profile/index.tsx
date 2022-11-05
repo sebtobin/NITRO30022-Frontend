@@ -10,6 +10,8 @@ import { DashboardScreenSelection } from "../../src/utils/Types";
 import { Formik, Form } from "formik";
 import { nitrusApi } from "../../src/redux/apiClient";
 import { UpdateUserInfoRequest, UpdateUserInfoResponse } from "../../src/redux/apiTypes";
+import Image from "next/image";
+import DefaultProfileImage from "../../images/friends-image-default.svg";
 
 // Profile Page of a User. On this page, they can change their User Details
 // (Username, Email, Password) as well as their Profile Picture.
@@ -109,7 +111,9 @@ export default function Home() {
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
-            <ProfilePicture></ProfilePicture>
+            <ProfilePicture>
+              <Image src={DefaultProfileImage} alt="" layout="fill" objectFit="contain"/> 
+            </ProfilePicture>
             <ChangeProfilePictureContainer>
               <ChangeText> Change </ChangeText>
             </ChangeProfilePictureContainer>
@@ -174,12 +178,12 @@ const ProfilePictureContainer = styled.div`
 
 const ProfilePicture = styled.div`
   display: flex;
+  position: relative;
   align-items: center;
   align-self: center;
   height: 80%;
   width: auto;
   aspect-ratio: 1;
-  background: #424f40;
   border-radius: 50%;
   margin-top: 2vh;
 `;
