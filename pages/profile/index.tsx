@@ -7,6 +7,7 @@ import { useCallback } from "react";
 import NitButton from "../../src/components/NitButton";
 import NavBar from "../dashboard/components/NavBar";
 import { DashboardScreenSelection } from "../../src/utils/Types";
+import { Formik, Form } from "formik";
 
 // Profile Page of a User. On this page, they can change their User Details
 // (Username, Email, Password) as well as their Profile Picture.
@@ -32,9 +33,36 @@ export default function Home() {
         <ProfileContainer>
           <UserInfoContainerBackground>
             <UserInfoFieldContainer>
-              {/* <InputField svg={UserImage} field={"Username"} heading={"Username"} />
-              <InputField svg={MailImage} field={"Email"} heading={"Email"} />
-              <InputField svg={KeyImage} field={"Password"} heading={"Password"} /> */}
+              <Formik
+                initialValues={{
+                  username: "",
+                  email: "",
+                  password: "",
+                }}
+                onSubmit = {onSaveClick}  
+              >
+                <Form>
+                  <InputField
+                    svg={UserImage} 
+                    heading={"Username"}
+                    field={"username"}
+                    id={"change_details_username"}
+                  />
+                  <InputField
+                    svg={MailImage} 
+                    heading={"Email"}
+                    field={"email"}
+                    id={"change_details_email"}
+                  />
+                  <InputField
+                    svg={KeyImage} 
+                    type={"password"}
+                    heading={"Password"}
+                    field={"password"}
+                    id={"change_details_password"}
+                  />
+                </Form>
+              </Formik>
             </UserInfoFieldContainer>
             <NitButton
               onClick={onSaveClick}
