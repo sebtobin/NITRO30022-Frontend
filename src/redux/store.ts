@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer, { authSlice } from "./authReducer";
 import userReducer from "./userReducer";
-import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import {
   persistReducer,
@@ -12,7 +11,26 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { nitrusApi } from "./apiClient";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+const createNoopStorage = () => {
+  return {
+    getItem(_key: any) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: any, value: any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key: any) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage =
+  typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createNoopStorage();
 const persistConfig = {
   key: "auth",
   storage,
