@@ -24,21 +24,16 @@ export default function Home() {
   const onSaveClick = useCallback(
     (values: UpdateUserInfoRequest) => {
       resetUpdatePrompts();
-      if (!values.email && !values.password) {
+      updateUserInfo(values)
+      .unwrap()
+      .then((result) => {
+        setUpdateSuccesful(true);
+        console.log(result);
+      })
+      .catch((error) => {
         setUpdateError(true);
-        console.log("Missing Fields");
-      } else {
-        updateUserInfo(values)
-        .unwrap()
-        .then((result) => {
-          setUpdateSuccesful(true);
-          console.log(result);
-        })
-        .catch((error) => {
-          setUpdateError(true);
-          console.log("API error: " + error);
-        });
-      }
+        console.log("API error: " + error);
+      });
     },
     [updateUserInfo]
   );
@@ -90,7 +85,7 @@ export default function Home() {
                   />
                   {updateSuccessful && (
                     <UpdateResultText>
-                      Details updated successfully.
+                      Details updated successfully. Empty fields were ignored.
                     </UpdateResultText>
                   )}
                   {updateError && (
@@ -107,6 +102,9 @@ export default function Home() {
                 </Form>
               </Formik>
             </UserInfoFieldContainer>
+            <UpdateDetailsInstructionText>
+              If you want to change only your email or password, please leave the other one empty.
+            </UpdateDetailsInstructionText>
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
@@ -213,6 +211,17 @@ const UpdateResultText = styled.h4`
   font-weight: 500;
   font-size: 14px;
   line-height: 10px;
-  margin-left: 35%;
+  margin-left: 25%;
   color: #424f40;
 `;
+
+const UpdateDetailsInstructionText = styled.p`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 39px;
+  white-space: pre-line;
+
+  color: #424f40;
+`

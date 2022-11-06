@@ -230,3 +230,55 @@ describe('Nitrus Files and Collections', () => {
   })
 })
 
+
+describe('Nitrus Change User Details and Profile', () => {
+  beforeEach(() => {
+    // At the start of all our tests, visit the home page and log in
+    cy.visit('/')
+
+    cy.get('#login_username').type('update_test')
+    cy.get('#login_password').type('update_test123')
+    cy.get('#login_button').click()
+    cy.url().should('include', '/dashboard')
+  })
+
+  it('Should be able to update email and password and use the new email and password to login', () => {
+    cy.get('#profile_button').click()
+    
+    // Changing email doesn't really matter in this case as it's not 
+    // used for logging on. 
+    cy.get('#change_details_email').type("update_test@gmail.com")
+    cy.get('#change_details_password').type("update_test12345")
+    cy.contains('Details updated successfully. Empty fields were ignored.')
+
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/')
+
+    // Test that the user can't use the old password to login
+    cy.get('#login_username').type('update_test')
+    cy.get('#login_password').type('update_test123')
+    cy.get('#login_button').click()
+    cy.contains('Incorrect username or password. Please try again.')
+
+    // Then log in using the new password
+    cy.get('#login_password').clear().type('update_test12345')
+    cy.url().should('include', '/dashboard')
+
+    // Change back to the old password so this test can be used on the CI Pipeline
+    cy.get('#profile_button').click()
+    cy.get('#change_details_email').type("update_test@gmail.com")
+    cy.get('#change_details_password').type("update_test123")
+    cy.contains('Details updated successfully. Empty fields were ignored.')
+
+    cy.get('#logout_button').click()
+    cy.url().should('eq', 'http://localhost:3000/')
+    
+
+    cy.get('#login_username').type('update_test')
+    cy.get('#login_password').type('update_test123')
+    cy.get('#login_button').click()
+    cy.url().should('include', '/dashboard')
+  })
+
+})
+
