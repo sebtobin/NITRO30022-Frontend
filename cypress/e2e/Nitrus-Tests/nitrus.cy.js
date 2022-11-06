@@ -263,6 +263,7 @@ describe('Nitrus Change User Details and Profile', () => {
 
     // Then log in using the new password
     cy.get('#login_password').clear().type('update_test12345')
+    cy.get('#login_button').click()
     cy.url().should('include', '/dashboard')
 
     // Change back to the old password so this test can be used on the CI Pipeline
