@@ -24,11 +24,11 @@ export default function Home() {
   const onSaveClick = useCallback(
     (values: UpdateUserInfoRequest) => {
       resetUpdatePrompts();
-      if (!values.email || !values.password) {
+      if (!values.email && !values.password) {
         setUpdateError(true);
         console.log("Missing Fields");
-      }
-      updateUserInfo(values)
+      } else {
+        updateUserInfo(values)
         .unwrap()
         .then((result) => {
           setUpdateSuccesful(true);
@@ -38,6 +38,7 @@ export default function Home() {
           setUpdateError(true);
           console.log("API error: " + error);
         });
+      }
     },
     [updateUserInfo]
   );
@@ -68,7 +69,10 @@ export default function Home() {
                   email: "",
                   password: "",
                 }}
-                onSubmit = {onSaveClick}
+                onSubmit = {(values, { resetForm }) => {
+                  onSaveClick(values);
+                  resetForm();
+                }}
               >
                 <Form>
                   <InputField

@@ -11,8 +11,8 @@ import {
   UpdateUserInfoRequest,
 } from "./apiTypes";
 import { RootState } from "./store";
-// export const baseUrl = `http://localhost:8081/api`;
-export const baseUrl = `http://ec2-3-26-229-20.ap-southeast-2.compute.amazonaws.com:8081/api`;
+export const baseUrl = `http://localhost:8081/api`;
+// export const baseUrl = `http://ec2-3-26-229-20.ap-southeast-2.compute.amazonaws.com:8081/api`;
 export const nitrusApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: baseUrl,
