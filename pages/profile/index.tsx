@@ -14,7 +14,7 @@ import Image from "next/image";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 
 // Profile Page of a User. On this page, they can change their User Details
-// (Username, Email, Password) as well as their Profile Picture.
+// (Email, Password) as well as their Profile Picture.
 export default function Home() {
 
   const [updateUserInfo] = nitrusApi.endpoints.updateUserInfo.useMutation();
@@ -24,13 +24,15 @@ export default function Home() {
   const onSaveClick = useCallback(
     (values: UpdateUserInfoRequest) => {
       resetUpdatePrompts();
-      if (!values.username || !values.email || !values.password) {
+      if (!values.email || !values.password) {
         setUpdateError(true);
+        console.log("Missing Fields");
       }
       updateUserInfo(values)
         .unwrap()
         .then((result) => {
           setUpdateSuccesful(true);
+          console.log(result);
         })
         .catch((error) => {
           setUpdateError(true);
@@ -63,19 +65,12 @@ export default function Home() {
             <UserInfoFieldContainer>
               <Formik
                 initialValues={{
-                  username: "",
                   email: "",
                   password: "",
                 }}
                 onSubmit = {onSaveClick}
               >
                 <Form>
-                  <InputField
-                    svg={UserImage} 
-                    heading={"Username"}
-                    field={"username"}
-                    id={"change_details_username"}
-                  />
                   <InputField
                     svg={MailImage} 
                     heading={"Email"}

@@ -44,13 +44,11 @@ export interface PostCollection {
 }
 
 export interface UpdateUserInfoRequest {
-  username: string;
   email: string;
   password: string;
 }
 
 export interface UpdateUserInfoResponse {
-  username: string;
   email: string;
   password: string;
 }
