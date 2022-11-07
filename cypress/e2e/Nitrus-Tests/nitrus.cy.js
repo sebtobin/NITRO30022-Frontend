@@ -245,6 +245,7 @@ describe('Nitrus Change User Details and Profile', () => {
     // used for logging on. 
     cy.get('#change_details_email').type("update12345@gmail.com")
     cy.get('#change_details_password').type("update12345")
+    cy.get('#change_details_password_confirm').type("update12345")
     cy.get('#update_details_save_button').click()
     cy.contains('Details updated successfully. Empty fields were ignored.')
 
@@ -266,6 +267,7 @@ describe('Nitrus Change User Details and Profile', () => {
     cy.get('#profile_button').click()
     cy.get('#change_details_email').type("update123@gmail.com")
     cy.get('#change_details_password').type("update123")
+    cy.get('#change_details_password_confirm').type("update123")
     cy.get('#update_details_save_button').click()
     cy.contains('Details updated successfully. Empty fields were ignored.')
 
