@@ -12,6 +12,7 @@ import { Collection, UserState } from "../../src/redux/apiTypes";
 import NitModal from "./components/NitModal";
 import { nitrusApi } from "../../src/redux/apiClient";
 import CollectionBubble from "./components/CollectionBubble";
+import ActivityIndicator from "./components/ActivityIndicator";
 
 interface Friends {
   name: string;
@@ -23,7 +24,7 @@ export default function Dashboard() {
   const user = useSelector<RootState, UserState | null>((state) => state.user);
   const [selectedScreen, setSelectedScreen] =
     useState<DashboardScreenSelection>(DashboardScreenSelection.Collection);
-
+  const [loadingCollections, setloadingCollections] = useState(false);
   const [postCollection] = nitrusApi.endpoints.postCollection.useMutation();
 
   const [getCollectionsList, collectionsList] =
@@ -31,12 +32,19 @@ export default function Dashboard() {
 
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
   useEffect(() => {
+    setloadingCollections(true);
     getCollectionsList()
       .unwrap()
       .then((res) => {
         setCollections(res);
       });
   }, [getCollectionsList]);
+
+  useEffect(() => {
+    if (collections && collections?.length > 0) {
+      setloadingCollections(false);
+    }
+  }, [collections]);
 
   const onNewCollectionClick = useCallback(() => {
     setShowCollectionsModal(true);
@@ -104,24 +112,30 @@ export default function Dashboard() {
               />
             </CollectionContainer>
             <CollectionsSelect id="collections_select">
-              {collections ? (
+              {!loadingCollections && (
                 <>
-                  {collections.map((item, index) => (
+                  {collections ? (
                     <>
-                      <CollectionBubble
-                        key={index}
-                        items={item.num_items}
-                        name={item.name}
-                        size={item.size}
-                        linkName={item.name}
-                        viewButtonID= {"collection_view_button" + index}
-                      />
-                      ;
+                      {collections.map((item, index) => (
+                        <CollectionBubble
+                          key={index}
+                          items={item.num_items}
+                          name={item.name}
+                          size={item.size}
+                          linkName={item.name}
+                          viewButtonID={"collection_view_button" + index}
+                        />
+                      ))}
                     </>
-                  ))}
+                  ) : (
+                    <FriendsName>{"No collections yet!"}</FriendsName>
+                  )}
                 </>
-              ) : (
-                <FriendsName>{"No collections yet!"}</FriendsName>
+              )}
+              {loadingCollections && (
+                <IndicatorContainer>
+                  <ActivityIndicator dim={175} />
+                </IndicatorContainer>
               )}
             </CollectionsSelect>
           </>
@@ -169,6 +183,12 @@ const FriendsName = styled.h2`
   font-weight: 600;
   font-size: 36px;
   color: #2a2e2a;
+`;
+const IndicatorContainer = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-top: 100px;
 `;
 const Dividor = styled.div`
   display: flex;

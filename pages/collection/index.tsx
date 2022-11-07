@@ -64,8 +64,8 @@ const CollectionDetails = () => {
     }
   }, []);
   const [deleteCollection] = nitrusApi.endpoints.deleteCollection.useMutation();
+  const [deleteFileMutation] = nitrusApi.endpoints.deleteFile.useMutation();
   const onDeleteCollection = useCallback(() => {
-    console.log("fire del colle" + data.name);
     if (data.name) {
       console.log("fire");
       deleteCollection(data.name as string)
@@ -130,6 +130,18 @@ const CollectionDetails = () => {
       //   });
     }
   };
+
+  const deleteFile = useCallback((id: string) => {
+    deleteFileMutation(id)
+      .unwrap()
+      .then(() => {
+        getCollection(data.name as string)
+          .unwrap()
+          .then((currentCollection) => {
+            setCollection(currentCollection);
+          });
+      });
+  }, []);
 
   return (
     <div>
@@ -209,14 +221,16 @@ const CollectionDetails = () => {
             ></NitButton>
           </CollectionSettings>
         </CollectionDetailsContainer>
-        {collection?.files_data ? (
+        {collection?.files_data && (
           <FilesContainer>
             {collection?.files_data?.map((item) => (
-              <FileRow key={item.id} file={item} />
+              <FileRow
+                key={item.id}
+                file={item}
+                onDelete={() => deleteFile(item.id)}
+              />
             ))}
           </FilesContainer>
-        ) : (
-          <h2>No files yet!</h2>
         )}
       </ContentContainer>
     </div>

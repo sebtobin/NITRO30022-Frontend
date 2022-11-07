@@ -2,7 +2,10 @@ import React, { FC } from "react";
 import Lottie from "react-lottie";
 import LoadingAtom from "../../../lottie/loading-atom.json";
 
-const ActivityIndicator: FC = () => {
+interface Props {
+  dim?: number;
+}
+const ActivityIndicator: FC<Props> = ({ dim }) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -12,6 +15,8 @@ const ActivityIndicator: FC = () => {
     },
   };
 
-  return <Lottie options={defaultOptions} height={50} width={50} />;
+  return (
+    <Lottie options={defaultOptions} height={dim ?? 50} width={dim ?? 50} />
+  );
 };
 export default ActivityIndicator;

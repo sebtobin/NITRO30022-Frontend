@@ -20,38 +20,36 @@ const InputField: FC<InputFieldProps> = ({
   type,
   placeholder,
   style,
-  id
+  id,
 }) => {
   const container: CSSProperties = {
     paddingLeft: "60px",
+    paddingRight: "30px",
     backgroundColor: "#d7e8d0",
     borderColor: "transparent",
     height: "55px",
     borderRadius: "12px",
     fontSize: "23px",
-    width: "30vw",
+    width: "50%",
+    flex: 1,
     backgroundPositionX: "10px",
     backgroundPositionY: "10px",
-    backgroundRepeat: "no-repeat",
-    paddingRight: "30px",
     color: " #424f40",
     fontFamily: "Poppins",
     fontStyle: "normal",
     fontWeight: 400,
     justifyContent: "center",
   };
-  const padding: CSSProperties = {
-    paddingLeft: svg ? "60px" : "20px",
-  };
+
   return (
-    <Container style = {style}>
+    <Container style={style}>
       <Heading>{heading}</Heading>
       <FieldContainer>
         <ImageComponent>
           <Image src={svg} alt="" />
         </ImageComponent>
         <Field
-          style={{ ...container, ...padding }}
+          style={{ ...container }}
           id={id}
           name={field}
           placeholder={placeholder}

@@ -86,7 +86,9 @@ const NavBar: FC<NavBarProps> = ({
         />
       </SelectionDashboardContainer>
 
-      <LogoutButton onClick={onLogoutClick} id="logout_button">Logout</LogoutButton>
+      <LogoutButton onClick={onLogoutClick} id="logout_button">
+        Logout
+      </LogoutButton>
     </NavBarContainer>
   );
 };
@@ -137,10 +139,6 @@ const NavBarContainer = styled.div`
   justify-content: space-between;
   padding-left: 40px;
   padding-right: 40px;
-
-  @media only screen and (max-width: 770px) {
-    background-color: red;
-  }
 `;
 
 export default NavBar;
