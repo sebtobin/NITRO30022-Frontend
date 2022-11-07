@@ -152,6 +152,7 @@ describe('Nitrus Files and Collections', () => {
     cy.get('#create_collection_button').click()
     cy.get('#create_collection_modal_input').type('TestCollection')
     cy.get('#create_collection_modal_button').click()
+    cy.wait(2000)
 
     cy.contains('TestCollection')
 
