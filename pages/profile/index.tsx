@@ -3,17 +3,44 @@ import UserImage from "../../images/user-ic.svg";
 import KeyImage from "../../images/key-ic.svg";
 import MailImage from "../../images/mail-ic.svg";
 import InputField from "../../src/components/InputField";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import NitButton from "../../src/components/NitButton";
 import NavBar from "../dashboard/components/NavBar";
 import { DashboardScreenSelection } from "../../src/utils/Types";
+import { Formik, Form } from "formik";
+import { nitrusApi } from "../../src/redux/apiClient";
+import { UpdateUserInfoRequest, UpdateUserInfoResponse } from "../../src/redux/apiTypes";
+import Image from "next/image";
+import DefaultProfileImage from "../../images/friends-image-default.svg";
 
 // Profile Page of a User. On this page, they can change their User Details
-// (Username, Email, Password) as well as their Profile Picture.
+// (Email, Password) as well as their Profile Picture.
 export default function Home() {
-  const onSaveClick = useCallback(() => {
-    //TODO: this.
-    console.log("Save press");
+
+  const [updateUserInfo] = nitrusApi.endpoints.updateUserInfo.useMutation();
+  const [updateSuccessful, setUpdateSuccesful] = useState(false);
+  const [updateError, setUpdateError] = useState(false);
+
+  const onSaveClick = useCallback(
+    (values: UpdateUserInfoRequest) => {
+      resetUpdatePrompts();
+      updateUserInfo(values)
+      .unwrap()
+      .then((result) => {
+        setUpdateSuccesful(true);
+        console.log(result);
+      })
+      .catch((error) => {
+        setUpdateError(true);
+        console.log("API error: " + error);
+      });
+    },
+    [updateUserInfo]
+  );
+
+  const resetUpdatePrompts = useCallback(() => {
+    setUpdateError(false);
+    setUpdateSuccesful(false);
   }, []);
 
   // Also need to look into adding the script when Change button is clicked.
@@ -32,19 +59,58 @@ export default function Home() {
         <ProfileContainer>
           <UserInfoContainerBackground>
             <UserInfoFieldContainer>
-              {/* <InputField svg={UserImage} field={"Username"} heading={"Username"} />
-              <InputField svg={MailImage} field={"Email"} heading={"Email"} />
-              <InputField svg={KeyImage} field={"Password"} heading={"Password"} /> */}
+              <Formik
+                initialValues={{
+                  email: "",
+                  password: "",
+                }}
+                onSubmit = {(values, { resetForm }) => {
+                  onSaveClick(values);
+                  resetForm();
+                }}
+              >
+                <Form>
+                  <InputField
+                    svg={MailImage} 
+                    heading={"Email"}
+                    field={"email"}
+                    id={"change_details_email"}
+                  />
+                  <InputField
+                    svg={KeyImage} 
+                    type={"password"}
+                    heading={"Password"}
+                    field={"password"}
+                    id={"change_details_password"}
+                  />
+                  {updateSuccessful && (
+                    <UpdateResultText>
+                      Details updated successfully. Empty fields were ignored.
+                    </UpdateResultText>
+                  )}
+                  {updateError && (
+                    <UpdateResultText>
+                      An error has ocurred. Please try again.
+                    </UpdateResultText>
+                  )}
+                  <NitButton
+                    type={"submit"}
+                    style={{ marginTop: "2.5vw", marginLeft: "9vw"}}
+                    buttonText="Save"
+                    id ={"update_details_save_button"}
+                  />
+                </Form>
+              </Formik>
             </UserInfoFieldContainer>
-            <NitButton
-              onClick={onSaveClick}
-              style={{ marginTop: "2.5vw", marginRight: "3vw" }}
-              buttonText="Save"
-            />
+            <UpdateDetailsInstructionText>
+              If you want to change only your email or password, please leave the other one empty.
+            </UpdateDetailsInstructionText>
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
-            <ProfilePicture></ProfilePicture>
+            <ProfilePicture>
+              <Image src={DefaultProfileImage} alt="" layout="fill" objectFit="contain"/> 
+            </ProfilePicture>
             <ChangeProfilePictureContainer>
               <ChangeText> Change </ChangeText>
             </ChangeProfilePictureContainer>
@@ -109,12 +175,12 @@ const ProfilePictureContainer = styled.div`
 
 const ProfilePicture = styled.div`
   display: flex;
+  position: relative;
   align-items: center;
   align-self: center;
   height: 80%;
   width: auto;
   aspect-ratio: 1;
-  background: #424f40;
   border-radius: 50%;
   margin-top: 2vh;
 `;
@@ -138,3 +204,24 @@ const ChangeText = styled.h3`
 
   color: #424f40;
 `;
+
+const UpdateResultText = styled.h4`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 10px;
+  margin-left: 25%;
+  color: #424f40;
+`;
+
+const UpdateDetailsInstructionText = styled.p`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 39px;
+  white-space: pre-line;
+
+  color: #424f40;
+`

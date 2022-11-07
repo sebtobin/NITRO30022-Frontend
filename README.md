@@ -1,34 +1,44 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
-
-First, run the development server:
-
+## Running the program
+First, build the dependencies:
 ```bash
-npm run dev
-# or
+yarn build
+```
+
+Then, 
+
+Either run the development server:
+```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or run the server normally:
+```bash
+yarn start
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000) with your browser to access the Nitrus Application.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## APIs
+The Frontend APIs can be found in the src/redux folder.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+These APIs send HTTP requests to the relevant Backend APIs and the Frontend then receives a response and acts as necessary.
 
-## Learn More
+## Testing
+Test Cases can be found on cypress/e2e/Nitrus-Tests/nitrus.cy.js
 
-To learn more about Next.js, take a look at the following resources:
+These test cases are created and ran through Cypress, and mainly on the Google Chrome browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+In order to run just the tests through the Command Line:
+```bash
+yarn cy:run
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+In order to run the tests through the Cypress GUI:
+```bash
+yarn cy:open
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Continuous Integration (CI) Pipeline
+In order to access and view the CI Pipeline, click on the "Actions" button or use the link https://github.com/sebtobin/NITRO30022-Frontend/actions to head to the Github Actions page of the repository. The CI Pipeline are the runs named "Cypress Test for Nitrus Application."
