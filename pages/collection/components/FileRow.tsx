@@ -15,24 +15,37 @@ interface FileRowProps {
 
 const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file }) => {
   return (
-    <FilePill>
-      <FileName>
-        {file.title.length > 17
-          ? file.title.substring(0, 17) + "..."
-          : file.title}
-      </FileName>
-      <FileButtons>
-        <FileButton href={file.document} target="_blank">
-          <Image src={ViewButton} alt={""} />
-        </FileButton>
-        <FileButton onClick={onEdit}>
-          <Image src={EditButton} alt={""} />
-        </FileButton>
-        <FileButton>
-          <Image onClick={onDelete} src={DeleteButton} alt={""} />
-        </FileButton>
-      </FileButtons>
-    </FilePill>
+		<FilePill>
+			<FileName>
+				{file.title.length > 17
+					? file.title.substring(0, 17) + "..."
+					: file.title}
+			</FileName>
+			<FileButtons>
+				<FileButton
+					href={
+						file.document.indexOf(".ap-southeast-3") > 0
+							? setCharAt(
+									file.document,
+									file.document.indexOf(".ap-southeast-3") +
+										".ap-southeast-3".length -
+										1,
+									"2"
+							  )
+							: file.document
+					}
+					target="_blank"
+				>
+					<Image src={ViewButton} alt={""} />
+				</FileButton>
+				<FileButton onClick={onEdit}>
+					<Image src={EditButton} alt={""} />
+				</FileButton>
+				<FileButton>
+					<Image onClick={onDelete} src={DeleteButton} alt={""} />
+				</FileButton>
+			</FileButtons>
+		</FilePill>
   );
 };
 
