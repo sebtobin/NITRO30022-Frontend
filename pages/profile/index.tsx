@@ -9,31 +9,39 @@ import NavBar from "../dashboard/components/NavBar";
 import { DashboardScreenSelection } from "../../src/utils/Types";
 import { Formik, Form } from "formik";
 import { nitrusApi } from "../../src/redux/apiClient";
-import { UpdateUserInfoRequest, UpdateUserInfoResponse } from "../../src/redux/apiTypes";
+import {
+  UpdateUserInfo,
+  UpdateUserInfoRequest,
+  UpdateUserInfoResponse,
+} from "../../src/redux/apiTypes";
 import Image from "next/image";
 import DefaultProfileImage from "../../images/friends-image-default.svg";
 
 // Profile Page of a User. On this page, they can change their User Details
 // (Email, Password) as well as their Profile Picture.
 export default function Home() {
-
   const [updateUserInfo] = nitrusApi.endpoints.updateUserInfo.useMutation();
   const [updateSuccessful, setUpdateSuccesful] = useState(false);
   const [updateError, setUpdateError] = useState(false);
+  const [passwordsIdenticalError, setpasswordsIdenticalError] = useState(false);
 
   const onSaveClick = useCallback(
-    (values: UpdateUserInfoRequest) => {
-      resetUpdatePrompts();
-      updateUserInfo(values)
-      .unwrap()
-      .then((result) => {
-        setUpdateSuccesful(true);
-        console.log(result);
-      })
-      .catch((error) => {
-        setUpdateError(true);
-        console.log("API error: " + error);
-      });
+    (values: UpdateUserInfo) => {
+      if (values.password === values.passwordConfirm) {
+        resetUpdatePrompts();
+        updateUserInfo({ email: values.email, password: values.password })
+          .unwrap()
+          .then((result) => {
+            setUpdateSuccesful(true);
+            console.log(result);
+          })
+          .catch((error) => {
+            setUpdateError(true);
+            console.log("API error: " + error);
+          });
+      } else {
+        setpasswordsIdenticalError(true);
+      }
     },
     [updateUserInfo]
   );
@@ -41,6 +49,7 @@ export default function Home() {
   const resetUpdatePrompts = useCallback(() => {
     setUpdateError(false);
     setUpdateSuccesful(false);
+    setpasswordsIdenticalError(false);
   }, []);
 
   // Also need to look into adding the script when Change button is clicked.
@@ -63,30 +72,41 @@ export default function Home() {
                 initialValues={{
                   email: "",
                   password: "",
+                  passwordConfirm: "",
                 }}
-                onSubmit = {(values, { resetForm }) => {
+                onSubmit={(values, { resetForm }) => {
                   onSaveClick(values);
                   resetForm();
                 }}
               >
                 <Form>
                   <InputField
-                    svg={MailImage} 
+                    svg={MailImage}
                     heading={"Email"}
                     field={"email"}
                     id={"change_details_email"}
                   />
                   <InputField
-                    svg={KeyImage} 
+                    svg={KeyImage}
                     type={"password"}
-                    heading={"Password"}
+                    heading={"New Password"}
                     field={"password"}
                     id={"change_details_password"}
+                  />
+                  <InputField
+                    svg={KeyImage}
+                    type={"password"}
+                    heading={"Confirm New Password"}
+                    field={"passwordConfirm"}
+                    id={"change_details_password_confirm"}
                   />
                   {updateSuccessful && (
                     <UpdateResultText>
                       Details updated successfully. Empty fields were ignored.
                     </UpdateResultText>
+                  )}
+                  {passwordsIdenticalError && (
+                    <UpdateResultText>Passwords do not match.</UpdateResultText>
                   )}
                   {updateError && (
                     <UpdateResultText>
@@ -95,25 +115,29 @@ export default function Home() {
                   )}
                   <NitButton
                     type={"submit"}
-                    style={{ marginTop: "2.5vw", marginLeft: "9vw"}}
+                    style={{ marginTop: "2.5vw", marginLeft: "9vw" }}
                     buttonText="Save"
-                    id ={"update_details_save_button"}
+                    id={"update_details_save_button"}
                   />
                 </Form>
               </Formik>
             </UserInfoFieldContainer>
             <UpdateDetailsInstructionText>
-              If you want to change only your email or password, please leave the other one empty.
+              If you want to change only your email or password, please leave
+              the other one empty.
             </UpdateDetailsInstructionText>
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
             <ProfilePicture>
-              <Image src={DefaultProfileImage} alt="" layout="fill" objectFit="contain"/> 
+              <Image
+                src={DefaultProfileImage}
+                alt=""
+                layout="fill"
+                objectFit="contain"
+              />
             </ProfilePicture>
-            <ChangeProfilePictureContainer>
-              <ChangeText> Change </ChangeText>
-            </ChangeProfilePictureContainer>
+            <ChangeProfilePictureContainer></ChangeProfilePictureContainer>
           </ProfilePictureContainer>
         </ProfileContainer>
       </Background>
@@ -219,9 +243,9 @@ const UpdateDetailsInstructionText = styled.p`
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 13px;
   line-height: 39px;
   white-space: pre-line;
-
+  margin-top: 30px;
   color: #424f40;
-`
+`;

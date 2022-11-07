@@ -47,6 +47,11 @@ export interface UpdateUserInfoRequest {
   email: string;
   password: string;
 }
+export interface UpdateUserInfo {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
 
 export interface UpdateUserInfoResponse {
   email: string;
