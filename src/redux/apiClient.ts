@@ -92,5 +92,15 @@ export const nitrusApi = createApi({
         url: `api/files/${id}`,
       }),
     }),
+    updateUserInfo: build.mutation<
+      UpdateUserInfoResponse,
+      UpdateUserInfoRequest
+    >({
+      query: ({ ...data }) => ({
+        method: "PUT",
+        url: "/users/updateUser/",
+        body: data,
+      }),
+    }),
   }),
 });

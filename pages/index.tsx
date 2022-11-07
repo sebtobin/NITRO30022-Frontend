@@ -89,7 +89,9 @@ export default function Home() {
         <LoginContainer>
           <TitleContainer>
             <Title>Nitrus</Title>
-            <Image src={LogoImage} alt="" />
+            <NitroLogo>
+              <Image src={LogoImage} alt="" />
+            </NitroLogo>
           </TitleContainer>
           <LoginInputContainer>
             <Formik
@@ -100,49 +102,52 @@ export default function Home() {
               onSubmit={onLoginClick}
             >
               <Form>
-                <InputField
-                  svg={UserImage}
-                  heading={"Username"}
-                  field={"username"}
-                  id={"login_username"}
-                />
-                <InputField
-                  svg={KeyImage}
-                  heading={"Password"}
-                  field={"password"}
-                  type={"password"}
-                  id={"login_password"}
-                />
-                <NitButton
-                  type={"submit"}
-                  loading={loggingIn}
-                  style={{ marginTop: "10vw", marginBottom: 55 }}
-                  buttonText="Login"
-                  id="login_button"
-                />
-                {loginError && (
-                  <ErrorText>
-                    Incorrect username or password. Please try again.
-                  </ErrorText>
-                )}
+                <LoginFormContainer>
+                  <InputField
+                    svg={UserImage}
+                    heading={"Username"}
+                    field={"username"}
+                    id={"login_username"}
+                  />
+                  <InputField
+                    svg={KeyImage}
+                    heading={"Password"}
+                    field={"password"}
+                    style={{ marginTop: 30 }}
+                    type={"password"}
+                    id={"login_password"}
+                  />
+                  <NitButton
+                    type={"submit"}
+                    loading={loggingIn}
+                    style={{ marginTop: "7vw", marginBottom: 55 }}
+                    buttonText="Login"
+                    id="login_button"
+                  />
+                  {loginError && (
+                    <ErrorText>
+                      Incorrect username or password. Please try again.
+                    </ErrorText>
+                  )}
+                </LoginFormContainer>
               </Form>
             </Formik>
           </LoginInputContainer>
         </LoginContainer>
         <SignUpContainer>
-          <TitleContainer>
+          <RegisterTitleContainer>
             <SubTitle>Register</SubTitle>
-          </TitleContainer>
-          <RegisterInputContainer>
-            <Formik
-              initialValues={{
-                username: "",
-                email: "",
-                password: "",
-              }}
-              onSubmit={onRegisterClick}
-            >
-              <Form>
+          </RegisterTitleContainer>
+          <Formik
+            initialValues={{
+              username: "",
+              email: "",
+              password: "",
+            }}
+            onSubmit={onRegisterClick}
+          >
+            <Form>
+              <RegisterInputContainer>
                 <InputField
                   svg={UserImage}
                   heading={"Username"}
@@ -167,7 +172,7 @@ export default function Home() {
                   type={"submit"}
                   loading={registering}
                   buttonText="Register"
-                  style={{ marginLeft: "54%", width: 220 }}
+                  style={{ alignSelf: "flex-end", minWidth: 150 }}
                   id={"register_button"}
                 />
                 {signupError && (
@@ -175,9 +180,9 @@ export default function Home() {
                     An unexpected error occurred. Please try again.
                   </ErrorText>
                 )}
-              </Form>
-            </Formik>
-          </RegisterInputContainer>
+              </RegisterInputContainer>
+            </Form>
+          </Formik>
         </SignUpContainer>
       </Container>
     </div>
@@ -203,18 +208,34 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
 
-  @media only screen and (max-width: 770px) {
-    background-color: red;
+  @media only screen and (max-width: 925px) {
     flex-direction: column;
   }
 `;
 
+const NitroLogo = styled.div`
+  display: flex;
+  min-width: 100px;
+`;
+const LoginFormContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  padding-right: 30%;
+  padding-top: 70px;
+  @media only screen and (max-width: 925px) {
+    padding-top: 0px;
+  }
+`;
 const TitleContainer = styled.div`
   display: flex;
   flex: 0.2;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
+`;
+const RegisterTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const LoginInputContainer = styled.div`
@@ -232,7 +253,7 @@ const RegisterInputContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 300px;
+  height: 30vh;
 `;
 
 const LoginContainer = styled.div`
@@ -249,6 +270,11 @@ const LoginContainer = styled.div`
   padding-left: 60px;
   padding-right: 60px;
   padding-top: 60px;
+  @media only screen and (max-width: 925px) {
+    width: 70%;
+    margin: 0px;
+    margin-top: 30px;
+  }
 `;
 
 const SignUpContainer = styled.div`
@@ -257,11 +283,15 @@ const SignUpContainer = styled.div`
   background-color: #e6f5e1;
   width: 30%;
   height: 55%;
-  align-items: center;
+  padding-left: 4%;
   flex-direction: column;
   border-radius: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
   margin-right: 65px;
+  @media only screen and (max-width: 925px) {
+    width: 50%;
+    margin: 0px;
+  }
 `;
 
 const Title = styled.h1`
@@ -277,6 +307,5 @@ const SubTitle = styled.h2`
   font-style: normal;
   font-weight: 500;
   font-size: 3pc;
-  margin-left: 80px;
   color: #424f40;
 `;
