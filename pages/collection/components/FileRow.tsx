@@ -11,16 +11,16 @@ interface FileRowProps {
   onEdit?: () => void;
   onDelete?: () => void;
   file: FileData;
+  index?: number
 }
-
 function setCharAt(str:any, index:any, chr:any) {
 	if (index > str.length - 1) return str;
 	return str.substring(0, index) + chr + str.substring(index + 1);
 }
 
-const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file }) => {
+const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file, index}) => {
   return (
-		<FilePill>
+    <FilePill>
 			<FileName>
 				{file.title.length > 17
 					? file.title.substring(0, 17) + "..."
@@ -40,13 +40,14 @@ const FileRow: FC<FileRowProps> = ({ onView, onDelete, onEdit, file }) => {
 							: file.document
 					}
 					target="_blank"
+          id = {"file_view_button" + index}
 				>
 					<Image src={ViewButton} alt={""} />
 				</FileButton>
-				<FileButton onClick={onEdit}>
+				<FileButton onClick={onEdit} id={"file_edit_button" + index}>
 					<Image src={EditButton} alt={""} />
 				</FileButton>
-				<FileButton>
+				<FileButton id={"file_delete_button" + index}>
 					<Image onClick={onDelete} src={DeleteButton} alt={""} />
 				</FileButton>
 			</FileButtons>

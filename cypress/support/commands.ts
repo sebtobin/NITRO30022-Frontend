@@ -35,4 +35,7 @@
 //     }
 //   }
 // }
+require('cypress-downloadfile/lib/downloadFileCommand')
+require('cypress-delete-downloads-folder').addCustomCommand();
+require('cy-verify-downloads').addCustomCommand();
 export {}

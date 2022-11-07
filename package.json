@@ -9,8 +9,8 @@
     "lint": "next lint",
     "cy:open-only": "cypress open",
     "cy:run-only": "cypress run",
-    "cy:open": "start-server-and-test dev 3000 cy:open-only",
-    "cy:run": "start-server-and-test dev 3000 cy:run-only"
+    "cy:open": "yarn build && start-server-and-test start 3000 cy:open-only",
+    "cy:run": "yarn build && start-server-and-test start 3000 cy:run-only"
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",
@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "@types/react-lottie": "^1.2.6",
     "axios": "^0.27.2",
+    "cypress-downloadfile": "^1.2.3",
     "formik": "3.0.0-next.8",
     "next": "^12.2.5",
     "react": "^18.2.0",
@@ -37,7 +38,9 @@
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
     "babel-plugin-istanbul": "^6.1.1",
+    "cy-verify-downloads": "^0.1.11",
     "cypress": "^10.8.0",
+    "cypress-delete-downloads-folder": "^0.0.2",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.5",
     "start-server-and-test": "^1.14.0",
