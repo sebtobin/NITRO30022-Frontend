@@ -162,6 +162,7 @@ describe('Nitrus Files and Collections', () => {
     cy.get('input[type=file]').selectFile({ contents: 'test_utils/WOREEE.png' }, { force: true })
     cy.get('#upload_file_button').click()
 
+    cy.wait(3000)
     cy.contains('WOREEE')
   })
 
@@ -213,6 +214,15 @@ describe('Nitrus Files and Collections', () => {
     cy.get('#profile_button').click()
     cy.url().should('include', '/profile')
     cy.contains('Save')
+  })
+
+  it('Should be able to download a file from a collection', () => {
+    cy.deleteDownloadsFolder();
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.get('#file_view_button0').click()
+    cy.verifyDownload('WOREEE', {contains: true})
   })
 
 

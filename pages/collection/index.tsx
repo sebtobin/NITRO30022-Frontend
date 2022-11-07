@@ -223,11 +223,12 @@ const CollectionDetails = () => {
         </CollectionDetailsContainer>
         {collection?.files_data && (
           <FilesContainer>
-            {collection?.files_data?.map((item) => (
+            {collection?.files_data?.map((item, index) => (
               <FileRow
                 key={item.id}
                 file={item}
                 onDelete={() => deleteFile(item.id)}
+                index={index}
               />
             ))}
           </FilesContainer>
