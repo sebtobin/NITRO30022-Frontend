@@ -82,7 +82,6 @@ describe('Nitrus Page Navigation', () => {
     cy.get('#profile_button').click()
     cy.url().should('include', '/profile')
     cy.contains('Save')
-    cy.contains('Change')
 
     cy.get('#logout_button').click()
     cy.url().should('eq', 'http://localhost:3000/')
@@ -98,7 +97,6 @@ describe('Nitrus Page Navigation', () => {
     cy.get('#profile_button').click()
     cy.url().should('include', '/profile')
     cy.contains('Save')
-    cy.contains('Change')
 
     cy.get('#collection_button').click()
     cy.url().should('include', '/dashboard')
@@ -109,7 +107,6 @@ describe('Nitrus Page Navigation', () => {
     cy.get('#profile_button').click()
     cy.url().should('include', '/profile')
     cy.contains('Save')
-    cy.contains('Change')
 
     cy.get('#friends_button').click()
     cy.url().should('include', '/dashboard')
@@ -216,7 +213,6 @@ describe('Nitrus Files and Collections', () => {
     cy.get('#profile_button').click()
     cy.url().should('include', '/profile')
     cy.contains('Save')
-    cy.contains('Change')
   })
 
 
@@ -236,8 +232,8 @@ describe('Nitrus Change User Details and Profile', () => {
     // At the start of all our tests, visit the home page and log in
     cy.visit('/')
 
-    cy.get('#login_username').type('update_test123')
-    cy.get('#login_password').type('update_test123')
+    cy.get('#login_username').type('update123')
+    cy.get('#login_password').type('update123')
     cy.get('#login_button').click()
     cy.url().should('include', '/dashboard')
   })
@@ -247,8 +243,8 @@ describe('Nitrus Change User Details and Profile', () => {
     
     // Changing email doesn't really matter in this case as it's not 
     // used for logging on. 
-    cy.get('#change_details_email').type("update_test12345@gmail.com")
-    cy.get('#change_details_password').type("update_test12345")
+    cy.get('#change_details_email').type("update12345@gmail.com")
+    cy.get('#change_details_password').type("update12345")
     cy.get('#update_details_save_button').click()
     cy.contains('Details updated successfully. Empty fields were ignored.')
 
@@ -256,20 +252,20 @@ describe('Nitrus Change User Details and Profile', () => {
     cy.url().should('eq', 'http://localhost:3000/')
 
     // Test that the user can't use the old password to login
-    cy.get('#login_username').type('update_test123')
-    cy.get('#login_password').type('update_test123')
+    cy.get('#login_username').type('update123')
+    cy.get('#login_password').type('update123')
     cy.get('#login_button').click()
     cy.contains('Incorrect username or password. Please try again.')
 
     // Then log in using the new password
-    cy.get('#login_password').clear().type('update_test12345')
+    cy.get('#login_password').clear().type('update12345')
     cy.get('#login_button').click()
     cy.url().should('include', '/dashboard')
 
     // Change back to the old password so this test can be used on the CI Pipeline
     cy.get('#profile_button').click()
-    cy.get('#change_details_email').type("update_test123@gmail.com")
-    cy.get('#change_details_password').type("update_test123")
+    cy.get('#change_details_email').type("update123@gmail.com")
+    cy.get('#change_details_password').type("update123")
     cy.get('#update_details_save_button').click()
     cy.contains('Details updated successfully. Empty fields were ignored.')
 
@@ -277,8 +273,8 @@ describe('Nitrus Change User Details and Profile', () => {
     cy.url().should('eq', 'http://localhost:3000/')
     
 
-    cy.get('#login_username').type('update_test123')
-    cy.get('#login_password').type('update_test123')
+    cy.get('#login_username').type('update123')
+    cy.get('#login_password').type('update123')
     cy.get('#login_button').click()
     cy.url().should('include', '/dashboard')
   })
