@@ -29,7 +29,10 @@ export default function Home() {
     (values: UpdateUserInfo) => {
       if (values.password === values.passwordConfirm) {
         resetUpdatePrompts();
-        updateUserInfo({ email: values.email, password: values.password })
+        updateUserInfo({
+          email: values.email === "" ? undefined : values.email,
+          password: values.password === "" ? undefined : values.password,
+        })
           .unwrap()
           .then((result) => {
             setUpdateSuccesful(true);
@@ -52,7 +55,6 @@ export default function Home() {
     setpasswordsIdenticalError(false);
   }, []);
 
-  // Also need to look into adding the script when Change button is clicked.
   return (
     <div>
       <NavBar
@@ -67,19 +69,19 @@ export default function Home() {
       <Background>
         <ProfileContainer>
           <UserInfoContainerBackground>
-            <UserInfoFieldContainer>
-              <Formik
-                initialValues={{
-                  email: "",
-                  password: "",
-                  passwordConfirm: "",
-                }}
-                onSubmit={(values, { resetForm }) => {
-                  onSaveClick(values);
-                  resetForm();
-                }}
-              >
-                <Form>
+            <Formik
+              initialValues={{
+                email: "",
+                password: "",
+                passwordConfirm: "",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                onSaveClick(values);
+                resetForm();
+              }}
+            >
+              <Form>
+                <UserInfoFieldContainer>
                   <InputField
                     svg={MailImage}
                     heading={"Email"}
@@ -110,18 +112,19 @@ export default function Home() {
                   )}
                   {updateError && (
                     <UpdateResultText>
-                      An error has ocurred. Please try again.
+                      Request to change details has failed. This may be due to
+                      another account existing with the same email. Please try
+                      again.
                     </UpdateResultText>
                   )}
                   <NitButton
                     type={"submit"}
-                    style={{ marginTop: "2.5vw", marginLeft: "9vw" }}
                     buttonText="Save"
                     id={"update_details_save_button"}
                   />
-                </Form>
-              </Formik>
-            </UserInfoFieldContainer>
+                </UserInfoFieldContainer>
+              </Form>
+            </Formik>
             <UpdateDetailsInstructionText>
               If you want to change only your email or password, please leave
               the other one empty.
@@ -182,9 +185,9 @@ const UserInfoContainerBackground = styled.div`
 
 const UserInfoFieldContainer = styled.div`
   display: flex;
-  flex: 0.6;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  /* justify-content: space-between; */
 `;
 
 const ProfilePictureContainer = styled.div`
@@ -230,12 +233,13 @@ const ChangeText = styled.h3`
 `;
 
 const UpdateResultText = styled.h4`
+  flex: 1;
+  width: 75%;
+  text-align: center;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  line-height: 10px;
-  margin-left: 25%;
   color: #424f40;
 `;
 

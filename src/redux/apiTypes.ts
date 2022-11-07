@@ -44,8 +44,8 @@ export interface PostCollection {
 }
 
 export interface UpdateUserInfoRequest {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 export interface UpdateUserInfo {
   email: string;
