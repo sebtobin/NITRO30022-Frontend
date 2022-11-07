@@ -132,15 +132,12 @@ export default function Home() {
           </UserInfoContainerBackground>
 
           <ProfilePictureContainer>
-            <ProfilePicture>
-              <Image
-                src={DefaultProfileImage}
-                alt=""
-                layout="fill"
-                objectFit="contain"
-              />
-            </ProfilePicture>
-            <ChangeProfilePictureContainer></ChangeProfilePictureContainer>
+            <Image
+              src={DefaultProfileImage}
+              alt=""
+              layout="fill"
+              objectFit="contain"
+            />
           </ProfilePictureContainer>
         </ProfileContainer>
       </Background>
@@ -155,7 +152,6 @@ const Background = styled.div`
   align-self: center;
   top: 0;
   left: 0;
-  background-color: #d7e8d0;
   align-items: center;
   flex-direction: column;
   display: flex;
@@ -169,6 +165,9 @@ const ProfileContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const UserInfoContainerBackground = styled.div`
@@ -187,30 +186,18 @@ const UserInfoFieldContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
 `;
 
 const ProfilePictureContainer = styled.div`
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  align-self: center;
-  width: 36%;
-  height: 100%;
-`;
 
-const ProfilePicture = styled.div`
-  display: flex;
   position: relative;
-  align-items: center;
-  align-self: center;
   height: 80%;
   width: auto;
   aspect-ratio: 1;
-  border-radius: 50%;
-  margin-top: 2vh;
 `;
+
+const ProfilePicture = styled.div``;
 
 const ChangeProfilePictureContainer = styled.div`
   display: flex;

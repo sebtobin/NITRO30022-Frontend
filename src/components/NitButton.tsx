@@ -17,10 +17,10 @@ const NitButton: FC<NitButtonProps> = ({
   buttonText,
   type,
   loading,
-  id
+  id,
 }) => {
   return (
-    <LoginButton type={type} onClick={onClick} style={style} id={id}> 
+    <LoginButton type={type} onClick={onClick} style={style} id={id}>
       <ButtonText>{buttonText}</ButtonText>
       {loading && (
         <Loading>
@@ -59,10 +59,13 @@ const ButtonText = styled.h3`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
-  line-height: 36px;
+  line-height: 16px;
   color: #f6fef3;
   :hover {
     cursor: pointer;
+  }
+  @media only screen and (max-width: 925px) {
+    font-size: 12px;
   }
 `;
 
