@@ -224,8 +224,16 @@ describe('Nitrus Files and Collections', () => {
 
     cy.get('#file_view_button0').click()
     cy.verifyDownload('WOREEE', {contains: true})
+    cy.deleteDownloadsFolder();
   })
 
+  it('Should be able to delete a file from a collection', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+
+    cy.get('#file_delete_button0').click()
+    cy.contains('WOREEE').should('not.exist')
+  })
 
   it('Should be able to delete an existing collection', () => {
     cy.get("#collection_view_button0").click()
