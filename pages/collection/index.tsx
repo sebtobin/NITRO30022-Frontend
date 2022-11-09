@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import NitButton from "../../src/components/NitButton";
 import { DashboardScreenSelection, PrivacyLevel } from "../../src/utils/Types";
@@ -13,6 +13,8 @@ import { Collection } from "../../src/redux/apiTypes";
 import { useRouter } from "next/router";
 import axios from "axios";
 import store from "../../src/redux/store";
+import EditButton from "../../images/user-ic.svg";
+import { title } from "process";
 
 interface Friends {
   name: string;
@@ -30,6 +32,10 @@ const CollectionDetails = () => {
   const data = router.query;
   const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
   const [collection, setCollection] = useState<Collection>();
+  const [newName, setNewName] = useState<string>();
+  const collectionName = useMemo(() => {
+    return newName ?? data?.name;
+  }, [newName, data?.name]);
   useEffect(() => {
     getCollection(data.name as string)
       .unwrap()
@@ -38,18 +44,32 @@ const CollectionDetails = () => {
       });
   }, [data.name, getCollection]);
 
-  const [postUploadedFile] = nitrusApi.endpoints.postFile.useMutation();
   interface CollectionEditableValues {
     collectionName: string;
   }
 
-  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.FriendsOnly);
+  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.Private);
   const navigateToDash = useCallback(() => {
     router.push("/dashboard");
   }, []);
+
+  const [updateCollection] =
+    nitrusApi.endpoints.updateCollectionDetails.useMutation();
   const onSaveName = useCallback((values: CollectionEditableValues) => {
-    // TODO: dispatch new name.
-    // setCollectionName(values.collectionName);
+    if (collectionName) {
+      updateCollection({
+        name: data?.name as string,
+        newName: values.collectionName,
+        private: privacyLevel === PrivacyLevel.Private ? "true" : "false",
+      }).then(() => {
+        setNewName(values.collectionName);
+        getCollection(values.collectionName)
+          .unwrap()
+          .then((currentCollection) => {
+            setCollection(currentCollection);
+          });
+      });
+    }
   }, []);
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
@@ -89,9 +109,6 @@ const CollectionDetails = () => {
       formData.append("colln", data.name as string);
 
       formData.append("title", selectedfile.name.substring(0, 30));
-      // for (var key of formData.entries()) {
-      //   console.log(key[0] + ", " + key[1]);
-      // }
       const config = {
         headers: {
           "content-type":
@@ -131,8 +148,9 @@ const CollectionDetails = () => {
     }
   };
 
-  const deleteFile = useCallback((id: string) => {
-    deleteFileMutation(id)
+  const deleteFile = useCallback((name: string) => {
+    console.log("del file: " + name);
+    deleteFileMutation({ colln: collectionName as string, title: name })
       .unwrap()
       .then(() => {
         getCollection(data.name as string)
@@ -153,7 +171,7 @@ const CollectionDetails = () => {
       <ContentContainer>
         <CollectionDetailsContainer>
           <Title>
-            <CollectionName>{collection?.name}</CollectionName>
+            <CollectionName>{collectionName}</CollectionName>
             <NitButton
               buttonText="ChooseFile"
               style={{ flex: 0.3 }}
@@ -189,11 +207,6 @@ const CollectionDetails = () => {
                 selected={privacyLevel}
                 onClick={onPrivacyLevelClick}
               />
-              <PrivacyLevelButton
-                level={PrivacyLevel.FriendsOnly}
-                selected={privacyLevel}
-                onClick={onPrivacyLevelClick}
-              />
             </PricacyLevelSelect>
             <Formik
               initialValues={{
@@ -205,6 +218,7 @@ const CollectionDetails = () => {
                 <InputField
                   heading={"Collection Name"}
                   field={"collectionName"}
+                  svg={EditButton}
                 />
                 <NitButton
                   type={"submit"}
@@ -227,8 +241,7 @@ const CollectionDetails = () => {
               <FileRow
                 key={item.id}
                 file={item}
-                onDelete={() => deleteFile(item.id)}
-                index={index}
+                onDelete={() => deleteFile(item.title)}
               />
             ))}
           </FilesContainer>
@@ -248,7 +261,7 @@ const FilesContainer = styled.div`
 `;
 const PricacyLevelSelect = styled.div`
   display: flex;
-  width: 100%;
+  width: 30%;
   flex-direction: row;
   justify-content: space-between;
 `;

@@ -57,3 +57,13 @@ export interface UpdateUserInfoResponse {
   email: string;
   password: string;
 }
+export interface DeleteFile {
+  title: string;
+  colln: string;
+}
+
+export interface UpdateCollection {
+  name: string;
+  newName?: string;
+  private?: "true" | "false";
+}

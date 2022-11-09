@@ -20,7 +20,7 @@ const CollectionBubble: FC<CollectionProps> = ({
   size,
   linkName,
   onViewClick,
-  viewButtonID
+  viewButtonID,
 }) => {
   return (
     <Container>
@@ -46,10 +46,6 @@ const CollectionBubble: FC<CollectionProps> = ({
             id={viewButtonID}
           />
         </Link>
-        <Storage>
-          <Image src={StorageImage} alt={""} />
-          <SpaceText>{`${size}MB`}</SpaceText>
-        </Storage>
       </AttributesContainer>
     </Container>
   );

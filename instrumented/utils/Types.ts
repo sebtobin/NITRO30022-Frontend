@@ -9,5 +9,4 @@ export enum DashboardScreenSelection {
 export enum PrivacyLevel {
   Public = "Public",
   Private = "Private",
-  FriendsOnly = "Friends Only",
 }

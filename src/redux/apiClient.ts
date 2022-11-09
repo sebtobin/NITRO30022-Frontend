@@ -9,9 +9,10 @@ import {
   PostCollection,
   UpdateUserInfoResponse,
   UpdateUserInfoRequest,
+  UpdateCollection,
+  DeleteFile,
 } from "./apiTypes";
 import { RootState } from "./store";
-// export const baseUrl = `http://localhost:8081/api`;
 export const baseUrl = `http://ec2-3-26-229-20.ap-southeast-2.compute.amazonaws.com:8081/api`;
 export const nitrusApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -86,10 +87,18 @@ export const nitrusApi = createApi({
         url: `/collection/${name}/`,
       }),
     }),
-    deleteFile: build.mutation<void, string>({
-      query: (id) => ({
+    deleteFile: build.mutation<void, DeleteFile>({
+      query: ({ ...data }) => ({
         method: "DELETE",
-        url: `api/files/${id}`,
+        url: `/files/${data.title}/`,
+        body: { collnName: data.colln },
+      }),
+    }),
+    updateCollectionDetails: build.mutation<void, UpdateCollection>({
+      query: ({ ...data }) => ({
+        method: "PUT",
+        url: `/collection/${data.name}/`,
+        body: { name: data.newName, private: data.private },
       }),
     }),
     updateUserInfo: build.mutation<
