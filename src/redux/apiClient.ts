@@ -115,9 +115,8 @@ export const nitrusApi = createApi({
     searchItem: build.mutation<Collection[], SearchItem>({
       query: ({ ...data }) => ({
         method: "GET",
-        url: `api/collection/?search=${data.searchTerm}`,
-        body: { public: data.public },
-      })
-    })
+        url: `/collection/?search=${data.searchTerm}`,
+      }),
+    }),
   }),
 });

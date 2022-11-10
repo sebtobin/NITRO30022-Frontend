@@ -69,7 +69,7 @@ export interface UpdateCollection {
   private?: "true" | "false";
 }
 
-export interface SearchItem{
+export interface SearchItem {
   searchTerm: string;
   public: "true" | "false";
 }

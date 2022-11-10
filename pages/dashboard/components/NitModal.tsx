@@ -4,6 +4,7 @@ import NitButton from "../../../src/components/NitButton";
 import InputField from "../../../src/components/InputField";
 import { Formik, Form } from "formik";
 import { useCallback, useRef } from "react";
+import UserImage from "../../../images/user-ic.svg";
 
 interface NitModalProps {
   show?: boolean;
@@ -26,11 +27,11 @@ const NitModal: FC<NitModalProps> = ({
   onButtonClick,
   inputFieldID,
   buttonID,
-  backgroundID
+  backgroundID,
 }) => {
   return show ? (
     <NitModalContainer>
-      <NitModalBackground onClick={onCloseClick} id={backgroundID}/>
+      <NitModalBackground onClick={onCloseClick} id={backgroundID} />
       <NitModalPopup>
         <NitModalPopUpContentContainer>
           <NitModalPopUpTitle>{title}</NitModalPopUpTitle>
@@ -45,6 +46,7 @@ const NitModal: FC<NitModalProps> = ({
               <Form>
                 <InputField
                   heading={fieldHeading}
+                  svg={UserImage}
                   field={"collectionName"}
                   style={{
                     width: 330,

@@ -54,13 +54,13 @@ const CollectionDetails = () => {
 
   const navigateToDash = useCallback(() => {
     router.push("/dashboard");
-  }, []); 
+  }, []);
 
   const [updateCollection] =
     nitrusApi.endpoints.updateCollectionDetails.useMutation();
   const onSaveName = useCallback((values: CollectionEditableValues) => {
     let updateQueryName = "";
-    if(values.collectionName === "") {
+    if (values.collectionName === "") {
       updateQueryName = data.name as string;
     } else {
       updateQueryName = values.collectionName as string;
@@ -82,6 +82,25 @@ const CollectionDetails = () => {
       });
     }, 1000)
 
+    updateCollection({
+      name: collection?.name ?? (data.name as string),
+      newName: updateQueryName,
+      private:
+        privacyLevel.toString() === PrivacyLevel.Private ? "true" : "false",
+    }).then(() => {
+      setNewName(updateQueryName);
+      getCollection(updateQueryName)
+        .unwrap()
+        .then((currentCollection) => {
+          setCollection(currentCollection);
+          if ((currentCollection.private = true)) {
+            setPrivacyLevel(PrivacyLevel.Private);
+          } else {
+            setPrivacyLevel(PrivacyLevel.Public);
+          }
+          router.push("/dashboard");
+        });
+    });
   }, []);
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
@@ -112,7 +131,7 @@ const CollectionDetails = () => {
   const onDeleteCollection = useCallback(() => {
     if (data.name) {
       console.log(collectionName);
-      deleteCollection( collectionName as string ?? data.name as string)
+      deleteCollection((collectionName as string) ?? (data.name as string))
         .unwrap()
         .then(() => {
           router.push("/dashboard");
@@ -149,7 +168,6 @@ const CollectionDetails = () => {
             .unwrap()
             .then((currentCollection) => {
               setCollection(currentCollection);
-              console.log("set collection upload")
             });
         })
         .catch((error) => {
@@ -157,19 +175,6 @@ const CollectionDetails = () => {
           setFileName("");
           console.warn("API upload error: " + JSON.stringify(error));
         });
-
-      // postUploadedFile(formData)
-      //   .unwrap()
-      //   .then(() => {
-      //     console.log("success on upload file");
-      //     setSelectedFile(undefined);
-      //     setFileName("");
-      //   })
-      //   .catch((error) => {
-      //     setSelectedFile(undefined);
-      //     setFileName("");
-      //     console.warn("API upload error: " + JSON.stringify(error));
-      //   });
     }
   };
 
@@ -182,7 +187,6 @@ const CollectionDetails = () => {
           .unwrap()
           .then((currentCollection) => {
             setCollection(currentCollection);
-            console.log("set collection delete")
           });
       });
   }, []);
@@ -197,7 +201,12 @@ const CollectionDetails = () => {
       <ContentContainer>
         <CollectionDetailsContainer>
           <Title>
-            <CollectionName>{collectionName}</CollectionName>
+            {collectionName && (
+              <CollectionName>
+                {String(collectionName).substring(0, 20) +
+                  (collectionName.length > 20 ? "..." : "")}
+              </CollectionName>
+            )}
             <NitButton
               buttonText="ChooseFile"
               style={{ flex: 0.3 }}
@@ -322,7 +331,7 @@ const CollectionName = styled.h1`
   font-weight: 600;
   font-size: 55px;
   flex: 1;
-
+  margin-right: 20px;
   color: #424f40;
 `;
 const ContentContainer = styled.div`
