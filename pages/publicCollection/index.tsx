@@ -85,6 +85,7 @@ const CollectionDetails = () => {
                 onDelete={() => {
                   return;
                 }}
+                index={index}
               />
             ))}
           </FilesContainer>

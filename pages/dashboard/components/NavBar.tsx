@@ -90,7 +90,7 @@ const NavBar: FC<NavBarProps> = ({
       >
         <Form>
           <SearchContainer>
-            <InputField svg={SearchImage} field={"searchTerm"} />
+            <InputField svg={SearchImage} field={"searchTerm"} id={"search_field"}/>
             <NitButton
               type={"submit"}
               buttonText="Go"
@@ -127,7 +127,7 @@ const NavBar: FC<NavBarProps> = ({
         Logout
       </LogoutButton>
       <SearchReturnContainer>
-        {searchedCollections.slice(0, 5).map((item) => (
+        {searchedCollections.slice(0, 5).map((item, index) => (
           <Link
             href={{
               pathname:
@@ -138,7 +138,7 @@ const NavBar: FC<NavBarProps> = ({
             }}
             key={item.name}
           >
-            <CollectionSearchRow onClick={onClearSearchClick}>
+            <CollectionSearchRow onClick={onClearSearchClick} id={"search_result" + index}>
               <CollectionSearchText>
                 {item.name.substring(0, 20) +
                   (item.name.length > 20 ? "..." : "")}
