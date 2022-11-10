@@ -86,7 +86,6 @@ const CollectionDetails = () => {
               setPrivacyLevel(PrivacyLevel.Public)
             }
             router.push("/dashboard");
-            router.push(`/collection?name=${currentCollection.name}`)
           });
       });
     }, 1000)
