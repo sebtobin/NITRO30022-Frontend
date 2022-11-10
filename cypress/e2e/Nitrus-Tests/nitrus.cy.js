@@ -57,7 +57,6 @@ describe('Nitrus Login and Register', () => {
       cy.url().should('include', '/dashboard')
       cy.contains('Welcome back to Nitrus')
       cy.contains('My Collection')
-      cy.contains('Friends')
     })
 
 })
@@ -127,11 +126,11 @@ describe('Nitrus Files and Collections', () => {
 
   it('Should be able to create a collection and upload a file to it', () => {
     cy.get('#create_collection_button').click()
-    cy.get('#create_collection_modal_input').type('TestCollection')
+    cy.get('#create_collection_modal_input').type('Test')
     cy.get('#create_collection_modal_button').click()
     cy.wait(2000)
 
-    cy.contains('TestCollection')
+    cy.contains('Test')
 
     cy.get("#collection_view_button0").click()
     cy.url().should('include', '/collection')
@@ -142,6 +141,11 @@ describe('Nitrus Files and Collections', () => {
 
     cy.wait(3000)
     cy.contains('WOREEE')
+  })
+
+  it('Should be able to log out from a collection', () => {
+    cy.get("#logout_button").click()
+    cy.url().should('eq', 'http://localhost:3000/')
   })
 
   it('Should not be able to upload when a file is not given', () => {
@@ -156,7 +160,7 @@ describe('Nitrus Files and Collections', () => {
   it('Should not be able to create a collection with the same name', () => {
     cy.wait(3000)
     cy.get('#create_collection_button').click()
-    cy.get('#create_collection_modal_input').type('TestCollection')
+    cy.get('#create_collection_modal_input').type('Test')
     cy.get('#create_collection_modal_button').click()
 
     cy.get('#collections_select').should('have.length', 1)
@@ -200,14 +204,88 @@ describe('Nitrus Files and Collections', () => {
     cy.contains('WOREEE').should('not.exist')
   })
 
+
+  it('Should be able to rename a collection', () => {
+    // Ignore the uncaught exception if there is one. Renaming a collection
+    // just pushes the dashboard so the exception is irrelevant.
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+
+    cy.contains('Test')
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+    
+    cy.get("#rename_collection_field").type('Updated')
+    cy.get('#rename_collection_save').click()
+    cy.url().should('include', '/dashboard')
+    cy.contains('Updated')
+
+    cy.get('#collection_view_button0').click()
+    cy.url().should('include', '/collection')
+    cy.contains('Updated')
+  })
+
+  it('Should be able to set the visibility of a collection', () => {
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+    cy.wait(500)
+    cy.get("#private_visibility_button").should('have.css', 'text-decoration', 'underline solid rgb(66, 79, 64)')
+    cy.get("#public_visibility_button").should('not.have.css', 'text-decoration', 'underline solid rgb(66, 79, 64)')
+
+    cy.get("#public_visibility_button").click()
+    cy.url().should('include', '/dashboard')
+
+    cy.get("#collection_view_button0").click()
+    cy.url().should('include', '/collection')
+    cy.wait(500)
+    cy.get("#private_visibility_button").should('not.have.css', 'text-decoration', 'underline solid rgb(66, 79, 64)')
+    cy.get("#public_visibility_button").should('have.css', 'text-decoration', 'underline solid rgb(66, 79, 64)')
+  })
+
+  it('Should be able to search for public collections and download files from it', () => {
+
+    cy.get("#search_field").type("public_1").should('have.value', "public_1")
+
+    cy.get("#search_go_button").click()
+    cy.contains("public_1")
+
+    cy.get("#search_clear_button").click()
+    cy.contains("public_1").should('not.exist')
+
+
+    cy.get("#search_go_button").click()
+    cy.get("#search_result0").click()
+
+    cy.wait(2000)
+    cy.contains("public_1")
+    cy.contains("Owned by: isaac_newish")
+
+    cy.get('#file_view_button0').click()
+    cy.verifyDownload('cat1', {contains: true})
+    cy.deleteDownloadsFolder();
+  })
+
+  it('Should be able to search for your own collections', () => {
+    cy.wait(2000)
+
+    cy.get("#search_field").type("Updated").should('have.value', "Updated")
+    cy.get("#search_go_button").click()
+    cy.contains("Updated")
+
+    cy.get("#search_result0").click()
+    cy.contains("Updated")
+  })
+
   it('Should be able to delete an existing collection', () => {
     cy.get("#collection_view_button0").click()
     cy.url().should('include', '/collection')
 
     cy.get('#delete_collection_button').click()
     cy.url().should('include', '/dashboard')
-    cy.contains('TestCollection').should('not.exist')
+    cy.contains('Test').should('not.exist')
   })
+
 })
 
 
@@ -266,4 +344,3 @@ describe('Nitrus Change User Details and Profile', () => {
   })
 
 })
-

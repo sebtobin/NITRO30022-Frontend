@@ -6,12 +6,14 @@ interface PrivacyLevelButtonProps {
   level: boolean;
   selected: boolean;
   onClick: (level: boolean) => void;
+  id?: string;
 }
 
 const PrivacyLevelButton: FC<PrivacyLevelButtonProps> = ({
   level,
   selected,
   onClick,
+  id,
 }) => {
   const isSelected = level === selected;
   const underLine: CSSProperties = { textDecoration: "underline" };
@@ -19,6 +21,7 @@ const PrivacyLevelButton: FC<PrivacyLevelButtonProps> = ({
     <PricacyLevelButton
       style={isSelected ? underLine : undefined}
       onClick={() => onClick(level)}
+      id={id}
     >
       {level === true ? "Private" : "Public"}
     </PricacyLevelButton>
