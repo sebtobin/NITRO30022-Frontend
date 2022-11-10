@@ -12,10 +12,10 @@ import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../src/redux/authReducer";
 import { RootState } from "../../../src/redux/store";
-import { UserState } from "../../../src/redux/apiTypes";
-import { SearchItem } from "../../../src/redux/apiTypes";
-import { profile } from "console";
+import { Collection, UserState } from "../../../src/redux/apiTypes";
 import { nitrusApi } from "../../../src/redux/apiClient";
+import NitButton from "../../../src/components/NitButton";
+import Link from "next/link";
 
 interface NavBarProps {
   onCollectionNav: () => void;
@@ -49,10 +49,27 @@ const NavBar: FC<NavBarProps> = ({
     onFriendsNav();
   }, [onFriendsNav]);
 
-  const [searchItem] = nitrusApi.endpoints.postCollection.useMutation();
+  const [searchItem, searchReturn] =
+    nitrusApi.endpoints.searchItem.useMutation();
   const search = useCallback((values: searchValues) => {
-    console.log(values);
+    console.log(values.searchTerm);
+    searchItem({ searchTerm: values.searchTerm, public: "true" })
+      .unwrap()
+      .then((res) => {
+        setSearchedCollections(res);
+        console.log("success: " + JSON.stringify(res));
+      })
+      .catch((e) => {
+        console.log("searchAPI error: " + e);
+      });
   }, []);
+
+  const onClearSearchClick = useCallback(() => {
+    setSearchedCollections([]);
+  }, []);
+  const [searchedCollections, setSearchedCollections] = useState<Collection[]>(
+    []
+  );
 
   return (
     <NavBarContainer>
@@ -60,6 +77,7 @@ const NavBar: FC<NavBarProps> = ({
         <title>Nitrus</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+
       <ProfileContainer onClick={onProfilePress} id="profile_button">
         <Image src={ProfileDefaultImage} alt="" />
         <UserName>{user?.username}</UserName>
@@ -71,7 +89,22 @@ const NavBar: FC<NavBarProps> = ({
         onSubmit={search}
       >
         <Form>
-          <InputField svg={SearchImage} field={"searchTerm"} />
+          <SearchContainer>
+            <InputField svg={SearchImage} field={"searchTerm"} />
+            <NitButton
+              type={"submit"}
+              buttonText="Go"
+              style={{ height: 40, marginLeft: 10, width: 60 }}
+              id={"search_go_button"}
+            />
+            <NitButton
+              buttonText="Clear"
+              type="button"
+              onClick={onClearSearchClick}
+              style={{ height: 40, marginLeft: 10, width: 80 }}
+              id={"search_clear_button"}
+            />
+          </SearchContainer>
         </Form>
       </Formik>
       <SelectionDashboardContainer>
@@ -81,24 +114,79 @@ const NavBar: FC<NavBarProps> = ({
           onClick={onCollectionNavigate}
           dashboardButtonID="collection_button"
         />
-        <DashboardButton
+        {/* TODO: implement friends */}
+        {/* <DashboardButton
           text={DashboardScreenSelection.Friends}
           selected={selectedScreen === DashboardScreenSelection.Friends}
           onClick={onFriendsNavigate}
           dashboardButtonID="friends_button"
-        />
+        /> */}
       </SelectionDashboardContainer>
 
       <LogoutButton onClick={onLogoutClick} id="logout_button">
         Logout
       </LogoutButton>
+      <SearchReturnContainer>
+        {searchedCollections.slice(0, 5).map((item) => (
+          <Link href={{ pathname: `/collection`, query: { name: item.name } }}>
+            <CollectionSearchRow onClick={onClearSearchClick}>
+              <CollectionSearchText>
+                {item.name.substring(0, 20) +
+                  (item.name.length > 20 ? "..." : "")}
+              </CollectionSearchText>
+              <CollectionSearchText>{`${item.num_items} Items`}</CollectionSearchText>
+            </CollectionSearchRow>
+          </Link>
+        ))}
+      </SearchReturnContainer>
     </NavBarContainer>
   );
 };
+const SearchReturnContainer = styled.div`
+  position: absolute;
+  background-color: #e6f6e1;
+  width: 25%;
+  top: 10vh;
+  left: 18%;
+  flex: 1;
+  display: flex;
+  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  border-radius: 25px;
+`;
+const CollectionSearchRow = styled.div`
+  background-color: #a2b39f;
+  flex-direction: row;
+  margin: 15px 30px;
+  border-radius: 12px;
+  justify-content: space-between;
+  display: flex;
+  :hover {
+    cursor: pointer;
+  }
+`;
 const SelectionDashboardContainer = styled.div`
-  width: 30vw;
+  width: 15vw;
   flex-direction: row;
   display: flex;
+`;
+const SearchContainer = styled.div`
+  flex: 1;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+`;
+const CollectionSearchText = styled.h2`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #f5fef3;
+  :hover {
+    cursor: pointer;
+  }
 `;
 const UserName = styled.h2`
   font-family: "Poppins";

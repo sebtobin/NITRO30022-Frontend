@@ -171,7 +171,10 @@ const CollectionDetails = () => {
       <ContentContainer>
         <CollectionDetailsContainer>
           <Title>
-            <CollectionName>{collectionName}</CollectionName>
+            <CollectionName>
+              {collectionName.substring(0, 20) +
+                (collectionName.length > 20 ? "..." : "")}
+            </CollectionName>
             <NitButton
               buttonText="ChooseFile"
               style={{ flex: 0.3 }}
@@ -296,7 +299,7 @@ const CollectionName = styled.h1`
   font-weight: 600;
   font-size: 55px;
   flex: 1;
-
+  margin-right: 20px;
   color: #424f40;
 `;
 const ContentContainer = styled.div`

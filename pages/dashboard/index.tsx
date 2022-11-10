@@ -36,6 +36,7 @@ export default function Dashboard() {
     getCollectionsList()
       .unwrap()
       .then((res) => {
+        setloadingCollections(false);
         setCollections(res);
       });
   }, [getCollectionsList]);
@@ -114,13 +115,16 @@ export default function Dashboard() {
             <CollectionsSelect id="collections_select">
               {!loadingCollections && (
                 <>
-                  {collections ? (
+                  {collections?.length !== 0 && collections ? (
                     <>
                       {collections.map((item, index) => (
                         <CollectionBubble
                           key={index}
                           items={item.num_items}
-                          name={item.name}
+                          name={
+                            item.name.substring(0, 13) +
+                            (item.name.length > 13 ? "..." : "")
+                          }
                           size={item.size}
                           linkName={item.name}
                           viewButtonID={"collection_view_button" + index}
@@ -153,7 +157,7 @@ export default function Dashboard() {
                       items={item.num_items}
                       name={item.name}
                       size={item.size}
-                      onViewClick={onViewCollection}
+                      // onViewClick={onViewCollection}
                     />
                   ))}
                 </FriendsCollectionsSelect>
