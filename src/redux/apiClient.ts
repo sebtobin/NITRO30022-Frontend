@@ -12,6 +12,7 @@ import {
   UpdateCollection,
   DeleteFile,
   SearchItem,
+  PublicCollection,
 } from "./apiTypes";
 import { RootState } from "./store";
 export const baseUrl = `http://ec2-3-26-229-20.ap-southeast-2.compute.amazonaws.com:8081/api`;
@@ -69,6 +70,13 @@ export const nitrusApi = createApi({
         url: `/collection/${name}/`,
       }),
     }),
+    getPublicCollection: build.mutation<Collection, PublicCollection>({
+      query: ({ ...data }) => ({
+        method: "POST",
+        url: `/collection/${data.name}/public/`,
+        body: { owner: data.owner },
+      }),
+    }),
     getCollectionsList: build.mutation<Collection[], void>({
       query: () => ({
         url: "/collection/",
@@ -115,7 +123,7 @@ export const nitrusApi = createApi({
     searchItem: build.mutation<Collection[], SearchItem>({
       query: ({ ...data }) => ({
         method: "GET",
-        url: `/collection/?search=${data.searchTerm}`,
+        url: `/collection/search/?search=${data.searchTerm}`,
       }),
     }),
   }),

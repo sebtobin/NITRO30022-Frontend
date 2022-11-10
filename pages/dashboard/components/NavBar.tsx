@@ -128,13 +128,29 @@ const NavBar: FC<NavBarProps> = ({
       </LogoutButton>
       <SearchReturnContainer>
         {searchedCollections.slice(0, 5).map((item) => (
-          <Link href={{ pathname: `/collection`, query: { name: item.name } }}>
+          <Link
+            href={{
+              pathname:
+                item.owner === user?.username
+                  ? `/collection`
+                  : `/publicCollection`,
+              query: { name: item.name, owner: item.owner },
+            }}
+            key={item.name}
+          >
             <CollectionSearchRow onClick={onClearSearchClick}>
               <CollectionSearchText>
                 {item.name.substring(0, 20) +
                   (item.name.length > 20 ? "..." : "")}
               </CollectionSearchText>
-              <CollectionSearchText>{`${item.num_items} Items`}</CollectionSearchText>
+              <CollectionInfo>
+                {item.owner !== user?.username && (
+                  <PublicTag>
+                    <PublicText>Public</PublicText>
+                  </PublicTag>
+                )}
+                <CollectionSearchText>{`${item.num_items} Items`}</CollectionSearchText>
+              </CollectionInfo>
             </CollectionSearchRow>
           </Link>
         ))}
@@ -154,13 +170,36 @@ const SearchReturnContainer = styled.div`
   flex-direction: column;
   border-radius: 25px;
 `;
+const CollectionInfo = styled.div`
+  display: flex;
+  width: 40%;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+`;
+const PublicTag = styled.div`
+  background-color: #7a9278;
+  width: 40%;
+  height: 30px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
+const PublicText = styled.h5`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  color: #e6f6e1;
+`;
 const CollectionSearchRow = styled.div`
   background-color: #a2b39f;
   flex-direction: row;
   margin: 15px 30px;
   border-radius: 12px;
-  justify-content: space-between;
   display: flex;
+  justify-content: space-between;
   :hover {
     cursor: pointer;
   }

@@ -32,20 +32,24 @@ interface CollectionDetails {
 const CollectionDetails = () => {
   const router = useRouter();
   const data = router.query;
-  const [getCollection, returnCollection] = nitrusApi.endpoints.getCollection.useMutation();
+  const [getCollection, returnCollection] =
+    nitrusApi.endpoints.getCollection.useMutation();
   const [collection, setCollection] = useState<Collection>();
   const [newName, setNewName] = useState<string>();
   const collectionName = useMemo(() => {
     return newName ?? data?.name;
   }, [newName, data?.name]);
-  const [privacyLevel, setPrivacyLevel] = useState(returnCollection?.data?.private === "true" ? true : false);
-  
+  const [privacyLevel, setPrivacyLevel] = useState(
+    returnCollection?.data?.private === "true" ? true : false
+  );
+
   useEffect(() => {
-    getCollection(collection?.name as string ?? data.name as string)
-    .unwrap()
-    .then((currentCollection) => {
-      setPrivacyLevel(currentCollection.private === "true" ? true : false);
-    });
+    getCollection((collection?.name as string) ?? (data.name as string))
+      .unwrap()
+      .then((currentCollection) => {
+        setCollection(currentCollection);
+        setPrivacyLevel(currentCollection.private === "true" ? true : false);
+      });
   }, [collection?.name, data.name]);
 
   interface CollectionEditableValues {
@@ -65,22 +69,20 @@ const CollectionDetails = () => {
     } else {
       updateQueryName = values.collectionName as string;
     }
-    setTimeout(() => {
-      updateCollection({
-        name: collection?.name ?? data.name as string,
-        newName: updateQueryName,
-        private: privacyLevel ? "true" : "false",
-      }).then(() => {
-        setNewName(updateQueryName);
-        getCollection(updateQueryName)
-          .unwrap()
-          .then((currentCollection) => {
-            setCollection(currentCollection);
-            
-            router.push("/dashboard");
-          });
-      });
-    }, 1000)
+    updateCollection({
+      name: collection?.name ?? (data.name as string),
+      newName: updateQueryName,
+      private: privacyLevel ? "true" : "false",
+    }).then(() => {
+      setNewName(updateQueryName);
+      getCollection(updateQueryName)
+        .unwrap()
+        .then((currentCollection) => {
+          setCollection(currentCollection);
+
+          router.push("/dashboard");
+        });
+    });
 
     updateCollection({
       name: collection?.name ?? (data.name as string),
@@ -93,10 +95,10 @@ const CollectionDetails = () => {
         .unwrap()
         .then((currentCollection) => {
           setCollection(currentCollection);
-          if ((currentCollection.private = true)) {
-            setPrivacyLevel(PrivacyLevel.Private);
+          if (currentCollection.private === "true") {
+            setPrivacyLevel(true);
           } else {
-            setPrivacyLevel(PrivacyLevel.Public);
+            setPrivacyLevel(false);
           }
           router.push("/dashboard");
         });

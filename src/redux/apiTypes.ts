@@ -34,6 +34,10 @@ export interface Collection {
   files_data?: FileData[];
 }
 
+export interface PublicCollection {
+  name: string;
+  owner: string;
+}
 export interface FileData {
   id: string;
   title: string;
