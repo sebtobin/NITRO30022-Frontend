@@ -15,6 +15,7 @@ import axios from "axios";
 import store from "../../src/redux/store";
 import EditButton from "../../images/user-ic.svg";
 import { title } from "process";
+import { first } from "cypress/types/lodash";
 
 interface Friends {
   name: string;
@@ -31,45 +32,65 @@ const CollectionDetails = () => {
   const router = useRouter();
   const data = router.query;
   const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
-  const [collection, setCollection] = useState<Collection>();
+  const [collection, setCollection] = useState<Collection>()
   const [newName, setNewName] = useState<string>();
+  const [firstRender, setFirstRender] = useState(true);
   const collectionName = useMemo(() => {
     return newName ?? data?.name;
   }, [newName, data?.name]);
+  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.Private);
+  
   useEffect(() => {
-    getCollection(data.name as string)
+    if(firstRender) {
+      getCollection(data.name as string)
       .unwrap()
       .then((currentCollection) => {
+        console.log("use effect call" + currentCollection.name);
         setCollection(currentCollection);
       });
-  }, [data.name, getCollection]);
+      setFirstRender(false);
+    }
+  }, []);
 
   interface CollectionEditableValues {
     collectionName: string;
   }
 
-  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.Private);
   const navigateToDash = useCallback(() => {
     router.push("/dashboard");
-  }, []);
+  }, []); 
 
   const [updateCollection] =
     nitrusApi.endpoints.updateCollectionDetails.useMutation();
   const onSaveName = useCallback((values: CollectionEditableValues) => {
-    if (collectionName) {
+    let updateQueryName = "";
+    if(values.collectionName === "") {
+      updateQueryName = data.name as string;
+    } else {
+      updateQueryName = values.collectionName as string;
+    }
+    setTimeout(() => {
       updateCollection({
-        name: data?.name as string,
-        newName: values.collectionName,
+        name: collection?.name ?? data.name as string,
+        newName: updateQueryName,
         private: privacyLevel === PrivacyLevel.Private ? "true" : "false",
       }).then(() => {
-        setNewName(values.collectionName);
-        getCollection(values.collectionName)
+        setNewName(updateQueryName);
+        getCollection(updateQueryName)
           .unwrap()
           .then((currentCollection) => {
             setCollection(currentCollection);
+            if(currentCollection.private = true) {
+              setPrivacyLevel(PrivacyLevel.Private)
+            } else {
+              setPrivacyLevel(PrivacyLevel.Public)
+            }
+            router.push("/dashboard");
+            router.push(`/collection?name=${currentCollection.name}`)
           });
       });
-    }
+    }, 1000)
+
   }, []);
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
@@ -87,8 +108,8 @@ const CollectionDetails = () => {
   const [deleteFileMutation] = nitrusApi.endpoints.deleteFile.useMutation();
   const onDeleteCollection = useCallback(() => {
     if (data.name) {
-      console.log("fire");
-      deleteCollection(data.name as string)
+      console.log(collectionName);
+      deleteCollection( collectionName as string ?? data.name as string)
         .unwrap()
         .then(() => {
           router.push("/dashboard");
@@ -125,6 +146,7 @@ const CollectionDetails = () => {
             .unwrap()
             .then((currentCollection) => {
               setCollection(currentCollection);
+              console.log("set collection upload")
             });
         })
         .catch((error) => {
@@ -157,6 +179,7 @@ const CollectionDetails = () => {
           .unwrap()
           .then((currentCollection) => {
             setCollection(currentCollection);
+            console.log("set collection delete")
           });
       });
   }, []);
