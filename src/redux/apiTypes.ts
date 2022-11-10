@@ -27,6 +27,7 @@ export interface Collection {
   name: string;
   num_items: number;
   size: number;
+  private?: boolean;
 
   owner?: string;
   allFiles?: number[];
