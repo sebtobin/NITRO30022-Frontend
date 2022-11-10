@@ -32,7 +32,7 @@ const CollectionDetails = () => {
   const router = useRouter();
   const data = router.query;
   const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
-  const [collection, setCollection] = useState<Collection>()
+  const [collection, setCollection] = useState<Collection>();
   const [newName, setNewName] = useState<string>();
   const [firstRender, setFirstRender] = useState(true);
   const collectionName = useMemo(() => {
