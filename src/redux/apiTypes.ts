@@ -67,3 +67,8 @@ export interface UpdateCollection {
   newName?: string;
   private?: "true" | "false";
 }
+
+export interface SearchItem{
+  searchTerm: string;
+  public: "true" | "false";
+}
