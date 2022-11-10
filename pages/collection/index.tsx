@@ -72,7 +72,7 @@ const CollectionDetails = () => {
     updateCollection({
       name: collection?.name ?? (data.name as string),
       newName: updateQueryName,
-      private: privacyLevel ? "true" : "false",
+      private: collection?.private ?? "true",
     }).then(() => {
       setNewName(updateQueryName);
       getCollection(updateQueryName)
@@ -80,26 +80,6 @@ const CollectionDetails = () => {
         .then((currentCollection) => {
           setCollection(currentCollection);
 
-          router.push("/dashboard");
-        });
-    });
-
-    updateCollection({
-      name: collection?.name ?? (data.name as string),
-      newName: updateQueryName,
-      private:
-        privacyLevel.toString() === PrivacyLevel.Private ? "true" : "false",
-    }).then(() => {
-      setNewName(updateQueryName);
-      getCollection(updateQueryName)
-        .unwrap()
-        .then((currentCollection) => {
-          setCollection(currentCollection);
-          if (currentCollection.private === "true") {
-            setPrivacyLevel(true);
-          } else {
-            setPrivacyLevel(false);
-          }
           router.push("/dashboard");
         });
     });
@@ -238,11 +218,13 @@ const CollectionDetails = () => {
                 level={true}
                 selected={privacyLevel}
                 onClick={onPrivacyLevelClick}
+                id={"private_visibility_button"}
               />
               <PrivacyLevelButton
                 level={false}
                 selected={privacyLevel}
                 onClick={onPrivacyLevelClick}
+                id={"public_visibility_button"}
               />
             </PricacyLevelSelect>
             <Formik
@@ -256,11 +238,13 @@ const CollectionDetails = () => {
                   heading={"Collection Name"}
                   field={"collectionName"}
                   svg={EditButton}
+                  id={"rename_collection_field"}
                 />
                 <NitButton
                   type={"submit"}
                   buttonText="Save"
                   style={{ width: 100, height: 40 }}
+                  id={"rename_collection_save"}
                 />
               </Form>
             </Formik>
@@ -279,6 +263,7 @@ const CollectionDetails = () => {
                 key={item.id}
                 file={item}
                 onDelete={() => deleteFile(item.title)}
+                index={index}
               />
             ))}
           </FilesContainer>
