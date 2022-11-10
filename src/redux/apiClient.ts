@@ -11,6 +11,7 @@ import {
   UpdateUserInfoRequest,
   UpdateCollection,
   DeleteFile,
+  SearchItem,
 } from "./apiTypes";
 import { RootState } from "./store";
 export const baseUrl = `http://ec2-3-26-229-20.ap-southeast-2.compute.amazonaws.com:8081/api`;
@@ -111,5 +112,12 @@ export const nitrusApi = createApi({
         body: data,
       }),
     }),
+    searchItem: build.mutation<Collection[], SearchItem>({
+      query: ({ ...data }) => ({
+        method: "GET",
+        url: `api/collection/?search=${data.searchTerm}`,
+        body: { public: data.public },
+      })
+    })
   }),
 });

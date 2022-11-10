@@ -13,7 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../src/redux/authReducer";
 import { RootState } from "../../../src/redux/store";
 import { UserState } from "../../../src/redux/apiTypes";
+import { SearchItem } from "../../../src/redux/apiTypes";
 import { profile } from "console";
+import { nitrusApi } from "../../../src/redux/apiClient";
 
 interface NavBarProps {
   onCollectionNav: () => void;
@@ -47,6 +49,7 @@ const NavBar: FC<NavBarProps> = ({
     onFriendsNav();
   }, [onFriendsNav]);
 
+  const [searchItem] = nitrusApi.endpoints.postCollection.useMutation();
   const search = useCallback((values: searchValues) => {
     console.log(values);
   }, []);
