@@ -16,6 +16,7 @@ import store from "../../src/redux/store";
 import EditButton from "../../images/user-ic.svg";
 import { title } from "process";
 import { first } from "cypress/types/lodash";
+import { current } from "@reduxjs/toolkit";
 
 interface Friends {
   name: string;
@@ -31,21 +32,21 @@ interface CollectionDetails {
 const CollectionDetails = () => {
   const router = useRouter();
   const data = router.query;
-  const [getCollection] = nitrusApi.endpoints.getCollection.useMutation();
+  const [getCollection, returnCollection] = nitrusApi.endpoints.getCollection.useMutation();
   const [collection, setCollection] = useState<Collection>();
   const [newName, setNewName] = useState<string>();
   const collectionName = useMemo(() => {
     return newName ?? data?.name;
   }, [newName, data?.name]);
-  const [privacyLevel, setPrivacyLevel] = useState(PrivacyLevel.Private);
-
+  const [privacyLevel, setPrivacyLevel] = useState(returnCollection?.data?.private === "true" ? true : false);
+  
   useEffect(() => {
-    getCollection(data.name as string)
-      .unwrap()
-      .then((currentCollection) => {
-        setCollection(currentCollection);
-      });
-  }, [data?.name]);
+    getCollection(collection?.name as string ?? data.name as string)
+    .unwrap()
+    .then((currentCollection) => {
+      setPrivacyLevel(currentCollection.private === "true" ? true : false);
+    });
+  }, [collection?.name, data.name]);
 
   interface CollectionEditableValues {
     collectionName: string;
@@ -64,6 +65,22 @@ const CollectionDetails = () => {
     } else {
       updateQueryName = values.collectionName as string;
     }
+    setTimeout(() => {
+      updateCollection({
+        name: collection?.name ?? data.name as string,
+        newName: updateQueryName,
+        private: privacyLevel ? "true" : "false",
+      }).then(() => {
+        setNewName(updateQueryName);
+        getCollection(updateQueryName)
+          .unwrap()
+          .then((currentCollection) => {
+            setCollection(currentCollection);
+            
+            router.push("/dashboard");
+          });
+      });
+    }, 1000)
 
     updateCollection({
       name: collection?.name ?? (data.name as string),
@@ -88,8 +105,20 @@ const CollectionDetails = () => {
   const [selectedfile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
 
-  const onPrivacyLevelClick = (level: PrivacyLevel) => {
-    setPrivacyLevel(level);
+  const onPrivacyLevelClick = (level: boolean) => {
+    console.log("privacy level " + level);
+    updateCollection({
+      name: data.name as string,
+      newName: data.name as string,
+      private: level ? "true" : "false",
+    }).then(() => {
+      getCollection(data.name as string)
+        .unwrap()
+        .then((currentCollection) => {
+          setCollection(currentCollection);
+          router.push("/dashboard");
+        });
+    });
   };
   const onUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -204,12 +233,12 @@ const CollectionDetails = () => {
           <CollectionSettings>
             <PricacyLevelSelect>
               <PrivacyLevelButton
-                level={PrivacyLevel.Private}
+                level={true}
                 selected={privacyLevel}
                 onClick={onPrivacyLevelClick}
               />
               <PrivacyLevelButton
-                level={PrivacyLevel.Public}
+                level={false}
                 selected={privacyLevel}
                 onClick={onPrivacyLevelClick}
               />

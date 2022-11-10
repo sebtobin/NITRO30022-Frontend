@@ -95,7 +95,7 @@ export const nitrusApi = createApi({
         body: { collnName: data.colln },
       }),
     }),
-    updateCollectionDetails: build.mutation<void, UpdateCollection>({
+    updateCollectionDetails: build.mutation<Collection, UpdateCollection>({
       query: ({ ...data }) => ({
         method: "PUT",
         url: `/collection/${data.name}/`,

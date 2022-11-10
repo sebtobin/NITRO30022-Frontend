@@ -3,9 +3,9 @@ import styled, { CSSProperties } from "styled-components";
 import { PrivacyLevel } from "../../../src/utils/Types";
 
 interface PrivacyLevelButtonProps {
-  level: PrivacyLevel;
-  selected: PrivacyLevel;
-  onClick: (level: PrivacyLevel) => void;
+  level: boolean;
+  selected: boolean;
+  onClick: (level: boolean) => void;
 }
 
 const PrivacyLevelButton: FC<PrivacyLevelButtonProps> = ({
@@ -20,7 +20,7 @@ const PrivacyLevelButton: FC<PrivacyLevelButtonProps> = ({
       style={isSelected ? underLine : undefined}
       onClick={() => onClick(level)}
     >
-      {level}
+      {level === true ? "Private" : "Public"}
     </PricacyLevelButton>
   );
 };
