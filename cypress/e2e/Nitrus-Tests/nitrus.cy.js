@@ -102,29 +102,6 @@ describe('Nitrus Page Navigation', () => {
     cy.url().should('include', '/dashboard')
     cy.contains('Welcome back to Nitrus')
   })
-
-  it('Should be able to navigate from the profile page to the friends page', () => {
-    cy.get('#profile_button').click()
-    cy.url().should('include', '/profile')
-    cy.contains('Save')
-
-    cy.get('#friends_button').click()
-    cy.url().should('include', '/dashboard')
-    // At the moment, friends button navigates from profile page to the dashboard instead of friends page
-    // cy.contains('Welcome back to Nitrus').should('not.exist')
-    // cy.contains('sentar') // Use dummy test data for now, change test later 
-  })
-
-  it('Should navigate to the friends page and be able to logout when user presses on those buttons', () => {
-    cy.get('#friends_button').click()
-    // Note: the friends page is still the same one as dashboard, just that some components are rendered, and others are not.
-    cy.url().should('include', '/dashboard') 
-    cy.contains('Welcome back to Nitrus').should('not.exist')
-    cy.contains('sentar') // Use dummy test data for now, change test later 
-
-    cy.get('#logout_button').click()
-    cy.url().should('eq', 'http://localhost:3000/')
-  })
 })
 
 describe('Nitrus Files and Collections', () => {
@@ -194,18 +171,6 @@ describe('Nitrus Files and Collections', () => {
     cy.url().should('include', '/dashboard')
     cy.contains('Welcome back to Nitrus')
   })
-
-  // Friends button on the Collection view also just navigates to the dashboard with 
-  // Collections rendered and Friends hidden 
-  // it('Should be able to navigate from a collection to Friends page', () => {
-  //   cy.get("#collection_view_button0").click()
-  //   cy.url().should('include', '/collection')
-
-  //   cy.wait(500)
-  //   cy.get('#friends_button').click()
-  //   cy.url().should('include', '/dashboard')
-  //   cy.contains('Welcome back to Nitrus').should('not.exist')
-  // })
 
   it('Should be able to navigate from a collection to Profile page', () => {
     cy.get("#collection_view_button0").click()
